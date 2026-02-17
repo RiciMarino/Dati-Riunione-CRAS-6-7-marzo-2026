@@ -370,13 +370,18 @@
       <div class="kpi-value" id="kpiSquadre">—</div>
       <div class="kpi-label">Squadre iscritte</div>
     </div>
+
+    <div class="kpi-card" id="kpiRegioniCard" style="border-top-color:var(--c-primary); display:none">
+      <div class="kpi-value" id="kpiRegioni">—</div>
+      <div class="kpi-label">Regioni</div>
+    </div>
     <div class="kpi-card" style="border-top-color:var(--c-ok)">
       <div class="kpi-value" id="kpiOk" style="color:var(--c-ok)">—</div>
-      <div class="kpi-label">Soddisfano minimo</div>
+      <div class="kpi-label">Soddisfano C.U.</div>
     </div>
     <div class="kpi-card" style="border-top-color:var(--c-warn)">
       <div class="kpi-value" id="kpiNomin" style="color:var(--c-warn)">—</div>
-      <div class="kpi-label">Sotto il minimo</div>
+      <div class="kpi-label">NON soddisfano C.U.</div>
     </div>
   </div>
 
@@ -8678,10 +8683,25 @@ function updateKPIs(){
   document.getElementById('kpiOk').textContent = ok.length.toLocaleString('it');
   document.getElementById('kpiNomin').textContent = nomin.length.toLocaleString('it');
 
+  // KPI "Regioni": mostrato solo quando sono selezionate almeno 1 Disciplina e 1 Categoria
+  const showRegioni = (f.disc && f.disc.length > 0) && (f.cat && f.cat.length > 0);
+  const regCard = document.getElementById('kpiRegioniCard');
+  const regVal  = document.getElementById('kpiRegioni');
+  if(regCard && regVal){
+    if(showRegioni){
+      const regionCount = new Set(filtered.map(r => r.Regione).filter(x => x !== null && x !== undefined && String(x).trim() !== "")).size;
+      regVal.textContent = regionCount.toLocaleString('it');
+      regCard.style.display = '';
+    } else {
+      regVal.textContent = '—';
+      regCard.style.display = 'none';
+    }
+  }
+
   document.getElementById('countOk').textContent = ok.length;
   document.getElementById('countNomin').textContent = nomin.length;
   document.getElementById('countNonprev').textContent = nonprev.length;
-}
+}}
 
 function refreshAll(){
   Object.keys(tables).forEach(key => {
