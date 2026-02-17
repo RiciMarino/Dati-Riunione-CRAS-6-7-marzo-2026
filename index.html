@@ -432,8 +432,11 @@
         <span class="dot dot-warn"></span> non soddisfa c.u. <span class="count-badge" id="countNomin">0</span>
       </button>
       <button class="status-tab" data-target="pane-nonprev">
-        <span class="dot dot-dark"></span> Non previsto nazionali <span class="count-badge" id="countNonprev">0</span>
+        <span class="dot dot-dark"></span> Non previsto ai nazionali <span class="count-badge" id="countNonprev">0</span>
       </button>
+        <button class="status-tab" data-target="pane-all">
+        <span class="dot" style="background: var(--c-accent);"></span> Mostra i dati insieme
+       </button>
     </div>
 
     <!-- Table panels -->
@@ -465,6 +468,47 @@
           </table>
         </div>
       </div>
+      <div class="tab-pane" id="pane-all">
+  <div class="mb-4">
+    <h3 style="font-family:var(--font-display);color:var(--c-primary);font-size:1.05rem;margin:0 0 .75rem">
+      Tabella 1 — Campionati che soddisfano il numero minimo di Squadre
+    </h3>
+    <div style="overflow-x:auto">
+      <table id="table-ok-all" class="table table-striped table-hover align-middle w-100">
+        <thead><tr>
+          <th>Disciplina</th><th>Categoria</th><th>Regione</th><th>Comitato</th><th>Squadre</th>
+        </tr></thead>
+      </table>
+    </div>
+  </div>
+
+  <div class="mb-4">
+    <h3 style="font-family:var(--font-display);color:var(--c-warn);font-size:1.05rem;margin:0 0 .75rem">
+      Tabella 2 — Campionati che NON soddisfano il numero minimo di Squadre
+    </h3>
+    <div style="overflow-x:auto">
+      <table id="table-nomin-all" class="table table-striped table-hover align-middle w-100">
+        <thead><tr>
+          <th>Disciplina</th><th>Categoria</th><th>Regione</th><th>Comitato</th><th>Squadre</th><th>Note</th>
+        </tr></thead>
+      </table>
+    </div>
+  </div>
+
+  <div>
+    <h3 style="font-family:var(--font-display);color:var(--c-dark);font-size:1.05rem;margin:0 0 .75rem">
+      Tabella 3 — Campionati che NON sono previsti ai Campionati nazionali
+    </h3>
+    <div style="overflow-x:auto">
+      <table id="table-nonprev-all" class="table table-striped table-hover align-middle w-100">
+        <thead><tr>
+          <th>Disciplina</th><th>Categoria</th><th>Regione</th><th>Comitato</th><th>Squadre</th><th>Note</th>
+        </tr></thead>
+      </table>
+    </div>
+  </div>
+</div>
+
     </div>
 
     <div class="text-center mt-4 no-print" style="color:var(--c-muted);font-size:.78rem">
@@ -8718,8 +8762,22 @@ document.getElementById('tabBar').addEventListener('click', function(e){
   document.getElementById(btn.dataset.target).classList.add('active');
   // Force DataTables to recalculate column widths
   const paneId = btn.dataset.target;
-  const tableMap = {'pane-ok':'ok','pane-nomin':'nomin','pane-nonprev':'nonprev'};
+  const tableMap = {
+  'pane-ok':'ok',
+  'pane-nomin':'nomin',
+  'pane-nonprev':'nonprev',
+  'pane-all': null
+};
+
+if (paneId !== 'pane-all') {
   if(tables[tableMap[paneId]]) tables[tableMap[paneId]].columns.adjust().draw();
+} else {
+  // quando mostro "tutto insieme", aggiusto tutte e 3 le tabelle del pannello "all"
+  ['ok_all','nomin_all','nonprev_all'].forEach(k => {
+    if (tables[k]) tables[k].columns.adjust().draw();
+  });
+}
+
 });
 
 function init(){
@@ -8761,6 +8819,24 @@ function init(){
     {data:'NOTE', defaultContent:''}
   ]);
 
+  tables.ok_all = makeTable('#table-ok-all', STATUS.OK, [
+  {data:'Disciplina'}, {data:'categoria'}, {data:'Regione'}, {data:'Comitato'},
+  {data:'Squadre', render:(d)=> d ?? ''}
+]);
+
+tables.nomin_all = makeTable('#table-nomin-all', STATUS.NOMIN, [
+  {data:'Disciplina'}, {data:'categoria'}, {data:'Regione'}, {data:'Comitato'},
+  {data:'Squadre', render:(d)=> d ?? ''},
+  {data:'NOTE', defaultContent:''}
+]);
+
+tables.nonprev_all = makeTable('#table-nonprev-all', STATUS.NONPREV, [
+  {data:'Disciplina'}, {data:'categoria'}, {data:'Regione'}, {data:'Comitato'},
+  {data:'Squadre', render:(d)=> d ?? ''},
+  {data:'NOTE', defaultContent:''}
+]);
+
+  
   refreshAll();
 
   $('#filterDisciplina, #filterCategoria, #filterRegione, #filterComitato').on('change', refreshAll);
