@@ -8689,7 +8689,7 @@ function updateKPIs(){
   const regVal  = document.getElementById('kpiRegioni');
   if(regCard && regVal){
     if(showRegioni){
-      const regionCount = new Set(filtered.map(r => r.Regione).filter(x => x !== null && x !== undefined && String(x).trim() !== "")).size;
+      const regionCount = new Set(ok.map(r => r.Regione).filter(x => x !== null && x !== undefined && String(x).trim() !== "")).size;
       regVal.textContent = regionCount.toLocaleString('it');
       regCard.style.display = '';
     } else {
