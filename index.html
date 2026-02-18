@@ -538,33 +538,7 @@ th .order-badge {
       CSI — Centro Sportivo Italiano · Dashboard Campionati Regionali
     </div>
 </div>
-<script src="https://code.jquery.com/jquery-3.7.1.min.js">
-    // --- Custom numeric sorting for Italian formatted numbers (e.g. "1.234", "12 345", "1.234,56") ---
-    // This fixes the SQUADRE column ordering when values are read as strings.
-    if ($.fn.dataTable) {
-      // Detect "num-it"
-      $.fn.dataTable.ext.type.detect.unshift(function (d) {
-        if (d === null || d === undefined) return null;
-        if (typeof d !== 'string') return null;
-        var s = d.replace(/<[^>]*>/g, '').trim(); // strip HTML
-        if (s === '') return null;
-        // Accept digits with optional thousands separators (dot/space) and optional decimal comma
-        return (/^[\d\s\.]+(?:,\d+)?$/.test(s)) ? 'num-it' : null;
-      });
-
-      // Pre-order for "num-it"
-      $.fn.dataTable.ext.type.order['num-it-pre'] = function (d) {
-        if (d === null || d === undefined) return 0;
-        var s = ('' + d).replace(/<[^>]*>/g, '').trim();
-        if (s === '') return 0;
-        // remove spaces, remove thousands '.', convert decimal ',' to '.'
-        s = s.replace(/\s+/g, '').replace(/\./g, '').replace(',', '.');
-        var x = parseFloat(s);
-        return isNaN(x) ? 0 : x;
-      };
-    }
-
-</script>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdn.datatables.net/1.13.8/js/jquery.dataTables.min.js"></script>
 <script src="https://cdn.datatables.net/1.13.8/js/dataTables.bootstrap5.min.js"></script>
@@ -8060,637 +8034,625 @@ const EMBEDDED_DATA = [
     "NOTE": ""
   },
   {
-    "status": "Non soddisfa C.U.",
+    "status": "non soddisfa c.u.",
     "Disciplina": "Calcio",
     "categoria": "Top Junior M",
     "Regione": "Lombardia",
     "Comitato": "Milano",
-    "NOTE": "Regioni insufficienti (1)",
-    "Squadre": 22
+    "Squadre": 22,
+    "NOTE": "Regioni insufficienti (1)"
   },
   {
-    "status": "Non soddisfa C.U.",
+    "status": "non soddisfa c.u.",
     "Disciplina": "Calcio",
     "categoria": "Top Junior M",
     "Regione": "Lombardia",
     "Comitato": "Bergamo",
-    "NOTE": "Regioni insufficienti (1)",
-    "Squadre": 23
+    "Squadre": 23,
+    "NOTE": "Regioni insufficienti (1)"
   },
   {
-    "status": "Non soddisfa C.U.",
+    "status": "non soddisfa c.u.",
     "Disciplina": "Calcio",
     "categoria": "Open Maschile",
     "Regione": "Lazio",
     "Comitato": "Roma",
-    "NOTE": "Non soddisfa C.U. 1 sq insufficienti",
-    "Squadre": 1
+    "Squadre": 1,
+    "NOTE": "Non soddisfa C.U. 1 sq insufficienti"
   },
   {
-    "status": "Non soddisfa C.U.",
+    "status": "non soddisfa c.u.",
     "Disciplina": "Calcio a Cinque",
     "categoria": "Allieve",
     "Regione": "Campania",
     "Comitato": "Caserta",
-    "NOTE": "Regioni insufficienti (1)",
-    "Squadre": 2
+    "Squadre": 2,
+    "NOTE": "Regioni insufficienti (1)"
   },
   {
-    "status": "Non soddisfa C.U.",
+    "status": "non soddisfa c.u.",
     "Disciplina": "Calcio a Cinque",
     "categoria": "Allievi",
     "Regione": "Liguria",
     "Comitato": "Imperia-Sanremo",
-    "NOTE": "Non soddisfa C.U. 1 sq insufficienti",
-    "Squadre": 2
+    "Squadre": 2,
+    "NOTE": "Non soddisfa C.U. 1 sq insufficienti"
   },
   {
-    "status": "Non soddisfa C.U.",
+    "status": "non soddisfa c.u.",
     "Disciplina": "Calcio a Cinque",
     "categoria": "Allievi",
     "Regione": "Puglia",
     "Comitato": "Brindisi",
-    "NOTE": "Non soddisfa C.U. 1 sq insufficienti",
-    "Squadre": 1
+    "Squadre": 1,
+    "NOTE": "Non soddisfa C.U. 1 sq insufficienti"
   },
   {
-    "status": "Non soddisfa C.U.",
+    "status": "non soddisfa c.u.",
     "Disciplina": "Calcio a Cinque",
     "categoria": "Juniores M",
     "Regione": "Liguria",
     "Comitato": "Imperia-Sanremo",
-    "NOTE": "Non soddisfa C.U. 1 sq insufficienti",
-    "Squadre": 1
+    "Squadre": 1,
+    "NOTE": "Non soddisfa C.U. 1 sq insufficienti"
   },
   {
-    "status": "Non soddisfa C.U.",
+    "status": "non soddisfa c.u.",
     "Disciplina": "Calcio a Cinque",
     "categoria": "Juniores M",
     "Regione": "Puglia",
     "Comitato": "Brindisi",
-    "NOTE": "Non soddisfa C.U. 1 sq insufficienti",
-    "Squadre": 1
+    "Squadre": 1,
+    "NOTE": "Non soddisfa C.U. 1 sq insufficienti"
   },
   {
-    "status": "Non soddisfa C.U.",
+    "status": "non soddisfa c.u.",
     "Disciplina": "Calcio a Cinque",
     "categoria": "Juniores M",
     "Regione": "Sicilia",
     "Comitato": "Palermo",
-    "NOTE": "Non soddisfa C.U. 1 sq insufficienti",
-    "Squadre": 1
+    "Squadre": 1,
+    "NOTE": "Non soddisfa C.U. 1 sq insufficienti"
   },
   {
-    "status": "Non soddisfa C.U.",
+    "status": "non soddisfa c.u.",
     "Disciplina": "Calcio a Cinque",
     "categoria": "Top Junior M",
     "Regione": "Campania",
     "Comitato": "Caserta",
-    "NOTE": "Non soddisfa C.U. 1 sq insufficienti",
-    "Squadre": 2
+    "Squadre": 2,
+    "NOTE": "Non soddisfa C.U. 1 sq insufficienti"
   },
   {
-    "status": "Non soddisfa C.U.",
+    "status": "non soddisfa c.u.",
     "Disciplina": "Calcio a Cinque",
     "categoria": "Top Junior M",
     "Regione": "Sicilia",
     "Comitato": "Enna",
-    "NOTE": "Non soddisfa C.U. 1 sq insufficienti",
-    "Squadre": 1
+    "Squadre": 1,
+    "NOTE": "Non soddisfa C.U. 1 sq insufficienti"
   },
   {
-    "status": "Non soddisfa C.U.",
+    "status": "non soddisfa c.u.",
     "Disciplina": "Calcio a Cinque",
     "categoria": "Top Junior M",
     "Regione": "Sicilia",
     "Comitato": "Palermo",
-    "NOTE": "Non soddisfa C.U. 1 sq insufficienti",
-    "Squadre": 1
+    "Squadre": 1,
+    "NOTE": "Non soddisfa C.U. 1 sq insufficienti"
   },
   {
-    "status": "Non soddisfa C.U.",
+    "status": "non soddisfa c.u.",
     "Disciplina": "Calcio a Cinque",
     "categoria": "Juniores F",
     "Regione": "Campania",
     "Comitato": "Caserta",
-    "NOTE": "Regioni insufficienti (1)",
-    "Squadre": 1
+    "Squadre": 1,
+    "NOTE": "Regioni insufficienti (1)"
   },
   {
-    "status": "Non soddisfa C.U.",
+    "status": "non soddisfa c.u.",
     "Disciplina": "Calcio a Cinque",
     "categoria": "Open Femminile",
     "Regione": "Liguria",
     "Comitato": "Imperia-Sanremo",
-    "NOTE": "Non soddisfa C.U. 1 sq insufficienti",
-    "Squadre": 1
+    "Squadre": 1,
+    "NOTE": "Non soddisfa C.U. 1 sq insufficienti"
   },
   {
-    "status": "Non soddisfa C.U.",
+    "status": "non soddisfa c.u.",
     "Disciplina": "Calcio a Cinque",
     "categoria": "Open Femminile",
     "Regione": "Puglia",
     "Comitato": "Lecce",
-    "NOTE": "Non soddisfa C.U. 1 sq insufficienti",
-    "Squadre": 0
+    "Squadre": 0,
+    "NOTE": "Non soddisfa C.U. 1 sq insufficienti"
   },
   {
-    "status": "Non soddisfa C.U.",
+    "status": "non soddisfa c.u.",
     "Disciplina": "Calcio a Cinque",
     "categoria": "Open Femminile",
     "Regione": "Toscana",
     "Comitato": "Pisa",
-    "NOTE": "Non soddisfa C.U. 1 sq insufficienti",
-    "Squadre": 4
+    "Squadre": 4,
+    "NOTE": "Non soddisfa C.U. 1 sq insufficienti"
   },
   {
-    "status": "Non soddisfa C.U.",
+    "status": "non soddisfa c.u.",
     "Disciplina": "Calcio a Cinque",
     "categoria": "Open Femminile",
     "Regione": "Marche",
     "Comitato": "Macerata",
-    "NOTE": "Non soddisfa C.U. 1 (manca fase reg.)",
-    "Squadre": 5
+    "Squadre": 5,
+    "NOTE": "Non soddisfa C.U. 1 (manca fase reg.)"
   },
   {
-    "status": "Non soddisfa C.U.",
+    "status": "non soddisfa c.u.",
     "Disciplina": "Calcio a Cinque",
     "categoria": "Open Maschile",
     "Regione": "Calabria",
     "Comitato": "Tirrenico",
-    "NOTE": "Non soddisfa C.U. 1 sq insufficienti",
-    "Squadre": 1
+    "Squadre": 1,
+    "NOTE": "Non soddisfa C.U. 1 sq insufficienti"
   },
   {
-    "status": "Non soddisfa C.U.",
+    "status": "non soddisfa c.u.",
     "Disciplina": "Calcio a Cinque",
     "categoria": "Open Maschile",
     "Regione": "Emilia-Romagna",
     "Comitato": "Forli",
-    "NOTE": "Non soddisfa C.U. 1 sq insufficienti",
-    "Squadre": 3
+    "Squadre": 3,
+    "NOTE": "Non soddisfa C.U. 1 sq insufficienti"
   },
   {
-    "status": "Non soddisfa C.U.",
+    "status": "non soddisfa c.u.",
     "Disciplina": "Calcio a Cinque",
     "categoria": "Open Maschile",
     "Regione": "Sicilia",
     "Comitato": "Enna",
-    "NOTE": "Non soddisfa C.U. 1 sq insufficienti",
-    "Squadre": 1
+    "Squadre": 1,
+    "NOTE": "Non soddisfa C.U. 1 sq insufficienti"
   },
   {
-    "status": "Non soddisfa C.U.",
+    "status": "non soddisfa c.u.",
     "Disciplina": "Calcio a Sette",
     "categoria": "Allieve",
     "Regione": "Campania",
     "Comitato": "Caserta",
-    "NOTE": "Regioni insufficienti (3)",
-    "Squadre": 6
+    "Squadre": 6,
+    "NOTE": "Regioni insufficienti (3)"
   },
   {
-    "status": "Non soddisfa C.U.",
+    "status": "non soddisfa c.u.",
     "Disciplina": "Calcio a Sette",
     "categoria": "Allieve",
     "Regione": "Lombardia",
     "Comitato": "Milano",
-    "NOTE": "Regioni insufficienti (3)",
-    "Squadre": 14
+    "Squadre": 14,
+    "NOTE": "Regioni insufficienti (3)"
   },
   {
-    "status": "Non soddisfa C.U.",
+    "status": "non soddisfa c.u.",
     "Disciplina": "Calcio a Sette",
     "categoria": "Allieve",
     "Regione": "Lombardia",
     "Comitato": "Bergamo",
-    "NOTE": "Regioni insufficienti (3)",
-    "Squadre": 8
+    "Squadre": 8,
+    "NOTE": "Regioni insufficienti (3)"
   },
   {
-    "status": "Non soddisfa C.U.",
+    "status": "non soddisfa c.u.",
     "Disciplina": "Calcio a Sette",
     "categoria": "Allieve",
     "Regione": "Piemonte",
     "Comitato": "Subalpino",
-    "NOTE": "Regioni insufficienti (3)",
-    "Squadre": 7
+    "Squadre": 7,
+    "NOTE": "Regioni insufficienti (3)"
   },
   {
-    "status": "Non soddisfa C.U.",
+    "status": "non soddisfa c.u.",
     "Disciplina": "Calcio a Sette",
     "categoria": "Allievi",
     "Regione": "Puglia",
     "Comitato": "Brindisi",
-    "NOTE": "Non soddisfa C.U. 1 sq insufficienti",
-    "Squadre": 1
+    "Squadre": 1,
+    "NOTE": "Non soddisfa C.U. 1 sq insufficienti"
   },
   {
-    "status": "Non soddisfa C.U.",
+    "status": "non soddisfa c.u.",
     "Disciplina": "Calcio a Sette",
     "categoria": "Juniores M",
     "Regione": "Puglia",
     "Comitato": "Brindisi",
-    "NOTE": "Non soddisfa C.U. 1 sq insufficienti",
-    "Squadre": 2
+    "Squadre": 2,
+    "NOTE": "Non soddisfa C.U. 1 sq insufficienti"
   },
   {
-    "status": "Non soddisfa C.U.",
+    "status": "non soddisfa c.u.",
     "Disciplina": "Calcio a Sette",
     "categoria": "Juniores M",
     "Regione": "Puglia",
     "Comitato": "Lecce",
-    "NOTE": "Non soddisfa C.U. 1 sq insufficienti",
-    "Squadre": 4
+    "Squadre": 4,
+    "NOTE": "Non soddisfa C.U. 1 sq insufficienti"
   },
   {
-    "status": "Non soddisfa C.U.",
+    "status": "non soddisfa c.u.",
     "Disciplina": "Calcio a Sette",
     "categoria": "Juniores M",
     "Regione": "Sicilia",
     "Comitato": "Enna",
-    "NOTE": "Non soddisfa C.U. 1 sq insufficienti",
-    "Squadre": 3
+    "Squadre": 3,
+    "NOTE": "Non soddisfa C.U. 1 sq insufficienti"
   },
   {
-    "status": "Non soddisfa C.U.",
+    "status": "non soddisfa c.u.",
     "Disciplina": "Calcio a Sette",
     "categoria": "Top Junior M",
     "Regione": "Lombardia",
     "Comitato": "Lecco",
-    "NOTE": "Regioni insufficienti (2)",
-    "Squadre": 11
+    "Squadre": 11,
+    "NOTE": "Regioni insufficienti (2)"
   },
   {
-    "status": "Non soddisfa C.U.",
+    "status": "non soddisfa c.u.",
     "Disciplina": "Calcio a Sette",
     "categoria": "Top Junior M",
     "Regione": "Lombardia",
     "Comitato": "Vallecamonica",
-    "NOTE": "Regioni insufficienti (2)",
-    "Squadre": 6
+    "Squadre": 6,
+    "NOTE": "Regioni insufficienti (2)"
   },
   {
-    "status": "Non soddisfa C.U.",
+    "status": "non soddisfa c.u.",
     "Disciplina": "Calcio a Sette",
     "categoria": "Top Junior M",
     "Regione": "Lombardia",
     "Comitato": "Milano",
-    "NOTE": "Regioni insufficienti (2)",
-    "Squadre": 60
+    "Squadre": 60,
+    "NOTE": "Regioni insufficienti (2)"
   },
   {
-    "status": "Non soddisfa C.U.",
+    "status": "non soddisfa c.u.",
     "Disciplina": "Calcio a Sette",
     "categoria": "Top Junior M",
     "Regione": "Lombardia",
     "Comitato": "Bergamo",
-    "NOTE": "Regioni insufficienti (2)",
-    "Squadre": 6
+    "Squadre": 6,
+    "NOTE": "Regioni insufficienti (2)"
   },
   {
-    "status": "Non soddisfa C.U.",
+    "status": "non soddisfa c.u.",
     "Disciplina": "Calcio a Sette",
     "categoria": "Top Junior M",
     "Regione": "Lombardia",
     "Comitato": "Brescia",
-    "NOTE": "Regioni insufficienti (2)",
-    "Squadre": 28
+    "Squadre": 28,
+    "NOTE": "Regioni insufficienti (2)"
   },
   {
-    "status": "Non soddisfa C.U.",
+    "status": "non soddisfa c.u.",
     "Disciplina": "Calcio a Sette",
     "categoria": "Top Junior M",
     "Regione": "Lombardia",
     "Comitato": "Varese",
-    "NOTE": "Regioni insufficienti (2)",
-    "Squadre": 18
+    "Squadre": 18,
+    "NOTE": "Regioni insufficienti (2)"
   },
   {
-    "status": "Non soddisfa C.U.",
+    "status": "non soddisfa c.u.",
     "Disciplina": "Calcio a Sette",
     "categoria": "Top Junior M",
     "Regione": "Veneto",
     "Comitato": "Legnago",
-    "NOTE": "Regioni insufficienti (2)",
-    "Squadre": 1
+    "Squadre": 1,
+    "NOTE": "Regioni insufficienti (2)"
   },
   {
-    "status": "Non soddisfa C.U.",
+    "status": "non soddisfa c.u.",
     "Disciplina": "Calcio a Sette",
     "categoria": "Juniores F",
     "Regione": "Lombardia",
     "Comitato": "Milano",
-    "NOTE": "Regioni insufficienti (1)",
-    "Squadre": 7
+    "Squadre": 7,
+    "NOTE": "Regioni insufficienti (1)"
   },
   {
-    "status": "Non soddisfa C.U.",
+    "status": "non soddisfa c.u.",
     "Disciplina": "Calcio a Sette",
     "categoria": "Open Femminile",
     "Regione": "Emilia-Romagna",
     "Comitato": "Reggio Emilia",
-    "NOTE": "Regioni insufficienti (2)",
-    "Squadre": 1
+    "Squadre": 1,
+    "NOTE": "Regioni insufficienti (2)"
   },
   {
-    "status": "Non soddisfa C.U.",
+    "status": "non soddisfa c.u.",
     "Disciplina": "Calcio a Sette",
     "categoria": "Open Femminile",
     "Regione": "Lombardia",
     "Comitato": "Milano",
-    "NOTE": "Regioni insufficienti (2)",
-    "Squadre": 12
+    "Squadre": 12,
+    "NOTE": "Regioni insufficienti (2)"
   },
   {
-    "status": "Non soddisfa C.U.",
+    "status": "non soddisfa c.u.",
     "Disciplina": "Calcio a Sette",
     "categoria": "Open Femminile",
     "Regione": "Lombardia",
     "Comitato": "Bergamo",
-    "NOTE": "Regioni insufficienti (2)",
-    "Squadre": 10
+    "Squadre": 10,
+    "NOTE": "Regioni insufficienti (2)"
   },
   {
-    "status": "Non soddisfa C.U.",
+    "status": "non soddisfa c.u.",
     "Disciplina": "Calcio a Sette",
     "categoria": "Open Femminile",
     "Regione": "Lombardia",
     "Comitato": "Brescia",
-    "NOTE": "Regioni insufficienti (2)",
-    "Squadre": 17
+    "Squadre": 17,
+    "NOTE": "Regioni insufficienti (2)"
   },
   {
-    "status": "Non soddisfa C.U.",
+    "status": "non soddisfa c.u.",
     "Disciplina": "Calcio a Sette",
     "categoria": "Open Femminile",
     "Regione": "Lombardia",
     "Comitato": "Varese",
-    "NOTE": "Regioni insufficienti (2)",
-    "Squadre": 19
+    "Squadre": 19,
+    "NOTE": "Regioni insufficienti (2)"
   },
   {
-    "status": "Non soddisfa C.U.",
+    "status": "non soddisfa c.u.",
     "Disciplina": "Pallacanestro",
     "categoria": "Top Junior M",
     "Regione": "Lombardia",
     "Comitato": "Milano",
-    "NOTE": "Regioni insufficienti (2)",
-    "Squadre": 5
+    "Squadre": 5,
+    "NOTE": "Regioni insufficienti (2)"
   },
   {
-    "status": "Non soddisfa C.U.",
+    "status": "non soddisfa c.u.",
     "Disciplina": "Pallacanestro",
     "categoria": "Top Junior M",
     "Regione": "Veneto",
     "Comitato": "Padova",
-    "NOTE": "Regioni insufficienti (2)",
-    "Squadre": 5
+    "Squadre": 5,
+    "NOTE": "Regioni insufficienti (2)"
   },
   {
-    "status": "Non soddisfa C.U.",
+    "status": "non soddisfa c.u.",
     "Disciplina": "Pallacanestro",
     "categoria": "Juniores F",
     "Regione": "Puglia",
     "Comitato": "Bari",
-    "NOTE": "Regioni insufficienti (2)",
-    "Squadre": 2
+    "Squadre": 2,
+    "NOTE": "Regioni insufficienti (2)"
   },
   {
-    "status": "Non soddisfa C.U.",
+    "status": "non soddisfa c.u.",
     "Disciplina": "Pallacanestro",
     "categoria": "Juniores F",
     "Regione": "Veneto",
     "Comitato": "Padova",
-    "NOTE": "Regioni insufficienti (2)",
-    "Squadre": 5
+    "Squadre": 5,
+    "NOTE": "Regioni insufficienti (2)"
   },
   {
-    "status": "Non soddisfa C.U.",
+    "status": "non soddisfa c.u.",
     "Disciplina": "Pallacanestro",
     "categoria": "Open Maschile",
     "Regione": "Emilia-Romagna",
     "Comitato": "Parma",
-    "NOTE": "Non soddisfa C.U. 1 sq insufficienti",
-    "Squadre": 2
+    "Squadre": 2,
+    "NOTE": "Non soddisfa C.U. 1 sq insufficienti"
   },
   {
-    "status": "Non soddisfa C.U.",
+    "status": "non soddisfa c.u.",
     "Disciplina": "Pallacanestro",
     "categoria": "Top J F",
     "Regione": "Puglia",
     "Comitato": "Bari",
-    "NOTE": "Regioni insufficienti (1 con 1 sq.)",
-    "Squadre": 1
+    "Squadre": 1,
+    "NOTE": "Regioni insufficienti (1 con 1 sq.)"
   },
   {
-    "status": "Non soddisfa C.U.",
+    "status": "non soddisfa c.u.",
     "Disciplina": "Pallavolo",
     "categoria": "Allieve",
     "Regione": "Abruzzo",
     "Comitato": "Teramo",
-    "NOTE": "Non soddisfa C.U. 1 sq insufficienti",
-    "Squadre": 2
+    "Squadre": 2,
+    "NOTE": "Non soddisfa C.U. 1 sq insufficienti"
   },
   {
-    "status": "Non soddisfa C.U.",
+    "status": "non soddisfa c.u.",
     "Disciplina": "Pallavolo",
     "categoria": "Allieve",
     "Regione": "Lombardia",
     "Comitato": "Crema",
-    "NOTE": "Non soddisfa C.U. 1 sq insufficienti",
-    "Squadre": 3
+    "Squadre": 3,
+    "NOTE": "Non soddisfa C.U. 1 sq insufficienti"
   },
   {
-    "status": "Non soddisfa C.U.",
+    "status": "non soddisfa c.u.",
     "Disciplina": "Pallavolo",
     "categoria": "Allieve",
     "Regione": "Puglia",
     "Comitato": "Barletta A.T.",
-    "NOTE": "Non soddisfa C.U. 1 sq insufficienti",
-    "Squadre": 4
+    "Squadre": 4,
+    "NOTE": "Non soddisfa C.U. 1 sq insufficienti"
   },
   {
-    "status": "Non soddisfa C.U.",
+    "status": "non soddisfa c.u.",
     "Disciplina": "Pallavolo",
     "categoria": "Allieve",
     "Regione": "Veneto",
     "Comitato": "Rovigo",
-    "NOTE": "Non soddisfa C.U. 1 sq insufficienti",
-    "Squadre": 4
+    "Squadre": 4,
+    "NOTE": "Non soddisfa C.U. 1 sq insufficienti"
   },
   {
-    "status": "Non soddisfa C.U.",
+    "status": "non soddisfa c.u.",
     "Disciplina": "Pallavolo",
     "categoria": "Allieve",
     "Regione": "Basilicata",
     "Comitato": "Potenza",
-    "NOTE": "Non soddisfa C.U. 1 (manca fase reg.)",
-    "Squadre": 5
+    "Squadre": 5,
+    "NOTE": "Non soddisfa C.U. 1 (manca fase reg.)"
   },
   {
-    "status": "Non soddisfa C.U.",
+    "status": "non soddisfa c.u.",
     "Disciplina": "Pallavolo",
     "categoria": "Juniores F",
     "Regione": "Liguria",
     "Comitato": "Chiavari",
-    "NOTE": "Non soddisfa C.U. 1 sq insufficienti",
-    "Squadre": 4
+    "Squadre": 4,
+    "NOTE": "Non soddisfa C.U. 1 sq insufficienti"
   },
   {
-    "status": "Non soddisfa C.U.",
+    "status": "non soddisfa c.u.",
     "Disciplina": "Pallavolo",
     "categoria": "Juniores F",
     "Regione": "Puglia",
     "Comitato": "Brindisi",
-    "NOTE": "Non soddisfa C.U. 1 (manca fase reg.)",
-    "Squadre": 5
+    "Squadre": 5,
+    "NOTE": "Non soddisfa C.U. 1 (manca fase reg.)"
   },
   {
-    "status": "Non soddisfa C.U.",
+    "status": "non soddisfa c.u.",
     "Disciplina": "Pallavolo",
     "categoria": "Juniores F",
     "Regione": "Puglia",
     "Comitato": "Lecce",
-    "NOTE": "Non soddisfa C.U. 1 sq insufficienti",
-    "Squadre": 4
+    "Squadre": 4,
+    "NOTE": "Non soddisfa C.U. 1 sq insufficienti"
   },
   {
-    "status": "Non soddisfa C.U.",
+    "status": "non soddisfa c.u.",
     "Disciplina": "Pallavolo",
     "categoria": "Open Femminile",
     "Regione": "Lombardia",
     "Comitato": "Crema",
-    "NOTE": "Non soddisfa C.U. 1 sq insufficienti",
-    "Squadre": 3
+    "Squadre": 3,
+    "NOTE": "Non soddisfa C.U. 1 sq insufficienti"
   },
   {
-    "status": "Non soddisfa C.U.",
+    "status": "non soddisfa c.u.",
     "Disciplina": "Pallavolo",
     "categoria": "Open Femminile",
     "Regione": "Lombardia",
     "Comitato": "Sondrio",
-    "NOTE": "Non soddisfa C.U. 1 sq insufficienti",
-    "Squadre": 3
+    "Squadre": 3,
+    "NOTE": "Non soddisfa C.U. 1 sq insufficienti"
   },
   {
-    "status": "Non soddisfa C.U.",
+    "status": "non soddisfa c.u.",
     "Disciplina": "Pallavolo",
     "categoria": "Open Femminile",
     "Regione": "Piemonte",
     "Comitato": "Alba",
-    "NOTE": "Non soddisfa C.U. 1 sq insufficienti",
-    "Squadre": 1
+    "Squadre": 1,
+    "NOTE": "Non soddisfa C.U. 1 sq insufficienti"
   },
   {
-    "status": "Non soddisfa C.U.",
+    "status": "non soddisfa c.u.",
     "Disciplina": "Pallavolo",
     "categoria": "Open Femminile",
     "Regione": "Piemonte",
     "Comitato": "Novara",
-    "NOTE": "Non soddisfa C.U. 1 sq insufficienti",
-    "Squadre": 2
+    "Squadre": 2,
+    "NOTE": "Non soddisfa C.U. 1 sq insufficienti"
   },
   {
-    "status": "Non soddisfa C.U.",
+    "status": "non soddisfa c.u.",
     "Disciplina": "Pallavolo",
     "categoria": "Open Femminile",
     "Regione": "Marche",
     "Comitato": "Macerata",
-    "NOTE": "Non soddisfa C.U. 1 (manca fase reg.)",
-    "Squadre": 5
+    "Squadre": 5,
+    "NOTE": "Non soddisfa C.U. 1 (manca fase reg.)"
   },
   {
-    "status": "Non soddisfa C.U.",
+    "status": "non soddisfa c.u.",
     "Disciplina": "Pallavolo",
     "categoria": "Open Maschile",
     "Regione": "Calabria",
     "Comitato": "Reggio Calabria",
-    "NOTE": "Non soddisfa C.U. 1 (manca fase reg.)",
-    "Squadre": 5
+    "Squadre": 5,
+    "NOTE": "Non soddisfa C.U. 1 (manca fase reg.)"
   },
   {
-    "status": "Non soddisfa C.U.",
+    "status": "non soddisfa c.u.",
     "Disciplina": "Pallavolo",
     "categoria": "Open Misto",
     "Regione": "Emilia-Romagna",
     "Comitato": "Emilia Romagna",
-    "NOTE": "Non soddisfa C.U. 1 sq insufficienti",
-    "Squadre": 1
+    "Squadre": 1,
+    "NOTE": "Non soddisfa C.U. 1 sq insufficienti"
   },
   {
-    "status": "Non soddisfa C.U.",
+    "status": "non soddisfa c.u.",
     "Disciplina": "Pallavolo",
     "categoria": "Open Misto",
     "Regione": "Piemonte",
     "Comitato": "Subalpino",
-    "NOTE": "Non soddisfa C.U. 1 sq insufficienti",
-    "Squadre": 4
+    "Squadre": 4,
+    "NOTE": "Non soddisfa C.U. 1 sq insufficienti"
   },
   {
-    "status": "Non soddisfa C.U.",
+    "status": "non soddisfa c.u.",
     "Disciplina": "Pallavolo",
     "categoria": "Open Misto",
     "Regione": "Toscana",
     "Comitato": "Toscana",
-    "NOTE": "Non soddisfa C.U. 1 sq insufficienti",
-    "Squadre": 4
+    "Squadre": 4,
+    "NOTE": "Non soddisfa C.U. 1 sq insufficienti"
   },
   {
-    "status": "Non soddisfa C.U.",
+    "status": "non soddisfa c.u.",
     "Disciplina": "Pallavolo",
     "categoria": "Top J F",
     "Regione": "Puglia",
     "Comitato": "Lecce",
-    "NOTE": "Non soddisfa C.U. 1 sq insufficienti",
-    "Squadre": 2
+    "Squadre": 2,
+    "NOTE": "Non soddisfa C.U. 1 sq insufficienti"
   },
   {
-    "status": "Non previsto",
+    "status": "Non previsto nazionali",
     "Disciplina": "Calcio",
     "categoria": "Under 12",
     "Regione": "Lombardia",
     "Comitato": "Bergamo",
-    "NOTE": "Non previsto dal progetto",
-    "Squadre": 157
+    "Squadre": 157,
+    "NOTE": "Non previsto dal progetto"
   },
   {
-    "status": "Non previsto",
+    "status": "Non previsto nazionali",
     "Disciplina": "Calcio",
     "categoria": "Under 12",
     "Regione": "Lombardia",
     "Comitato": "Milano",
-    "NOTE": "Non previsto dal progetto",
-    "Squadre": 10
+    "Squadre": 10,
+    "NOTE": "Non previsto dal progetto"
   },
   {
-    "status": "Non previsto",
+    "status": "Non previsto nazionali",
     "Disciplina": "Pallavolo",
     "categoria": "Under 10 Femminile 6x6",
     "Regione": "Lombardia",
     "Comitato": "Lodi",
-    "NOTE": "!!! Non previsto dal progetto",
-    "Squadre": 6
+    "Squadre": 6,
+    "NOTE": "!!! Non previsto dal progetto"
   }
 ];
+
 
 const STATUS = {
   OK: "Soddisfa C.U.",
   NOMIN: "non soddisfa c.u.",
   NONPREV: "Non previsto nazionali"
 };
-
-function parseNumIt(v){
-  if(v === null || v === undefined) return 0;
-  if(typeof v === 'number') return v;
-  let s = String(v).replace(/<[^>]*>/g,'').trim();
-  if(!s) return 0;
-  // keep digits, dots, commas, spaces
-  s = s.replace(/\s+/g,'').replace(/\./g,'').replace(',', '.');
-  const n = parseFloat(s);
-  return isNaN(n) ? 0 : n;
-}
-
-
 
 let raw = [];
 let tables = {};
@@ -8782,7 +8744,7 @@ function makeTable(id, status, columns){
     lengthMenu: [50, 75, 100, 125, 150, 175, 200],
     order: [[0,'asc'],[1,'asc'],[2,'asc'],[3,'asc']],
     orderMulti: false, // gestito da noi
-    dom: '<"d-flex flex-wrap gap-2 justify-content-between align-items-center mb-2"Bf>rt<"d-flex flex-wrap gap-2 justify-content-between align-items-center mt-2"ip>',
+    dom: '<"d-flex flex-wrap gap-2 justify-content-between align-items-center mb-2"B<"d-flex flex-wrap gap-2 align-items-center"lf>>rt<"d-flex flex-wrap gap-2 justify-content-between align-items-center mt-2"ip>',
     buttons: [
             {
               text: '↺ Reset ordinamento',
@@ -8913,33 +8875,33 @@ function init(){
 
   tables.ok = makeTable('#table-ok', STATUS.OK, [
     {data:'Disciplina'}, {data:'categoria'}, {data:'Regione'}, {data:'Comitato'},
-    {data:'Squadre', render:function(d,type){ if(type==='sort'||type==='type') return parseNumIt(d); return d ?? ''; }}
+    {data:'Squadre', render:function(d,type){ var n=(d===null||d===undefined||d==='')?0:Number(d); if(type==='sort'||type==='type') return n; if(type==='display') return n.toLocaleString('it-IT'); return n; }}
   ]);
   tables.nomin = makeTable('#table-nomin', STATUS.NOMIN, [
     {data:'Disciplina'}, {data:'categoria'}, {data:'Regione'}, {data:'Comitato'},
-    {data:'Squadre', render:function(d,type){ if(type==='sort'||type==='type') return parseNumIt(d); return d ?? ''; }},
+    {data:'Squadre', render:function(d,type){ var n=(d===null||d===undefined||d==='')?0:Number(d); if(type==='sort'||type==='type') return n; if(type==='display') return n.toLocaleString('it-IT'); return n; }},
     {data:'NOTE', defaultContent:''}
   ]);
   tables.nonprev = makeTable('#table-nonprev', STATUS.NONPREV, [
     {data:'Disciplina'}, {data:'categoria'}, {data:'Regione'}, {data:'Comitato'},
-    {data:'Squadre', render:function(d,type){ if(type==='sort'||type==='type') return parseNumIt(d); return d ?? ''; }},
+    {data:'Squadre', render:function(d,type){ var n=(d===null||d===undefined||d==='')?0:Number(d); if(type==='sort'||type==='type') return n; if(type==='display') return n.toLocaleString('it-IT'); return n; }},
     {data:'NOTE', defaultContent:''}
   ]);
 
   tables.ok_all = makeTable('#table-ok-all', STATUS.OK, [
   {data:'Disciplina'}, {data:'categoria'}, {data:'Regione'}, {data:'Comitato'},
-  {data:'Squadre', render:function(d,type){ if(type==='sort'||type==='type') return parseNumIt(d); return d ?? ''; }}
+  {data:'Squadre', render:function(d,type){ var n=(d===null||d===undefined||d==='')?0:Number(d); if(type==='sort'||type==='type') return n; if(type==='display') return n.toLocaleString('it-IT'); return n; }}
 ]);
 
 tables.nomin_all = makeTable('#table-nomin-all', STATUS.NOMIN, [
   {data:'Disciplina'}, {data:'categoria'}, {data:'Regione'}, {data:'Comitato'},
-  {data:'Squadre', render:function(d,type){ if(type==='sort'||type==='type') return parseNumIt(d); return d ?? ''; }},
+  {data:'Squadre', render:function(d,type){ var n=(d===null||d===undefined||d==='')?0:Number(d); if(type==='sort'||type==='type') return n; if(type==='display') return n.toLocaleString('it-IT'); return n; }},
   {data:'NOTE', defaultContent:''}
 ]);
 
 tables.nonprev_all = makeTable('#table-nonprev-all', STATUS.NONPREV, [
   {data:'Disciplina'}, {data:'categoria'}, {data:'Regione'}, {data:'Comitato'},
-  {data:'Squadre', render:function(d,type){ if(type==='sort'||type==='type') return parseNumIt(d); return d ?? ''; }},
+  {data:'Squadre', render:function(d,type){ var n=(d===null||d===undefined||d==='')?0:Number(d); if(type==='sort'||type==='type') return n; if(type==='display') return n.toLocaleString('it-IT'); return n; }},
   {data:'NOTE', defaultContent:''}
 ]);
 
