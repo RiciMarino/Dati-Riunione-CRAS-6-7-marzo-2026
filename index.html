@@ -8920,8 +8920,78 @@ data: [],
             },
 
       { extend: 'excelHtml5', text: '⬇️ Excel', title: 'Campionati' },
-      { extend: 'print',      text: '🖨 Stampa / PDF', title: '' }
-    ],
+      { 
+        text: '🖨 Stampa / PDF',
+        action: function (e, dt) {
+          // Export all rows with current filters/order, across all pages
+          var data = dt.buttons.exportData({
+            modifier: { search: 'applied', order: 'applied', page: 'all' }
+          });
+
+          // Build a small title with active filters (solo se selezionati)
+          function selVals(id){
+            var el = document.getElementById(id);
+            if(!el) return [];
+            return Array.from(el.selectedOptions || []).map(o => o.textContent.trim()).filter(Boolean);
+          }
+          var disciplina = selVals('filterDisciplina');
+          var categoria  = selVals('filterCategoria');
+          var regione    = selVals('filterRegione');
+          var comitato   = selVals('filterComitato');
+
+          var parts = [];
+          if(disciplina.length) parts.push('Disciplina: ' + disciplina.join(', '));
+          if(categoria.length)  parts.push('Categoria: ' + categoria.join(', '));
+          if(regione.length)    parts.push('Regione: ' + regione.join(', '));
+          if(comitato.length)   parts.push('Comitato: ' + comitato.join(', '));
+
+          var subtitle = parts.length ? parts.join(' • ') : '';
+          
+          var baseTitle = document.title || 'Campionati';
+          var title = baseTitle;
+          // Se c'è una sola selezione, usala nel titolo (priorità: Regione, Disciplina, Categoria, Comitato)
+          if (regione.length === 1) title = baseTitle + ' – Regione: ' + regione[0];
+          else if (disciplina.length === 1) title = baseTitle + ' – Disciplina: ' + disciplina[0];
+          else if (categoria.length === 1) title = baseTitle + ' – Categoria: ' + categoria[0];
+          else if (comitato.length === 1) title = baseTitle + ' – Comitato: ' + comitato[0];
+
+
+          // Open print window
+          var win = window.open('', '_blank');
+          if(!win){ alert('Popup bloccato dal browser: abilita i popup per la stampa.'); return; }
+
+          var style = `
+            <style>
+              body{ font-family: Arial, sans-serif; padding: 18px; }
+              h1{ font-size: 16px; margin: 0 0 6px 0; }
+              .sub{ font-size: 12px; opacity: .75; margin-bottom: 12px; }
+              table{ width: 100%; border-collapse: collapse; font-size: 12px; }
+              th, td{ border: 1px solid #ddd; padding: 6px 8px; text-align: left; }
+              th{ background: #f3f5f7; }
+              td:last-child{ text-align: right; }
+              /* Mantieni lo sbiadito in stampa SOLO per chi ha 1-4 squadre (se presente la classe) */
+              tr.soft-deadline td{ background: rgba(255,193,7,.10) !important; }
+            </style>
+          `;
+
+          var thead = '<tr>' + data.header.map(h => '<th>' + h + '</th>').join('') + '</tr>';
+          var tbody = data.body.map(function(row){
+            return '<tr>' + row.map(function(cell){ return '<td>' + (cell ?? '') + '</td>'; }).join('') + '</tr>';
+          }).join('');
+
+          win.document.open();
+          win.document.write('<html><head><title>' + title + '</title>' + style + '</head><body>' +
+            '<h1>' + title + '</h1>' +
+            (subtitle ? '<div class="sub">' + subtitle + '</div>' : '') +
+            '<table><thead>' + thead + '</thead><tbody>' + tbody + '</tbody></table>' +
+            '</body></html>');
+          win.document.close();
+
+          // Print after the document is ready
+          win.focus();
+          win.onload = function(){ win.print(); };
+        }
+      }],
     language: { url: "https://cdn.datatables.net/plug-ins/1.13.8/i18n/it-IT.json" }
   });
   dt.__status = status;
