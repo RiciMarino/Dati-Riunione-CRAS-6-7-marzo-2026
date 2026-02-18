@@ -418,6 +418,39 @@ tr.soft-deadline td:first-child{
   box-shadow: inset 3px 0 0 rgba(255, 193, 7, 0.25); /* riga laterale appena percettibile */
 }
 
+
+/* Tooltip "post-it" discreto al passaggio del mouse */
+tr.soft-deadline td:first-child{ position: relative; }
+tr.soft-deadline:hover td:first-child::after{
+  content: "da aggiornare entro il 15/3/26";
+  position: absolute;
+  left: 0;
+  top: -10px;
+  transform: translateY(-100%);
+  background: rgba(255, 250, 205, 0.95); /* giallino post-it */
+  border: 1px solid rgba(0,0,0,0.15);
+  border-radius: 10px;
+  padding: .35rem .55rem;
+  font-size: .78rem;
+  color: rgba(0,0,0,0.78);
+  box-shadow: 0 6px 16px rgba(0,0,0,0.12);
+  white-space: nowrap;
+  z-index: 2000;
+}
+tr.soft-deadline:hover td:first-child::before{
+  content: "";
+  position: absolute;
+  left: 14px;
+  top: -10px;
+  transform: translateY(-50%) rotate(45deg);
+  width: 10px;
+  height: 10px;
+  background: rgba(255, 250, 205, 0.95);
+  border-left: 1px solid rgba(0,0,0,0.12);
+  border-top: 1px solid rgba(0,0,0,0.12);
+  z-index: 2001;
+}
+
 </style>
 <link href="https://cdn.datatables.net/buttons/2.4.2/css/buttons.bootstrap5.min.css" rel="stylesheet"/></head>
 <body>
@@ -8815,11 +8848,13 @@ function refreshAll(){
 function makeTable(id, status, columns){
   const dt = $(id).DataTable({
     
-createdRow: function(row, data){
-  // Evidenzia blanda per chi è in "Soddisfa C.U." ma ha 1-4 squadre (tempo fino al 15/03/2026)
+
+rowCallback: function(row, data){
   var sq = (data && data.Squadre !== undefined) ? Number(data.Squadre) : NaN;
-  if (data && data.status === 'Soddisfa C.U.' && !isNaN(sq) && sq >= 1 && sq <= 4){
+  if (!isNaN(sq) && sq >= 1 && sq <= 4){
     row.classList.add('soft-deadline');
+  } else {
+    row.classList.remove('soft-deadline');
   }
 },
 data: [],
