@@ -8850,21 +8850,29 @@ function makeTable(id, status, columns){
     
 
 
+
 rowCallback: function(row, data){
-  // Evidenzia blanda per chi ha 1-4 squadre (numeri anche formattati tipo "1.234" o con spazi/nota)
-  var raw = (data && data.Squadre !== undefined) ? data.Squadre : '';
-  var s = (raw === null || raw === undefined) ? '' : String(raw);
-  // strip HTML and normalize spaces
-  s = s.replace(/<[^>]*>/g,'').replace(/\u00A0/g,' ').trim();
-  if (s === '') { row.classList.remove('soft-deadline'); return; }
-  // keep digits + separators, then normalize Italian formats
-  var t = s.replace(/\s+/g,'').replace(/\./g,'').replace(',', '.');
-  // if still not numeric, fall back to first integer found
-  var n = parseFloat(t);
-  if (isNaN(n)) {
-    var m = s.match(/\d+/);
-    n = m ? parseInt(m[0], 10) : NaN;
+  // Applica SOLO nella tabella "Soddisfa C.U." (le altre restano bianche, senza post-it)
+  if (status !== 'Soddisfa C.U.') {
+    row.classList.remove('soft-deadline');
+    return;
   }
+
+  // Evidenzia blanda per chi ha 1-4 squadre (gestisce anche formati non puliti)
+  var raw = (data && data.Squadre !== undefined) ? data.Squadre : '';
+  var n = Number(raw);
+  if (isNaN(n)) {
+    var s = (raw === null || raw === undefined) ? '' : String(raw);
+    s = s.replace(/<[^>]*>/g,'').replace(/\u00A0/g,' ').trim();
+    if (s === '') { row.classList.remove('soft-deadline'); return; }
+    var t = s.replace(/\s+/g,'').replace(/\./g,'').replace(',', '.');
+    n = parseFloat(t);
+    if (isNaN(n)) {
+      var m = s.match(/\d+/);
+      n = m ? parseInt(m[0], 10) : NaN;
+    }
+  }
+
   if (!isNaN(n) && n >= 1 && n <= 4){
     row.classList.add('soft-deadline');
   } else {
