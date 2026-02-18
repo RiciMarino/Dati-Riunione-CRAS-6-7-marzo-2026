@@ -408,6 +408,16 @@ th .order-badge {
   border-radius: 10px;
 }
 
+
+/* Evidenziazione molto blanda: campionati con 1-4 squadre (tempo fino al 15/03/2026) */
+tr.soft-deadline td{
+  background: rgba(255, 193, 7, 0.10) !important; /* giallo molto sbiadito */
+  color: rgba(0,0,0,0.78);
+}
+tr.soft-deadline td:first-child{
+  box-shadow: inset 3px 0 0 rgba(255, 193, 7, 0.25); /* riga laterale appena percettibile */
+}
+
 </style>
 <link href="https://cdn.datatables.net/buttons/2.4.2/css/buttons.bootstrap5.min.css" rel="stylesheet"/></head>
 <body>
@@ -8804,7 +8814,15 @@ function refreshAll(){
 
 function makeTable(id, status, columns){
   const dt = $(id).DataTable({
-    data: [],
+    
+createdRow: function(row, data){
+  // Evidenzia blanda per chi è in "Soddisfa C.U." ma ha 1-4 squadre (tempo fino al 15/03/2026)
+  var sq = (data && data.Squadre !== undefined) ? Number(data.Squadre) : NaN;
+  if (data && data.status === 'Soddisfa C.U.' && !isNaN(sq) && sq >= 1 && sq <= 4){
+    row.classList.add('soft-deadline');
+  }
+},
+data: [],
     columns,
     pageLength: 50,
     lengthMenu: [50, 75, 100, 125, 150, 175, 200],
