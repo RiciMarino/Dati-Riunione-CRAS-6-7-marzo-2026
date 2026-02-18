@@ -386,39 +386,26 @@ th .order-badge {
 }
 
 
-.sort-help {
-  display: flex;
-  justify-content: flex-end;
+.sort-hint{flex-wrap:wrap; gap:.35rem; 
+  display:flex;
+  justify-content:flex-end;
+  font-size: .82rem;
+  opacity: .85;
   margin-bottom: .5rem;
 }
-.sort-help-icon {
-  width: 22px;
-  height: 22px;
-  border-radius: 50%;
-  background: #6c757d;
-  color: #fff;
-  font-weight: bold;
-  text-align: center;
-  line-height: 22px;
-  cursor: pointer;
-  font-size: 0.85rem;
+.sort-hint kbd{
+  display:inline-block;
+  padding: 0 .35rem;
+  border: 1px solid rgba(0,0,0,.2);
+  border-bottom-width: 2px;
+  border-radius: 6px;
+  background: rgba(255,255,255,.8);
+  font-family: inherit;
+  font-weight: 600;
 }
-.sort-help-box {
-  position: absolute;
-  right: 1.5rem;
-  margin-top: 28px;
-  background: #fff;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  padding: .75rem;
-  font-size: .8rem;
-  box-shadow: 0 4px 12px rgba(0,0,0,.15);
-  display: none;
-  max-width: 260px;
-  z-index: 1000;
-}
-.sort-help:hover .sort-help-box {
-  display: block;
+/* Small button alignment polish */
+.dt-buttons .btn, .dt-buttons button{
+  border-radius: 10px;
 }
 
 </style>
@@ -1982,6 +1969,15 @@ const EMBEDDED_DATA = [
     "Regione": "Lombardia",
     "Comitato": "Bergamo",
     "Squadre": 7,
+    "NOTE": ""
+  },
+  {
+    "status": "Soddisfa C.U.",
+    "Disciplina": "Calcio a Cinque",
+    "categoria": "Open Femminile",
+    "Regione": "Marche",
+    "Comitato": "Macerata",
+    "Squadre": 5,
     "NOTE": ""
   },
   {
@@ -4904,6 +4900,15 @@ const EMBEDDED_DATA = [
     "status": "Soddisfa C.U.",
     "Disciplina": "Pallavolo",
     "categoria": "Allieve",
+    "Regione": "Basilicata",
+    "Comitato": "Potenza",
+    "Squadre": 5,
+    "NOTE": ""
+  },
+  {
+    "status": "Soddisfa C.U.",
+    "Disciplina": "Pallavolo",
+    "categoria": "Allieve",
     "Regione": "Campania",
     "Comitato": "Caserta",
     "Squadre": 5,
@@ -5303,6 +5308,15 @@ const EMBEDDED_DATA = [
     "Regione": "Toscana",
     "Comitato": "Toscana",
     "Squadre": 6,
+    "NOTE": ""
+  },
+  {
+    "status": "Soddisfa C.U.",
+    "Disciplina": "Pallavolo",
+    "categoria": "Juniores F",
+    "Regione": "Puglia",
+    "Comitato": "Brindisi",
+    "Squadre": 5,
     "NOTE": ""
   },
   {
@@ -7388,6 +7402,15 @@ const EMBEDDED_DATA = [
     "status": "Soddisfa C.U.",
     "Disciplina": "Pallavolo",
     "categoria": "Open Femminile",
+    "Regione": "Marche",
+    "Comitato": "Macerata",
+    "Squadre": 5,
+    "NOTE": ""
+  },
+  {
+    "status": "Soddisfa C.U.",
+    "Disciplina": "Pallavolo",
+    "categoria": "Open Femminile",
     "Regione": "Piemonte",
     "Comitato": "Cuneo",
     "Squadre": 15,
@@ -7472,6 +7495,15 @@ const EMBEDDED_DATA = [
     "Regione": "Veneto",
     "Comitato": "Verona",
     "Squadre": 14,
+    "NOTE": ""
+  },
+  {
+    "status": "Soddisfa C.U.",
+    "Disciplina": "Pallavolo",
+    "categoria": "Open Maschile",
+    "Regione": "Calabria",
+    "Comitato": "Reggio Calabria",
+    "Squadre": 5,
     "NOTE": ""
   },
   {
@@ -8051,51 +8083,6 @@ const EMBEDDED_DATA = [
     "NOTE": ""
   },
   {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Top J F",
-    "Regione": "Sicilia",
-    "Comitato": "Palermo",
-    "Squadre": 6,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Top J F",
-    "Regione": "Umbria",
-    "Comitato": "Perugia",
-    "Squadre": 7,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Top J M",
-    "Regione": "Puglia",
-    "Comitato": "Lecce",
-    "Squadre": 1,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Top J M",
-    "Regione": "Sicilia",
-    "Comitato": "Palermo",
-    "Squadre": 6,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Under 10 (Minivolley)",
-    "Regione": "Emilia-Romagna",
-    "Comitato": "Modena",
-    "Squadre": 15,
-    "NOTE": ""
-  },
-  {
     "status": "non soddisfa c.u.",
     "Disciplina": "Calcio",
     "categoria": "Top Junior M",
@@ -8238,15 +8225,6 @@ const EMBEDDED_DATA = [
     "Comitato": "Pisa",
     "Squadre": 4,
     "NOTE": "Non soddisfa C.U. 1 sq insufficienti"
-  },
-  {
-    "status": "non soddisfa c.u.",
-    "Disciplina": "Calcio a Cinque",
-    "categoria": "Open Femminile",
-    "Regione": "Marche",
-    "Comitato": "Macerata",
-    "Squadre": 5,
-    "NOTE": "Non soddisfa C.U. 1 (manca fase reg.)"
   },
   {
     "status": "non soddisfa c.u.",
@@ -8557,29 +8535,11 @@ const EMBEDDED_DATA = [
   {
     "status": "non soddisfa c.u.",
     "Disciplina": "Pallavolo",
-    "categoria": "Allieve",
-    "Regione": "Basilicata",
-    "Comitato": "Potenza",
-    "Squadre": 5,
-    "NOTE": "Non soddisfa C.U. 1 (manca fase reg.)"
-  },
-  {
-    "status": "non soddisfa c.u.",
-    "Disciplina": "Pallavolo",
     "categoria": "Juniores F",
     "Regione": "Liguria",
     "Comitato": "Chiavari",
     "Squadre": 4,
     "NOTE": "Non soddisfa C.U. 1 sq insufficienti"
-  },
-  {
-    "status": "non soddisfa c.u.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Juniores F",
-    "Regione": "Puglia",
-    "Comitato": "Brindisi",
-    "Squadre": 5,
-    "NOTE": "Non soddisfa C.U. 1 (manca fase reg.)"
   },
   {
     "status": "non soddisfa c.u.",
@@ -8629,24 +8589,6 @@ const EMBEDDED_DATA = [
   {
     "status": "non soddisfa c.u.",
     "Disciplina": "Pallavolo",
-    "categoria": "Open Femminile",
-    "Regione": "Marche",
-    "Comitato": "Macerata",
-    "Squadre": 5,
-    "NOTE": "Non soddisfa C.U. 1 (manca fase reg.)"
-  },
-  {
-    "status": "non soddisfa c.u.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Open Maschile",
-    "Regione": "Calabria",
-    "Comitato": "Reggio Calabria",
-    "Squadre": 5,
-    "NOTE": "Non soddisfa C.U. 1 (manca fase reg.)"
-  },
-  {
-    "status": "non soddisfa c.u.",
-    "Disciplina": "Pallavolo",
     "categoria": "Open Misto",
     "Regione": "Emilia-Romagna",
     "Comitato": "Emilia Romagna",
@@ -8679,6 +8621,51 @@ const EMBEDDED_DATA = [
     "Comitato": "Lecce",
     "Squadre": 2,
     "NOTE": "Non soddisfa C.U. 1 sq insufficienti"
+  },
+  {
+    "status": "non soddisfa c.u.",
+    "Disciplina": "Campionati che NON sono \nprevisti ai Campionati nazionali",
+    "categoria": "Top J F",
+    "Regione": "Puglia",
+    "Comitato": "Lecce",
+    "Squadre": 0,
+    "NOTE": "Non soddisfa C.U. 1 sq insufficienti"
+  },
+  {
+    "status": "non soddisfa c.u.",
+    "Disciplina": "Disciplina",
+    "categoria": "categoria",
+    "Regione": "Regione",
+    "Comitato": "Comitato",
+    "Squadre": 0,
+    "NOTE": "NOTE"
+  },
+  {
+    "status": "non soddisfa c.u.",
+    "Disciplina": "Calcio",
+    "categoria": "Under 12",
+    "Regione": "Lombardia",
+    "Comitato": "Bergamo",
+    "Squadre": 157,
+    "NOTE": "Non previsto dal progetto"
+  },
+  {
+    "status": "non soddisfa c.u.",
+    "Disciplina": "Calcio",
+    "categoria": "Under 12",
+    "Regione": "Lombardia",
+    "Comitato": "Milano",
+    "Squadre": 10,
+    "NOTE": "Non previsto dal progetto"
+  },
+  {
+    "status": "non soddisfa c.u.",
+    "Disciplina": "Pallavolo",
+    "categoria": "Under 10 Femminile 6x6",
+    "Regione": "Lombardia",
+    "Comitato": "Lodi",
+    "Squadre": 6,
+    "NOTE": "!!! Non previsto dal progetto"
   },
   {
     "status": "Non previsto nazionali",
