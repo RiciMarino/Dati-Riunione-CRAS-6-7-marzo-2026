@@ -1,18 +1,17 @@
-<!doctype html>
+<!DOCTYPE html>
+
 <html lang="it">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>RIUNIONE CON I CRAS – Portale Sport · 17/02/2026</title>
-
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300..700;1,9..40,300..700&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
-  <link rel="stylesheet" href="https://cdn.datatables.net/1.13.8/css/dataTables.bootstrap5.min.css">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.min.css">
-
-  <style>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<title>RIUNIONE CON I CRAS – Portale Sport · 17/02/2026</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300..700;1,9..40,300..700&amp;family=Playfair+Display:wght@700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"/>
+<link href="https://cdn.datatables.net/1.13.8/css/dataTables.bootstrap5.min.css" rel="stylesheet"/>
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet"/>
+<link href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.min.css" rel="stylesheet"/>
+<style>
     :root {
       --c-bg: #f4f1ec;
       --c-surface: #ffffff;
@@ -329,187 +328,192 @@
     .fade-up-d3 { animation-delay: .3s; }
     .tab-pane { display: none; }
     .tab-pane.active { display: block; }
-  </style>
-</head>
+  
+
+    /* ── Sticky multi-sort indicators ───────────────── */
+    table.dataTable thead th[data-sort-label]{
+      position: relative;
+      padding-right: 2.4rem !important;
+      cursor: pointer;
+      user-select: none;
+    }
+    table.dataTable thead th[data-sort-label]::after{
+      content: attr(data-sort-label);
+      position: absolute;
+      right: .6rem;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: .72rem;
+      font-weight: 700;
+      opacity: .9;
+      background: rgba(255,255,255,.22);
+      border: 1px solid rgba(255,255,255,.32);
+      border-radius: 999px;
+      padding: .1rem .45rem;
+    }
+    table.dataTable thead th.sort-off::after{ content: ""; border: none; background: transparent; }
+</style>
+<link href="https://cdn.datatables.net/buttons/2.4.2/css/buttons.bootstrap5.min.css" rel="stylesheet"/></head>
 <body>
-
-  <!-- ═══════ HERO ═══════ -->
-  <header class="hero no-print">
-    <div style="max-width:1400px;margin:0 auto;">
-      <div class="badge-date">📅 Dati aggiornati al 17 febbraio 2026</div>
-      <h1>Riunione con i CRAS</h1>
-      <div class="subtitle">Panoramica dei campionati regionali — Portale Sport CSI</div>
-    </div>
-  </header>
-
-  <!-- ═══════ KPI STRIP ═══════ -->
-  <div class="kpi-strip no-print fade-up">
-    <div class="kpi-card">
-      <div class="kpi-value" id="kpiTotal">—</div>
-      <div class="kpi-label">Campionati totali</div>
-    </div>
-    <div class="kpi-card">
-      <div class="kpi-value" id="kpiSquadre">—</div>
-      <div class="kpi-label">Squadre iscritte</div>
-    </div>
-
-    <div class="kpi-card" id="kpiRegioniCard" style="border-top-color:var(--c-primary); display:none">
-      <div class="kpi-value" id="kpiRegioni">—</div>
-      <div class="kpi-label">Regioni</div>
-    </div>
-    <div class="kpi-card" style="border-top-color:var(--c-ok)">
-      <div class="kpi-value" id="kpiOk" style="color:var(--c-ok)">—</div>
-      <div class="kpi-label">Soddisfano C.U.</div>
-    </div>
-    <div class="kpi-card" style="border-top-color:var(--c-warn)">
-      <div class="kpi-value" id="kpiNomin" style="color:var(--c-warn)">—</div>
-      <div class="kpi-label">NON soddisfano C.U.</div>
-    </div>
-  </div>
-
-  <!-- ═══════ MAIN ═══════ -->
-  <div class="main-wrap">
-
-    <!-- Filters -->
-    <div class="filter-card no-print fade-up fade-up-d1">
-      <div class="section-label">🔍 Filtri</div>
-      <div class="row g-3">
-        <div class="col-12 col-md-3">
-          <label class="form-label">Disciplina</label>
-          <select id="filterDisciplina" class="form-select" multiple></select>
-        </div>
-        <div class="col-12 col-md-3">
-          <label class="form-label">Categoria</label>
-          <select id="filterCategoria" class="form-select" multiple></select>
-        </div>
-        <div class="col-12 col-md-3">
-          <label class="form-label">Regione</label>
-          <select id="filterRegione" class="form-select" multiple></select>
-        </div>
-        <div class="col-12 col-md-3">
-          <label class="form-label">Comitato</label>
-          <select id="filterComitato" class="form-select" multiple></select>
-        </div>
-        <div class="col-12 d-flex flex-wrap gap-2 align-items-end">
-          <button id="btnReset" class="btn-outline-custom">↺ Reset filtri</button>
-
-          <div class="ms-auto d-flex flex-wrap gap-2 align-items-end">
-            <div>
-              <label class="form-label mb-1">Regione per PDF</label>
-              <select id="printRegione" class="form-select" style="border-radius:10px;min-width:180px"></select>
-            </div>
-            <label class="d-flex align-items-center gap-1" style="font-size:.85rem;cursor:pointer">
-              <input type="checkbox" id="printInclude2" checked style="accent-color:var(--c-primary)"> includi Tabella "non soddisfa"
+<!-- ═══════ HERO ═══════ -->
+<header class="hero no-print">
+<div style="max-width:1400px;margin:0 auto;">
+<div class="badge-date">📅 Dati aggiornati al 17 febbraio 2026</div>
+<h1>Riunione con i CRAS</h1>
+<div class="subtitle">Panoramica dei campionati regionali — Portale Sport CSI</div>
+</div>
+</header>
+<!-- ═══════ KPI STRIP ═══════ -->
+<div class="kpi-strip no-print fade-up">
+<div class="kpi-card" style="border-top-color:var(--c-ok)">
+<div class="kpi-value" id="kpiOk" style="color:var(--c-ok)">—</div>
+<div class="kpi-label">SODDISFANO C.U.</div>
+</div><div class="kpi-card">
+<div class="kpi-value" id="kpiTotal">—</div>
+<div class="kpi-label">NUMERO CAMPIONATI</div>
+</div><div class="kpi-card" id="kpiRegioniCard" style="border-top-color:var(--c-primary); display:none">
+<div class="kpi-value" id="kpiRegioni">—</div>
+<div class="kpi-label">REGIONI</div>
+</div><div class="kpi-card">
+<div class="kpi-value" id="kpiSquadre">—</div>
+<div class="kpi-label">SQUADRE ISCRITTE</div>
+</div><div class="kpi-card" id="kpiNominCard" style="border-top-color:var(--c-warn);cursor:pointer">
+<div class="kpi-value" id="kpiNomin" style="color:var(--c-warn)">—</div>
+<div class="kpi-label">NON SODDISFANO C.U.</div>
+</div></div>
+<!-- ═══════ MAIN ═══════ -->
+<div class="main-wrap">
+<!-- Filters -->
+<div class="filter-card no-print fade-up fade-up-d1">
+<div class="section-label">🔍 Filtri</div>
+<div class="row g-3">
+<div class="col-12 col-md-3">
+<label class="form-label">Disciplina</label>
+<select class="form-select" id="filterDisciplina" multiple=""></select>
+</div>
+<div class="col-12 col-md-3">
+<label class="form-label">Categoria</label>
+<select class="form-select" id="filterCategoria" multiple=""></select>
+</div>
+<div class="col-12 col-md-3">
+<label class="form-label">Regione</label>
+<select class="form-select" id="filterRegione" multiple=""></select>
+</div>
+<div class="col-12 col-md-3">
+<label class="form-label">Comitato</label>
+<select class="form-select" id="filterComitato" multiple=""></select>
+</div>
+<div class="col-12 d-flex flex-wrap gap-2 align-items-end">
+<button class="btn-outline-custom" id="btnReset">↺ Reset filtri</button>
+<div class="ms-auto d-flex flex-wrap gap-2 align-items-end">
+<div>
+<label class="form-label mb-1">Regione per PDF</label>
+<select class="form-select" id="printRegione" style="border-radius:10px;min-width:180px"></select>
+</div>
+<label class="d-flex align-items-center gap-1" style="font-size:.85rem;cursor:pointer">
+<input checked="" id="printInclude2" style="accent-color:var(--c-primary)" type="checkbox"/> includi Tabella "non soddisfa"
             </label>
-            <label class="d-flex align-items-center gap-1" style="font-size:.85rem;cursor:pointer">
-              <input type="checkbox" id="printInclude3" checked style="accent-color:var(--c-primary)"> includi Tabella "non previsti"
+<label class="d-flex align-items-center gap-1" style="font-size:.85rem;cursor:pointer">
+<input checked="" id="printInclude3" style="accent-color:var(--c-primary)" type="checkbox"/> includi Tabella "non previsti"
             </label>
-            <button id="btnPrint" class="btn-primary-custom">🖨 Stampa PDF</button>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Tabs -->
-    <div class="status-tabs no-print fade-up fade-up-d2" id="tabBar">
-      <button class="status-tab active" data-target="pane-ok">
-        <span class="dot dot-ok"></span> Soddisfa C.U. <span class="count-badge" id="countOk">0</span>
-      </button>
-      <button class="status-tab" data-target="pane-nomin">
-        <span class="dot dot-warn"></span> non soddisfa c.u. <span class="count-badge" id="countNomin">0</span>
-      </button>
-      <button class="status-tab" data-target="pane-nonprev">
-        <span class="dot dot-dark"></span> Non previsto ai nazionali <span class="count-badge" id="countNonprev">0</span>
-      </button>
-        <button class="status-tab" data-target="pane-all">
-        <span class="dot" style="background: var(--c-accent);"></span> Mostra i dati insieme
+<button class="btn-primary-custom" id="btnPrint">🖨 Stampa PDF</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Tabs -->
+<div class="status-tabs no-print fade-up fade-up-d2" id="tabBar">
+<button class="status-tab active" data-target="pane-ok">
+<span class="dot dot-ok"></span> Soddisfa C.U. <span class="count-badge" id="countOk">0</span>
+</button>
+<button class="status-tab" data-target="pane-nomin">
+<span class="dot dot-warn"></span> non soddisfa c.u. <span class="count-badge" id="countNomin">0</span>
+</button>
+<button class="status-tab" data-target="pane-nonprev">
+<span class="dot dot-dark"></span> Non previsto ai nazionali <span class="count-badge" id="countNonprev">0</span>
+</button>
+<button class="status-tab" data-target="pane-all">
+<span class="dot" style="background: var(--c-accent);"></span> Mostra i dati insieme
        </button>
-    </div>
-
-    <!-- Table panels -->
-    <div class="table-panel fade-up fade-up-d3">
-      <div class="tab-pane active" id="pane-ok">
+</div>
+<!-- Table panels -->
+<div class="table-panel fade-up fade-up-d3">
+<div class="tab-pane active" id="pane-ok">
 <div style="overflow-x:auto">
-          <table id="table-ok" class="table table-striped table-hover align-middle w-100">
-            <thead><tr>
-              <th>Disciplina</th><th>Categoria</th><th>Regione</th><th>Comitato</th><th>Squadre</th>
-            </tr></thead>
-          </table>
-        </div>
-      </div>
-      <div class="tab-pane" id="pane-nomin">
+<table class="table table-striped table-hover align-middle w-100" id="table-ok">
+<thead><tr>
+<th>Disciplina</th><th>Categoria</th><th>Regione</th><th>Comitato</th><th>Squadre</th>
+</tr></thead>
+</table>
+</div>
+</div>
+<div class="tab-pane" id="pane-nomin">
 <div style="overflow-x:auto">
-          <table id="table-nomin" class="table table-striped table-hover align-middle w-100">
-            <thead><tr>
-              <th>Disciplina</th><th>Categoria</th><th>Regione</th><th>Comitato</th><th>Squadre</th><th>Note</th>
-            </tr></thead>
-          </table>
-        </div>
-      </div>
-      <div class="tab-pane" id="pane-nonprev">
+<table class="table table-striped table-hover align-middle w-100" id="table-nomin">
+<thead><tr>
+<th>Disciplina</th><th>Categoria</th><th>Regione</th><th>Comitato</th><th>Squadre</th><th>Note</th>
+</tr></thead>
+</table>
+</div>
+</div>
+<div class="tab-pane" id="pane-nonprev">
 <div style="overflow-x:auto">
-          <table id="table-nonprev" class="table table-striped table-hover align-middle w-100">
-            <thead><tr>
-              <th>Disciplina</th><th>Categoria</th><th>Regione</th><th>Comitato</th><th>Squadre</th><th>Note</th>
-            </tr></thead>
-          </table>
-        </div>
-      </div>
-      <div class="tab-pane" id="pane-all">
-  <div class="mb-4">
-    <h3 style="font-family:var(--font-display);color:var(--c-primary);font-size:1.05rem;margin:0 0 .75rem">
+<table class="table table-striped table-hover align-middle w-100" id="table-nonprev">
+<thead><tr>
+<th>Disciplina</th><th>Categoria</th><th>Regione</th><th>Comitato</th><th>Squadre</th><th>Note</th>
+</tr></thead>
+</table>
+</div>
+</div>
+<div class="tab-pane" id="pane-all">
+<div class="mb-4">
+<h3 style="font-family:var(--font-display);color:var(--c-primary);font-size:1.05rem;margin:0 0 .75rem">
       Tabella 1 — Campionati che soddisfano il numero minimo di Squadre
     </h3>
-    <div style="overflow-x:auto">
-      <table id="table-ok-all" class="table table-striped table-hover align-middle w-100">
-        <thead><tr>
-          <th>Disciplina</th><th>Categoria</th><th>Regione</th><th>Comitato</th><th>Squadre</th>
-        </tr></thead>
-      </table>
-    </div>
-  </div>
-
-  <div class="mb-4">
-    <h3 style="font-family:var(--font-display);color:var(--c-warn);font-size:1.05rem;margin:0 0 .75rem">
+<div style="overflow-x:auto">
+<table class="table table-striped table-hover align-middle w-100" id="table-ok-all">
+<thead><tr>
+<th>Disciplina</th><th>Categoria</th><th>Regione</th><th>Comitato</th><th>Squadre</th>
+</tr></thead>
+</table>
+</div>
+</div>
+<div class="mb-4">
+<h3 style="font-family:var(--font-display);color:var(--c-warn);font-size:1.05rem;margin:0 0 .75rem">
       Tabella 2 — Campionati che NON soddisfano il numero minimo di Squadre
     </h3>
-    <div style="overflow-x:auto">
-      <table id="table-nomin-all" class="table table-striped table-hover align-middle w-100">
-        <thead><tr>
-          <th>Disciplina</th><th>Categoria</th><th>Regione</th><th>Comitato</th><th>Squadre</th><th>Note</th>
-        </tr></thead>
-      </table>
-    </div>
-  </div>
-
-  <div>
-    <h3 style="font-family:var(--font-display);color:var(--c-dark);font-size:1.05rem;margin:0 0 .75rem">
+<div style="overflow-x:auto">
+<table class="table table-striped table-hover align-middle w-100" id="table-nomin-all">
+<thead><tr>
+<th>Disciplina</th><th>Categoria</th><th>Regione</th><th>Comitato</th><th>Squadre</th><th>Note</th>
+</tr></thead>
+</table>
+</div>
+</div>
+<div>
+<h3 style="font-family:var(--font-display);color:var(--c-dark);font-size:1.05rem;margin:0 0 .75rem">
       Tabella 3 — Campionati che NON sono previsti ai Campionati nazionali
     </h3>
-    <div style="overflow-x:auto">
-      <table id="table-nonprev-all" class="table table-striped table-hover align-middle w-100">
-        <thead><tr>
-          <th>Disciplina</th><th>Categoria</th><th>Regione</th><th>Comitato</th><th>Squadre</th><th>Note</th>
-        </tr></thead>
-      </table>
-    </div>
-  </div>
+<div style="overflow-x:auto">
+<table class="table table-striped table-hover align-middle w-100" id="table-nonprev-all">
+<thead><tr>
+<th>Disciplina</th><th>Categoria</th><th>Regione</th><th>Comitato</th><th>Squadre</th><th>Note</th>
+</tr></thead>
+</table>
 </div>
-
-    </div>
-
-    <div class="text-center mt-4 no-print" style="color:var(--c-muted);font-size:.78rem">
+</div>
+</div>
+</div>
+<div class="text-center mt-4 no-print" style="color:var(--c-muted);font-size:.78rem">
       CSI — Centro Sportivo Italiano · Dashboard Campionati Regionali
     </div>
-  </div>
-
-  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-  <script src="https://cdn.datatables.net/1.13.8/js/jquery.dataTables.min.js"></script>
-  <script src="https://cdn.datatables.net/1.13.8/js/dataTables.bootstrap5.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-
-  <script>
+</div>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.8/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.8/js/dataTables.bootstrap5.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.4.2/js/dataTables.buttons.min.js"></script><script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.bootstrap5.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script><script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.html5.min.js"></script><script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.print.min.js"></script><script>
 const EMBEDDED_DATA = [
   {
     "status": "Soddisfa C.U.",
@@ -766,7 +770,7 @@ const EMBEDDED_DATA = [
   {
     "status": "Soddisfa C.U.",
     "Disciplina": "Calcio",
-    "categoria": "Open M",
+    "categoria": "Open Maschile",
     "Regione": "Abruzzo",
     "Comitato": "Teramo",
     "Squadre": 26,
@@ -775,7 +779,7 @@ const EMBEDDED_DATA = [
   {
     "status": "Soddisfa C.U.",
     "Disciplina": "Calcio",
-    "categoria": "Open M",
+    "categoria": "Open Maschile",
     "Regione": "Campania",
     "Comitato": "Caserta",
     "Squadre": 11,
@@ -784,7 +788,7 @@ const EMBEDDED_DATA = [
   {
     "status": "Soddisfa C.U.",
     "Disciplina": "Calcio",
-    "categoria": "Open M",
+    "categoria": "Open Maschile",
     "Regione": "Campania",
     "Comitato": "Cava Dei Tirreni",
     "Squadre": 13,
@@ -793,7 +797,7 @@ const EMBEDDED_DATA = [
   {
     "status": "Soddisfa C.U.",
     "Disciplina": "Calcio",
-    "categoria": "Open M",
+    "categoria": "Open Maschile",
     "Regione": "Campania",
     "Comitato": "Salerno",
     "Squadre": 13,
@@ -802,7 +806,7 @@ const EMBEDDED_DATA = [
   {
     "status": "Soddisfa C.U.",
     "Disciplina": "Calcio",
-    "categoria": "Open M",
+    "categoria": "Open Maschile",
     "Regione": "Emilia-Romagna",
     "Comitato": "Bologna",
     "Squadre": 14,
@@ -811,7 +815,7 @@ const EMBEDDED_DATA = [
   {
     "status": "Soddisfa C.U.",
     "Disciplina": "Calcio",
-    "categoria": "Open M",
+    "categoria": "Open Maschile",
     "Regione": "Emilia-Romagna",
     "Comitato": "Cesena",
     "Squadre": 37,
@@ -820,7 +824,7 @@ const EMBEDDED_DATA = [
   {
     "status": "Soddisfa C.U.",
     "Disciplina": "Calcio",
-    "categoria": "Open M",
+    "categoria": "Open Maschile",
     "Regione": "Emilia-Romagna",
     "Comitato": "Faenza",
     "Squadre": 16,
@@ -829,7 +833,7 @@ const EMBEDDED_DATA = [
   {
     "status": "Soddisfa C.U.",
     "Disciplina": "Calcio",
-    "categoria": "Open M",
+    "categoria": "Open Maschile",
     "Regione": "Emilia-Romagna",
     "Comitato": "Ravenna",
     "Squadre": 13,
@@ -838,7 +842,7 @@ const EMBEDDED_DATA = [
   {
     "status": "Soddisfa C.U.",
     "Disciplina": "Calcio",
-    "categoria": "Open M",
+    "categoria": "Open Maschile",
     "Regione": "Emilia-Romagna",
     "Comitato": "Reggio Emilia",
     "Squadre": 46,
@@ -847,7 +851,7 @@ const EMBEDDED_DATA = [
   {
     "status": "Soddisfa C.U.",
     "Disciplina": "Calcio",
-    "categoria": "Open M",
+    "categoria": "Open Maschile",
     "Regione": "Emilia-Romagna",
     "Comitato": "Imola",
     "Squadre": 14,
@@ -856,7 +860,7 @@ const EMBEDDED_DATA = [
   {
     "status": "Soddisfa C.U.",
     "Disciplina": "Calcio",
-    "categoria": "Open M",
+    "categoria": "Open Maschile",
     "Regione": "Emilia-Romagna",
     "Comitato": "Ferrara",
     "Squadre": 15,
@@ -865,7 +869,7 @@ const EMBEDDED_DATA = [
   {
     "status": "Soddisfa C.U.",
     "Disciplina": "Calcio",
-    "categoria": "Open M",
+    "categoria": "Open Maschile",
     "Regione": "Emilia-Romagna",
     "Comitato": "Emilia Romagna",
     "Squadre": 4,
@@ -874,7 +878,7 @@ const EMBEDDED_DATA = [
   {
     "status": "Soddisfa C.U.",
     "Disciplina": "Calcio",
-    "categoria": "Open M",
+    "categoria": "Open Maschile",
     "Regione": "Lazio",
     "Comitato": "Cassino",
     "Squadre": 29,
@@ -883,7 +887,7 @@ const EMBEDDED_DATA = [
   {
     "status": "Soddisfa C.U.",
     "Disciplina": "Calcio",
-    "categoria": "Open M",
+    "categoria": "Open Maschile",
     "Regione": "Lazio",
     "Comitato": "Viterbo",
     "Squadre": 8,
@@ -892,7 +896,7 @@ const EMBEDDED_DATA = [
   {
     "status": "Soddisfa C.U.",
     "Disciplina": "Calcio",
-    "categoria": "Open M",
+    "categoria": "Open Maschile",
     "Regione": "Lombardia",
     "Comitato": "Bergamo",
     "Squadre": 109,
@@ -901,7 +905,7 @@ const EMBEDDED_DATA = [
   {
     "status": "Soddisfa C.U.",
     "Disciplina": "Calcio",
-    "categoria": "Open M",
+    "categoria": "Open Maschile",
     "Regione": "Lombardia",
     "Comitato": "Como",
     "Squadre": 22,
@@ -910,7 +914,7 @@ const EMBEDDED_DATA = [
   {
     "status": "Soddisfa C.U.",
     "Disciplina": "Calcio",
-    "categoria": "Open M",
+    "categoria": "Open Maschile",
     "Regione": "Lombardia",
     "Comitato": "Cremona",
     "Squadre": 27,
@@ -919,7 +923,7 @@ const EMBEDDED_DATA = [
   {
     "status": "Soddisfa C.U.",
     "Disciplina": "Calcio",
-    "categoria": "Open M",
+    "categoria": "Open Maschile",
     "Regione": "Lombardia",
     "Comitato": "Lecco",
     "Squadre": 12,
@@ -928,7 +932,7 @@ const EMBEDDED_DATA = [
   {
     "status": "Soddisfa C.U.",
     "Disciplina": "Calcio",
-    "categoria": "Open M",
+    "categoria": "Open Maschile",
     "Regione": "Lombardia",
     "Comitato": "Milano",
     "Squadre": 17,
@@ -937,7 +941,7 @@ const EMBEDDED_DATA = [
   {
     "status": "Soddisfa C.U.",
     "Disciplina": "Calcio",
-    "categoria": "Open M",
+    "categoria": "Open Maschile",
     "Regione": "Lombardia",
     "Comitato": "Pavia",
     "Squadre": 30,
@@ -946,7 +950,7 @@ const EMBEDDED_DATA = [
   {
     "status": "Soddisfa C.U.",
     "Disciplina": "Calcio",
-    "categoria": "Open M",
+    "categoria": "Open Maschile",
     "Regione": "Piemonte",
     "Comitato": "Cuneo",
     "Squadre": 15,
@@ -955,7 +959,7 @@ const EMBEDDED_DATA = [
   {
     "status": "Soddisfa C.U.",
     "Disciplina": "Calcio",
-    "categoria": "Open M",
+    "categoria": "Open Maschile",
     "Regione": "Piemonte",
     "Comitato": "Novara",
     "Squadre": 18,
@@ -964,7 +968,7 @@ const EMBEDDED_DATA = [
   {
     "status": "Soddisfa C.U.",
     "Disciplina": "Calcio",
-    "categoria": "Open M",
+    "categoria": "Open Maschile",
     "Regione": "Piemonte",
     "Comitato": "Vercelli",
     "Squadre": 22,
@@ -973,7 +977,7 @@ const EMBEDDED_DATA = [
   {
     "status": "Soddisfa C.U.",
     "Disciplina": "Calcio",
-    "categoria": "Open M",
+    "categoria": "Open Maschile",
     "Regione": "Piemonte",
     "Comitato": "Subalpino",
     "Squadre": 50,
@@ -982,7 +986,7 @@ const EMBEDDED_DATA = [
   {
     "status": "Soddisfa C.U.",
     "Disciplina": "Calcio",
-    "categoria": "Open M",
+    "categoria": "Open Maschile",
     "Regione": "Sardegna",
     "Comitato": "Sassari",
     "Squadre": 16,
@@ -991,7 +995,7 @@ const EMBEDDED_DATA = [
   {
     "status": "Soddisfa C.U.",
     "Disciplina": "Calcio",
-    "categoria": "Open M",
+    "categoria": "Open Maschile",
     "Regione": "Veneto",
     "Comitato": "Padova",
     "Squadre": 140,
@@ -1000,7 +1004,7 @@ const EMBEDDED_DATA = [
   {
     "status": "Soddisfa C.U.",
     "Disciplina": "Calcio",
-    "categoria": "Open M",
+    "categoria": "Open Maschile",
     "Regione": "Veneto",
     "Comitato": "Verona",
     "Squadre": 96,
@@ -1009,7 +1013,7 @@ const EMBEDDED_DATA = [
   {
     "status": "Soddisfa C.U.",
     "Disciplina": "Calcio",
-    "categoria": "Open M",
+    "categoria": "Open Maschile",
     "Regione": "Veneto",
     "Comitato": "Belluno",
     "Squadre": 13,
@@ -1135,69 +1139,6 @@ const EMBEDDED_DATA = [
   {
     "status": "Soddisfa C.U.",
     "Disciplina": "Calcio a Cinque",
-    "categoria": "Open F",
-    "Regione": "Campania",
-    "Comitato": "Caserta",
-    "Squadre": 8,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Calcio a Cinque",
-    "categoria": "Open F",
-    "Regione": "Emilia-Romagna",
-    "Comitato": "Forli",
-    "Squadre": 16,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Calcio a Cinque",
-    "categoria": "Open F",
-    "Regione": "Emilia-Romagna",
-    "Comitato": "Reggio Emilia",
-    "Squadre": 14,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Calcio a Cinque",
-    "categoria": "Open F",
-    "Regione": "Lombardia",
-    "Comitato": "Bergamo",
-    "Squadre": 7,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Calcio a Cinque",
-    "categoria": "Open F",
-    "Regione": "Sicilia",
-    "Comitato": "Messina",
-    "Squadre": 6,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Calcio a Cinque",
-    "categoria": "Open F",
-    "Regione": "Umbria",
-    "Comitato": "Perugia",
-    "Squadre": 25,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Calcio a Cinque",
-    "categoria": "Open F",
-    "Regione": "Veneto",
-    "Comitato": "Verona",
-    "Squadre": 20,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Calcio a Cinque",
     "categoria": "Ragazzi",
     "Regione": "Calabria",
     "Comitato": "Reggio Calabria",
@@ -1918,6085 +1859,19 @@ const EMBEDDED_DATA = [
   {
     "status": "Soddisfa C.U.",
     "Disciplina": "Calcio a Cinque",
-    "categoria": "Open M",
-    "Regione": "Abruzzo",
-    "Comitato": "Teramo",
-    "Squadre": 10,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Calcio a Cinque",
-    "categoria": "Open M",
-    "Regione": "Basilicata",
-    "Comitato": "Melfi",
-    "Squadre": 20,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Calcio a Cinque",
-    "categoria": "Open M",
-    "Regione": "Basilicata",
-    "Comitato": "Potenza",
-    "Squadre": 8,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Calcio a Cinque",
-    "categoria": "Open M",
-    "Regione": "Calabria",
-    "Comitato": "Catanzaro",
-    "Squadre": 6,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Calcio a Cinque",
-    "categoria": "Open M",
-    "Regione": "Calabria",
-    "Comitato": "Reggio Calabria",
-    "Squadre": 9,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Calcio a Cinque",
-    "categoria": "Open M",
-    "Regione": "Campania",
-    "Comitato": "Caserta",
-    "Squadre": 18,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Calcio a Cinque",
-    "categoria": "Open M",
-    "Regione": "Campania",
-    "Comitato": "Napoli",
-    "Squadre": 8,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Calcio a Cinque",
-    "categoria": "Open M",
-    "Regione": "Emilia-Romagna",
-    "Comitato": "Bologna",
-    "Squadre": 8,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Calcio a Cinque",
-    "categoria": "Open M",
-    "Regione": "Emilia-Romagna",
-    "Comitato": "Forli",
-    "Squadre": 9,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Calcio a Cinque",
-    "categoria": "Open M",
-    "Regione": "Emilia-Romagna",
-    "Comitato": "Modena",
-    "Squadre": 46,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Calcio a Cinque",
-    "categoria": "Open M",
-    "Regione": "Emilia-Romagna",
-    "Comitato": "Parma",
-    "Squadre": 38,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Calcio a Cinque",
-    "categoria": "Open M",
-    "Regione": "Emilia-Romagna",
-    "Comitato": "Reggio Emilia",
-    "Squadre": 61,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Calcio a Cinque",
-    "categoria": "Open M",
-    "Regione": "Emilia-Romagna",
-    "Comitato": "Piacenza",
-    "Squadre": 11,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Calcio a Cinque",
-    "categoria": "Open M",
-    "Regione": "Emilia-Romagna",
-    "Comitato": "Imola",
-    "Squadre": 8,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Calcio a Cinque",
-    "categoria": "Open M",
-    "Regione": "Emilia-Romagna",
-    "Comitato": "Ferrara",
-    "Squadre": 10,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Calcio a Cinque",
-    "categoria": "Open M",
-    "Regione": "Emilia-Romagna",
-    "Comitato": "Carpi",
-    "Squadre": 29,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Calcio a Cinque",
-    "categoria": "Open M",
-    "Regione": "Emilia-Romagna",
-    "Comitato": "Emilia Romagna",
-    "Squadre": 3,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Calcio a Cinque",
-    "categoria": "Open M",
-    "Regione": "Lazio",
-    "Comitato": "Cassino",
-    "Squadre": 10,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Calcio a Cinque",
-    "categoria": "Open M",
-    "Regione": "Lombardia",
-    "Comitato": "Bergamo",
-    "Squadre": 170,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Calcio a Cinque",
-    "categoria": "Open M",
-    "Regione": "Lombardia",
-    "Comitato": "Brescia",
-    "Squadre": 12,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Calcio a Cinque",
-    "categoria": "Open M",
-    "Regione": "Lombardia",
-    "Comitato": "Cremona",
-    "Squadre": 14,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Calcio a Cinque",
-    "categoria": "Open M",
-    "Regione": "Lombardia",
-    "Comitato": "Lecco",
-    "Squadre": 13,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Calcio a Cinque",
-    "categoria": "Open M",
-    "Regione": "Lombardia",
-    "Comitato": "Lodi",
-    "Squadre": 8,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Calcio a Cinque",
-    "categoria": "Open M",
-    "Regione": "Marche",
-    "Comitato": "Macerata",
-    "Squadre": 24,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Calcio a Cinque",
-    "categoria": "Open M",
-    "Regione": "Marche",
-    "Comitato": "Pesaro-Urbino",
-    "Squadre": 39,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Calcio a Cinque",
-    "categoria": "Open M",
-    "Regione": "Marche",
-    "Comitato": "Ascoli Piceno",
-    "Squadre": 12,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Calcio a Cinque",
-    "categoria": "Open M",
-    "Regione": "Marche",
-    "Comitato": "Fermo",
-    "Squadre": 16,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Calcio a Cinque",
-    "categoria": "Open M",
-    "Regione": "Piemonte",
-    "Comitato": "Alba",
-    "Squadre": 8,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Calcio a Cinque",
-    "categoria": "Open M",
-    "Regione": "Piemonte",
-    "Comitato": "Cuneo",
-    "Squadre": 16,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Calcio a Cinque",
-    "categoria": "Open M",
-    "Regione": "Piemonte",
-    "Comitato": "Novara",
-    "Squadre": 8,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Calcio a Cinque",
-    "categoria": "Open M",
-    "Regione": "Puglia",
-    "Comitato": "Lecce",
-    "Squadre": 19,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Calcio a Cinque",
-    "categoria": "Open M",
-    "Regione": "Puglia",
-    "Comitato": "Ostuni",
-    "Squadre": 10,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Calcio a Cinque",
-    "categoria": "Open M",
-    "Regione": "Sardegna",
-    "Comitato": "Oristano",
-    "Squadre": 10,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Calcio a Cinque",
-    "categoria": "Open M",
-    "Regione": "Sicilia",
-    "Comitato": "Acireale",
-    "Squadre": 8,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Calcio a Cinque",
-    "categoria": "Open M",
-    "Regione": "Sicilia",
-    "Comitato": "Palermo",
-    "Squadre": 6,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Calcio a Cinque",
-    "categoria": "Open M",
-    "Regione": "Sicilia",
-    "Comitato": "Siracusa",
-    "Squadre": 6,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Calcio a Cinque",
-    "categoria": "Open M",
-    "Regione": "Toscana",
-    "Comitato": "Firenze",
-    "Squadre": 25,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Calcio a Cinque",
-    "categoria": "Open M",
-    "Regione": "Umbria",
-    "Comitato": "Foligno",
-    "Squadre": 6,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Calcio a Cinque",
-    "categoria": "Open M",
-    "Regione": "Umbria",
-    "Comitato": "Perugia",
-    "Squadre": 15,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Calcio a Cinque",
-    "categoria": "Open M",
-    "Regione": "Umbria",
-    "Comitato": "Gubbio",
-    "Squadre": 6,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Calcio a Cinque",
-    "categoria": "Open M",
-    "Regione": "Umbria",
-    "Comitato": "Terni",
-    "Squadre": 28,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Calcio a Cinque",
-    "categoria": "Open M",
-    "Regione": "Veneto",
-    "Comitato": "Padova",
-    "Squadre": 16,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Calcio a Cinque",
-    "categoria": "Open M",
-    "Regione": "Veneto",
-    "Comitato": "Venezia",
-    "Squadre": 24,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Calcio a Cinque",
-    "categoria": "Open M",
-    "Regione": "Veneto",
-    "Comitato": "Verona",
-    "Squadre": 227,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Calcio a Cinque",
-    "categoria": "Open M",
-    "Regione": "Friuli Venezia Giulia",
-    "Comitato": "Pordenone",
-    "Squadre": 59,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Calcio a Sette",
-    "categoria": "Allievi",
-    "Regione": "Campania",
-    "Comitato": "Napoli",
-    "Squadre": 8,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Calcio a Sette",
-    "categoria": "Allievi",
-    "Regione": "Emilia-Romagna",
-    "Comitato": "Faenza",
-    "Squadre": 7,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Calcio a Sette",
-    "categoria": "Allievi",
-    "Regione": "Liguria",
-    "Comitato": "Genova",
-    "Squadre": 6,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Calcio a Sette",
-    "categoria": "Allievi",
-    "Regione": "Lombardia",
-    "Comitato": "Brescia",
-    "Squadre": 35,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Calcio a Sette",
-    "categoria": "Allievi",
-    "Regione": "Lombardia",
-    "Comitato": "Como",
-    "Squadre": 7,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Calcio a Sette",
-    "categoria": "Allievi",
-    "Regione": "Lombardia",
-    "Comitato": "Lecco",
-    "Squadre": 9,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Calcio a Sette",
-    "categoria": "Allievi",
-    "Regione": "Lombardia",
-    "Comitato": "Milano",
-    "Squadre": 54,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Calcio a Sette",
-    "categoria": "Allievi",
-    "Regione": "Lombardia",
-    "Comitato": "Vallecamonica",
-    "Squadre": 5,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Calcio a Sette",
-    "categoria": "Allievi",
-    "Regione": "Lombardia",
-    "Comitato": "Varese",
-    "Squadre": 26,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Calcio a Sette",
-    "categoria": "Allievi",
-    "Regione": "Piemonte",
-    "Comitato": "Subalpino",
-    "Squadre": 11,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Calcio a Sette",
-    "categoria": "Allievi",
-    "Regione": "Sicilia",
-    "Comitato": "Acireale",
-    "Squadre": 5,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Calcio a Sette",
-    "categoria": "Allievi",
-    "Regione": "Sicilia",
-    "Comitato": "Catania",
-    "Squadre": 6,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Calcio a Sette",
-    "categoria": "Allievi",
-    "Regione": "Sicilia",
-    "Comitato": "Messina",
-    "Squadre": 5,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Calcio a Sette",
-    "categoria": "Allievi",
-    "Regione": "Sicilia",
-    "Comitato": "Siracusa",
-    "Squadre": 6,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Calcio a Sette",
-    "categoria": "Juniores M",
-    "Regione": "Campania",
-    "Comitato": "Napoli",
-    "Squadre": 6,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Calcio a Sette",
-    "categoria": "Juniores M",
-    "Regione": "Lombardia",
-    "Comitato": "Bergamo",
-    "Squadre": 10,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Calcio a Sette",
-    "categoria": "Juniores M",
-    "Regione": "Lombardia",
-    "Comitato": "Brescia",
-    "Squadre": 24,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Calcio a Sette",
-    "categoria": "Juniores M",
-    "Regione": "Lombardia",
-    "Comitato": "Como",
-    "Squadre": 6,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Calcio a Sette",
-    "categoria": "Juniores M",
-    "Regione": "Lombardia",
-    "Comitato": "Lecco",
-    "Squadre": 8,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Calcio a Sette",
-    "categoria": "Juniores M",
-    "Regione": "Lombardia",
-    "Comitato": "Milano",
-    "Squadre": 29,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Calcio a Sette",
-    "categoria": "Juniores M",
-    "Regione": "Lombardia",
-    "Comitato": "Vallecamonica",
-    "Squadre": 5,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Calcio a Sette",
-    "categoria": "Juniores M",
-    "Regione": "Lombardia",
-    "Comitato": "Varese",
-    "Squadre": 24,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Calcio a Sette",
-    "categoria": "Juniores M",
-    "Regione": "Piemonte",
-    "Comitato": "Subalpino",
-    "Squadre": 6,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Calcio a Sette",
-    "categoria": "Ragazzi",
-    "Regione": "Basilicata",
-    "Comitato": "Potenza",
-    "Squadre": 8,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Calcio a Sette",
-    "categoria": "Ragazzi",
-    "Regione": "Campania",
-    "Comitato": "Caserta",
-    "Squadre": 34,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Calcio a Sette",
-    "categoria": "Ragazzi",
-    "Regione": "Campania",
-    "Comitato": "Napoli",
-    "Squadre": 11,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Calcio a Sette",
-    "categoria": "Ragazzi",
-    "Regione": "Emilia-Romagna",
-    "Comitato": "Parma",
-    "Squadre": 22,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Calcio a Sette",
-    "categoria": "Ragazzi",
-    "Regione": "Liguria",
-    "Comitato": "Chiavari",
-    "Squadre": 8,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Calcio a Sette",
-    "categoria": "Ragazzi",
-    "Regione": "Liguria",
-    "Comitato": "Genova",
-    "Squadre": 7,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Calcio a Sette",
-    "categoria": "Ragazzi",
-    "Regione": "Liguria",
-    "Comitato": "Imperia-Sanremo",
-    "Squadre": 4,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Calcio a Sette",
-    "categoria": "Ragazzi",
-    "Regione": "Lombardia",
-    "Comitato": "Bergamo",
-    "Squadre": 62,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Calcio a Sette",
-    "categoria": "Ragazzi",
-    "Regione": "Lombardia",
-    "Comitato": "Brescia",
-    "Squadre": 17,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Calcio a Sette",
-    "categoria": "Ragazzi",
-    "Regione": "Lombardia",
-    "Comitato": "Como",
-    "Squadre": 8,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Calcio a Sette",
-    "categoria": "Ragazzi",
-    "Regione": "Lombardia",
-    "Comitato": "Lecco",
-    "Squadre": 10,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Calcio a Sette",
-    "categoria": "Ragazzi",
-    "Regione": "Lombardia",
-    "Comitato": "Milano",
-    "Squadre": 94,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Calcio a Sette",
-    "categoria": "Ragazzi",
-    "Regione": "Lombardia",
-    "Comitato": "Sondrio",
-    "Squadre": 1,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Calcio a Sette",
-    "categoria": "Ragazzi",
-    "Regione": "Lombardia",
-    "Comitato": "Vallecamonica",
-    "Squadre": 10,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Calcio a Sette",
-    "categoria": "Ragazzi",
-    "Regione": "Lombardia",
-    "Comitato": "Varese",
-    "Squadre": 35,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Calcio a Sette",
-    "categoria": "Ragazzi",
-    "Regione": "Piemonte",
-    "Comitato": "Subalpino",
-    "Squadre": 23,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Calcio a Sette",
-    "categoria": "Ragazzi",
-    "Regione": "Puglia",
-    "Comitato": "Brindisi",
-    "Squadre": 1,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Calcio a Sette",
-    "categoria": "Ragazzi",
-    "Regione": "Puglia",
-    "Comitato": "Lecce",
-    "Squadre": 6,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Calcio a Sette",
-    "categoria": "Ragazzi",
-    "Regione": "Sicilia",
-    "Comitato": "Acireale",
-    "Squadre": 6,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Calcio a Sette",
-    "categoria": "Ragazzi",
-    "Regione": "Sicilia",
-    "Comitato": "Agrigento",
-    "Squadre": 1,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Calcio a Sette",
-    "categoria": "Ragazzi",
-    "Regione": "Sicilia",
-    "Comitato": "Catania",
-    "Squadre": 10,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Calcio a Sette",
-    "categoria": "Ragazzi",
-    "Regione": "Sicilia",
-    "Comitato": "Messina",
-    "Squadre": 16,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Calcio a Sette",
-    "categoria": "Ragazzi",
-    "Regione": "Sicilia",
-    "Comitato": "Siracusa",
-    "Squadre": 6,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Calcio a Sette",
-    "categoria": "Ragazzi",
-    "Regione": "Veneto",
-    "Comitato": "Rovigo",
-    "Squadre": 8,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Calcio a Sette",
-    "categoria": "Under 10",
-    "Regione": "Calabria",
-    "Comitato": "Lamezia Terme",
-    "Squadre": 4,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Calcio a Sette",
-    "categoria": "Under 10",
-    "Regione": "Campania",
-    "Comitato": "Caserta",
-    "Squadre": 25,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Calcio a Sette",
-    "categoria": "Under 10",
-    "Regione": "Campania",
-    "Comitato": "Napoli",
-    "Squadre": 7,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Calcio a Sette",
-    "categoria": "Under 10",
-    "Regione": "Emilia-Romagna",
-    "Comitato": "Modena",
-    "Squadre": 34,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Calcio a Sette",
-    "categoria": "Under 10",
-    "Regione": "Emilia-Romagna",
-    "Comitato": "Parma",
-    "Squadre": 79,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Calcio a Sette",
-    "categoria": "Under 10",
-    "Regione": "Emilia-Romagna",
-    "Comitato": "Reggio Emilia",
-    "Squadre": 15,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Calcio a Sette",
-    "categoria": "Under 10",
-    "Regione": "Liguria",
-    "Comitato": "Genova",
-    "Squadre": 8,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Calcio a Sette",
-    "categoria": "Under 10",
-    "Regione": "Liguria",
-    "Comitato": "Imperia-Sanremo",
-    "Squadre": 5,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Calcio a Sette",
-    "categoria": "Under 10",
-    "Regione": "Lombardia",
-    "Comitato": "Bergamo",
-    "Squadre": 273,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Calcio a Sette",
-    "categoria": "Under 10",
-    "Regione": "Lombardia",
-    "Comitato": "Brescia",
-    "Squadre": 21,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Calcio a Sette",
-    "categoria": "Under 10",
-    "Regione": "Lombardia",
-    "Comitato": "Como",
-    "Squadre": 11,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Calcio a Sette",
-    "categoria": "Under 10",
-    "Regione": "Lombardia",
-    "Comitato": "Cremona",
-    "Squadre": 16,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Calcio a Sette",
-    "categoria": "Under 10",
-    "Regione": "Lombardia",
-    "Comitato": "Lecco",
-    "Squadre": 24,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Calcio a Sette",
-    "categoria": "Under 10",
-    "Regione": "Lombardia",
-    "Comitato": "Milano",
-    "Squadre": 133,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Calcio a Sette",
-    "categoria": "Under 10",
-    "Regione": "Lombardia",
-    "Comitato": "Sondrio",
-    "Squadre": 11,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Calcio a Sette",
-    "categoria": "Under 10",
-    "Regione": "Lombardia",
-    "Comitato": "Vallecamonica",
-    "Squadre": 12,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Calcio a Sette",
-    "categoria": "Under 10",
-    "Regione": "Lombardia",
-    "Comitato": "Varese",
-    "Squadre": 35,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Calcio a Sette",
-    "categoria": "Under 10",
-    "Regione": "Piemonte",
-    "Comitato": "Cuneo",
-    "Squadre": 23,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Calcio a Sette",
-    "categoria": "Under 10",
-    "Regione": "Piemonte",
-    "Comitato": "Subalpino",
-    "Squadre": 15,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Calcio a Sette",
-    "categoria": "Under 10",
-    "Regione": "Puglia",
-    "Comitato": "Bari",
-    "Squadre": 7,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Calcio a Sette",
-    "categoria": "Under 10",
-    "Regione": "Puglia",
-    "Comitato": "Brindisi",
-    "Squadre": 5,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Calcio a Sette",
-    "categoria": "Under 10",
-    "Regione": "Puglia",
-    "Comitato": "Lecce",
-    "Squadre": 3,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Calcio a Sette",
-    "categoria": "Under 10",
-    "Regione": "Sicilia",
-    "Comitato": "Acireale",
-    "Squadre": 6,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Calcio a Sette",
-    "categoria": "Under 10",
-    "Regione": "Sicilia",
-    "Comitato": "Agrigento",
-    "Squadre": 5,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Calcio a Sette",
-    "categoria": "Under 10",
-    "Regione": "Sicilia",
-    "Comitato": "Catania",
-    "Squadre": 10,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Calcio a Sette",
-    "categoria": "Under 10",
-    "Regione": "Sicilia",
-    "Comitato": "Messina",
-    "Squadre": 6,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Calcio a Sette",
-    "categoria": "Under 12",
-    "Regione": "Calabria",
-    "Comitato": "Lamezia Terme",
-    "Squadre": 2,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Calcio a Sette",
-    "categoria": "Under 12",
-    "Regione": "Campania",
-    "Comitato": "Caserta",
-    "Squadre": 54,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Calcio a Sette",
-    "categoria": "Under 12",
-    "Regione": "Campania",
-    "Comitato": "Napoli",
-    "Squadre": 9,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Calcio a Sette",
-    "categoria": "Under 12",
-    "Regione": "Emilia-Romagna",
-    "Comitato": "Parma",
-    "Squadre": 36,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Calcio a Sette",
-    "categoria": "Under 12",
-    "Regione": "Emilia-Romagna",
-    "Comitato": "Reggio Emilia",
-    "Squadre": 21,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Calcio a Sette",
-    "categoria": "Under 12",
-    "Regione": "Liguria",
-    "Comitato": "Genova",
-    "Squadre": 8,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Calcio a Sette",
-    "categoria": "Under 12",
-    "Regione": "Liguria",
-    "Comitato": "Imperia-Sanremo",
-    "Squadre": 4,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Calcio a Sette",
-    "categoria": "Under 12",
-    "Regione": "Lombardia",
-    "Comitato": "Bergamo",
-    "Squadre": 80,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Calcio a Sette",
-    "categoria": "Under 12",
-    "Regione": "Lombardia",
-    "Comitato": "Brescia",
-    "Squadre": 24,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Calcio a Sette",
-    "categoria": "Under 12",
-    "Regione": "Lombardia",
-    "Comitato": "Como",
-    "Squadre": 13,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Calcio a Sette",
-    "categoria": "Under 12",
-    "Regione": "Lombardia",
-    "Comitato": "Lecco",
-    "Squadre": 22,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Calcio a Sette",
-    "categoria": "Under 12",
-    "Regione": "Lombardia",
-    "Comitato": "Milano",
-    "Squadre": 122,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Calcio a Sette",
-    "categoria": "Under 12",
-    "Regione": "Lombardia",
-    "Comitato": "Sondrio",
-    "Squadre": 7,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Calcio a Sette",
-    "categoria": "Under 12",
-    "Regione": "Lombardia",
-    "Comitato": "Vallecamonica",
-    "Squadre": 15,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Calcio a Sette",
-    "categoria": "Under 12",
-    "Regione": "Lombardia",
-    "Comitato": "Varese",
-    "Squadre": 41,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Calcio a Sette",
-    "categoria": "Under 12",
-    "Regione": "Piemonte",
-    "Comitato": "Cuneo",
-    "Squadre": 21,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Calcio a Sette",
-    "categoria": "Under 12",
-    "Regione": "Piemonte",
-    "Comitato": "Subalpino",
-    "Squadre": 24,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Calcio a Sette",
-    "categoria": "Under 12",
-    "Regione": "Puglia",
-    "Comitato": "Bari",
-    "Squadre": 6,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Calcio a Sette",
-    "categoria": "Under 12",
-    "Regione": "Puglia",
-    "Comitato": "Brindisi",
-    "Squadre": 8,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Calcio a Sette",
-    "categoria": "Under 12",
-    "Regione": "Puglia",
-    "Comitato": "Lecce",
-    "Squadre": 9,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Calcio a Sette",
-    "categoria": "Under 12",
-    "Regione": "Puglia",
-    "Comitato": "Ostuni",
-    "Squadre": 5,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Calcio a Sette",
-    "categoria": "Under 12",
-    "Regione": "Puglia",
-    "Comitato": "Barletta A.T.",
-    "Squadre": 11,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Calcio a Sette",
-    "categoria": "Under 12",
-    "Regione": "Sicilia",
-    "Comitato": "Acireale",
-    "Squadre": 8,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Calcio a Sette",
-    "categoria": "Under 12",
-    "Regione": "Sicilia",
-    "Comitato": "Agrigento",
-    "Squadre": 5,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Calcio a Sette",
-    "categoria": "Under 12",
-    "Regione": "Sicilia",
-    "Comitato": "Catania",
-    "Squadre": 12,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Calcio a Sette",
-    "categoria": "Under 12",
-    "Regione": "Sicilia",
-    "Comitato": "Messina",
-    "Squadre": 25,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Calcio a Sette",
-    "categoria": "Open M",
-    "Regione": "Abruzzo",
-    "Comitato": "Teramo",
-    "Squadre": 39,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Calcio a Sette",
-    "categoria": "Open M",
-    "Regione": "Abruzzo",
-    "Comitato": "Lanciano-Ortona",
-    "Squadre": 8,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Calcio a Sette",
-    "categoria": "Open M",
-    "Regione": "Emilia-Romagna",
-    "Comitato": "Bologna",
-    "Squadre": 16,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Calcio a Sette",
-    "categoria": "Open M",
-    "Regione": "Emilia-Romagna",
-    "Comitato": "Cesena",
-    "Squadre": 13,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Calcio a Sette",
-    "categoria": "Open M",
-    "Regione": "Emilia-Romagna",
-    "Comitato": "Forli",
-    "Squadre": 52,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Calcio a Sette",
-    "categoria": "Open M",
-    "Regione": "Emilia-Romagna",
-    "Comitato": "Modena",
-    "Squadre": 98,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Calcio a Sette",
-    "categoria": "Open M",
-    "Regione": "Emilia-Romagna",
-    "Comitato": "Parma",
-    "Squadre": 24,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Calcio a Sette",
-    "categoria": "Open M",
-    "Regione": "Emilia-Romagna",
-    "Comitato": "Reggio Emilia",
-    "Squadre": 98,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Calcio a Sette",
-    "categoria": "Open M",
-    "Regione": "Emilia-Romagna",
-    "Comitato": "Imola",
-    "Squadre": 22,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Calcio a Sette",
-    "categoria": "Open M",
-    "Regione": "Emilia-Romagna",
-    "Comitato": "Ferrara",
-    "Squadre": 20,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Calcio a Sette",
-    "categoria": "Open M",
-    "Regione": "Emilia-Romagna",
-    "Comitato": "Emilia Romagna",
-    "Squadre": 7,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Calcio a Sette",
-    "categoria": "Open M",
-    "Regione": "Liguria",
-    "Comitato": "Chiavari",
-    "Squadre": 10,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Calcio a Sette",
-    "categoria": "Open M",
-    "Regione": "Lombardia",
-    "Comitato": "Bergamo",
-    "Squadre": 386,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Calcio a Sette",
-    "categoria": "Open M",
-    "Regione": "Lombardia",
-    "Comitato": "Brescia",
-    "Squadre": 281,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Calcio a Sette",
-    "categoria": "Open M",
-    "Regione": "Lombardia",
-    "Comitato": "Como",
-    "Squadre": 106,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Calcio a Sette",
-    "categoria": "Open M",
-    "Regione": "Lombardia",
-    "Comitato": "Lecco",
-    "Squadre": 105,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Calcio a Sette",
-    "categoria": "Open M",
-    "Regione": "Lombardia",
-    "Comitato": "Milano",
-    "Squadre": 20,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Calcio a Sette",
-    "categoria": "Open M",
-    "Regione": "Lombardia",
-    "Comitato": "Sondrio",
-    "Squadre": 32,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Calcio a Sette",
-    "categoria": "Open M",
-    "Regione": "Lombardia",
-    "Comitato": "Vallecamonica",
-    "Squadre": 7,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Calcio a Sette",
-    "categoria": "Open M",
-    "Regione": "Lombardia",
-    "Comitato": "Varese",
-    "Squadre": 189,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Calcio a Sette",
-    "categoria": "Open M",
-    "Regione": "Lombardia",
-    "Comitato": "Pavia",
-    "Squadre": 17,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Calcio a Sette",
-    "categoria": "Open M",
-    "Regione": "Marche",
-    "Comitato": "Pesaro-Urbino",
-    "Squadre": 29,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Calcio a Sette",
-    "categoria": "Open M",
-    "Regione": "Piemonte",
-    "Comitato": "Alba",
-    "Squadre": 22,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Calcio a Sette",
-    "categoria": "Open M",
-    "Regione": "Piemonte",
-    "Comitato": "Cuneo",
-    "Squadre": 8,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Calcio a Sette",
-    "categoria": "Open M",
-    "Regione": "Piemonte",
-    "Comitato": "Verbania",
-    "Squadre": 44,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Calcio a Sette",
-    "categoria": "Open M",
-    "Regione": "Piemonte",
-    "Comitato": "Subalpino",
-    "Squadre": 8,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Calcio a Sette",
-    "categoria": "Open M",
-    "Regione": "Puglia",
-    "Comitato": "Ostuni",
-    "Squadre": 12,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Calcio a Sette",
-    "categoria": "Open M",
-    "Regione": "Sicilia",
-    "Comitato": "Acireale",
-    "Squadre": 9,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Calcio a Sette",
-    "categoria": "Open M",
-    "Regione": "Umbria",
-    "Comitato": "Terni",
-    "Squadre": 42,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Calcio a Sette",
-    "categoria": "Open M",
-    "Regione": "Veneto",
-    "Comitato": "Verona",
-    "Squadre": 30,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Calcio a Sette",
-    "categoria": "Open M",
-    "Regione": "Veneto",
-    "Comitato": "Legnago",
-    "Squadre": 12,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallacanestro",
-    "categoria": "Allieve",
-    "Regione": "Emilia-Romagna",
-    "Comitato": "Bologna",
-    "Squadre": 5,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallacanestro",
-    "categoria": "Allieve",
-    "Regione": "Piemonte",
-    "Comitato": "Cuneo",
-    "Squadre": 5,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallacanestro",
-    "categoria": "Allieve",
-    "Regione": "Piemonte",
-    "Comitato": "Subalpino",
-    "Squadre": 5,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallacanestro",
-    "categoria": "Allieve",
-    "Regione": "Puglia",
-    "Comitato": "Bari",
-    "Squadre": 2,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallacanestro",
-    "categoria": "Allieve",
-    "Regione": "Veneto",
-    "Comitato": "Padova",
-    "Squadre": 7,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallacanestro",
-    "categoria": "Allievi",
-    "Regione": "Emilia-Romagna",
-    "Comitato": "Bologna",
-    "Squadre": 18,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallacanestro",
-    "categoria": "Allievi",
-    "Regione": "Emilia-Romagna",
-    "Comitato": "Modena",
-    "Squadre": 12,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallacanestro",
-    "categoria": "Allievi",
-    "Regione": "Emilia-Romagna",
-    "Comitato": "Parma",
-    "Squadre": 3,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallacanestro",
-    "categoria": "Allievi",
-    "Regione": "Emilia-Romagna",
-    "Comitato": "Reggio Emilia",
-    "Squadre": 17,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallacanestro",
-    "categoria": "Allievi",
-    "Regione": "Lazio",
-    "Comitato": "Roma",
-    "Squadre": 16,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallacanestro",
-    "categoria": "Allievi",
-    "Regione": "Liguria",
-    "Comitato": "Genova",
-    "Squadre": 9,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallacanestro",
-    "categoria": "Allievi",
-    "Regione": "Lombardia",
-    "Comitato": "Bergamo",
-    "Squadre": 13,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallacanestro",
-    "categoria": "Allievi",
-    "Regione": "Lombardia",
-    "Comitato": "Lecco",
-    "Squadre": 6,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallacanestro",
-    "categoria": "Allievi",
-    "Regione": "Lombardia",
-    "Comitato": "Milano",
-    "Squadre": 14,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallacanestro",
-    "categoria": "Allievi",
-    "Regione": "Piemonte",
-    "Comitato": "Cuneo",
-    "Squadre": 8,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallacanestro",
-    "categoria": "Allievi",
-    "Regione": "Piemonte",
-    "Comitato": "Subalpino",
-    "Squadre": 11,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallacanestro",
-    "categoria": "Allievi",
-    "Regione": "Puglia",
-    "Comitato": "Bari",
-    "Squadre": 7,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallacanestro",
-    "categoria": "Allievi",
-    "Regione": "Puglia",
-    "Comitato": "Brindisi",
-    "Squadre": 1,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallacanestro",
-    "categoria": "Allievi",
-    "Regione": "Puglia",
-    "Comitato": "Lecce",
-    "Squadre": 1,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallacanestro",
-    "categoria": "Allievi",
-    "Regione": "Toscana",
-    "Comitato": "Firenze",
-    "Squadre": 30,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallacanestro",
-    "categoria": "Allievi",
-    "Regione": "Umbria",
-    "Comitato": "Perugia",
-    "Squadre": 4,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallacanestro",
-    "categoria": "Allievi",
-    "Regione": "Veneto",
-    "Comitato": "Padova",
-    "Squadre": 16,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallacanestro",
-    "categoria": "Allievi",
-    "Regione": "Veneto",
-    "Comitato": "Verona",
-    "Squadre": 18,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallacanestro",
-    "categoria": "Juniores M",
-    "Regione": "Campania",
-    "Comitato": "Napoli",
-    "Squadre": 1,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallacanestro",
-    "categoria": "Juniores M",
-    "Regione": "Emilia-Romagna",
-    "Comitato": "Bologna",
-    "Squadre": 10,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallacanestro",
-    "categoria": "Juniores M",
-    "Regione": "Emilia-Romagna",
-    "Comitato": "Modena",
-    "Squadre": 7,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallacanestro",
-    "categoria": "Juniores M",
-    "Regione": "Emilia-Romagna",
-    "Comitato": "Parma",
-    "Squadre": 1,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallacanestro",
-    "categoria": "Juniores M",
-    "Regione": "Emilia-Romagna",
-    "Comitato": "Reggio Emilia",
-    "Squadre": 14,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallacanestro",
-    "categoria": "Juniores M",
-    "Regione": "Lazio",
-    "Comitato": "Roma",
-    "Squadre": 14,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallacanestro",
-    "categoria": "Juniores M",
-    "Regione": "Liguria",
-    "Comitato": "Genova",
-    "Squadre": 6,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallacanestro",
-    "categoria": "Juniores M",
-    "Regione": "Lombardia",
-    "Comitato": "Bergamo",
-    "Squadre": 10,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallacanestro",
-    "categoria": "Juniores M",
-    "Regione": "Lombardia",
-    "Comitato": "Brescia",
-    "Squadre": 1,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallacanestro",
-    "categoria": "Juniores M",
-    "Regione": "Lombardia",
-    "Comitato": "Lecco",
-    "Squadre": 6,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallacanestro",
-    "categoria": "Juniores M",
-    "Regione": "Lombardia",
-    "Comitato": "Milano",
-    "Squadre": 8,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallacanestro",
-    "categoria": "Juniores M",
-    "Regione": "Piemonte",
-    "Comitato": "Alessandria",
-    "Squadre": 7,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallacanestro",
-    "categoria": "Juniores M",
-    "Regione": "Piemonte",
-    "Comitato": "Cuneo",
-    "Squadre": 6,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallacanestro",
-    "categoria": "Juniores M",
-    "Regione": "Piemonte",
-    "Comitato": "Subalpino",
-    "Squadre": 5,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallacanestro",
-    "categoria": "Juniores M",
-    "Regione": "Puglia",
-    "Comitato": "Bari",
-    "Squadre": 4,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallacanestro",
-    "categoria": "Juniores M",
-    "Regione": "Puglia",
-    "Comitato": "Brindisi",
-    "Squadre": 1,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallacanestro",
-    "categoria": "Juniores M",
-    "Regione": "Puglia",
-    "Comitato": "Lecce",
-    "Squadre": 6,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallacanestro",
-    "categoria": "Juniores M",
-    "Regione": "Sicilia",
-    "Comitato": "Enna",
-    "Squadre": 1,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallacanestro",
-    "categoria": "Juniores M",
-    "Regione": "Toscana",
-    "Comitato": "Firenze",
-    "Squadre": 15,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallacanestro",
-    "categoria": "Juniores M",
-    "Regione": "Veneto",
-    "Comitato": "Padova",
-    "Squadre": 14,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallacanestro",
-    "categoria": "Juniores M",
-    "Regione": "Veneto",
-    "Comitato": "Verona",
-    "Squadre": 10,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallacanestro",
-    "categoria": "Open F",
-    "Regione": "Emilia-Romagna",
-    "Comitato": "Bologna",
-    "Squadre": 9,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallacanestro",
-    "categoria": "Open F",
-    "Regione": "Piemonte",
-    "Comitato": "Subalpino",
-    "Squadre": 8,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallacanestro",
-    "categoria": "Open F",
-    "Regione": "Puglia",
-    "Comitato": "Bari",
-    "Squadre": 1,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallacanestro",
-    "categoria": "Open F",
-    "Regione": "Veneto",
-    "Comitato": "Padova",
-    "Squadre": 5,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallacanestro",
-    "categoria": "Ragazzi",
-    "Regione": "Emilia-Romagna",
-    "Comitato": "Bologna",
-    "Squadre": 13,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallacanestro",
-    "categoria": "Ragazzi",
-    "Regione": "Emilia-Romagna",
-    "Comitato": "Modena",
-    "Squadre": 7,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallacanestro",
-    "categoria": "Ragazzi",
-    "Regione": "Emilia-Romagna",
-    "Comitato": "Parma",
-    "Squadre": 1,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallacanestro",
-    "categoria": "Ragazzi",
-    "Regione": "Emilia-Romagna",
-    "Comitato": "Reggio Emilia",
-    "Squadre": 9,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallacanestro",
-    "categoria": "Ragazzi",
-    "Regione": "Lazio",
-    "Comitato": "Roma",
-    "Squadre": 10,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallacanestro",
-    "categoria": "Ragazzi",
-    "Regione": "Liguria",
-    "Comitato": "Genova",
-    "Squadre": 6,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallacanestro",
-    "categoria": "Ragazzi",
-    "Regione": "Lombardia",
-    "Comitato": "Bergamo",
-    "Squadre": 25,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallacanestro",
-    "categoria": "Ragazzi",
-    "Regione": "Lombardia",
-    "Comitato": "Lecco",
-    "Squadre": 7,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallacanestro",
-    "categoria": "Ragazzi",
-    "Regione": "Lombardia",
-    "Comitato": "Milano",
-    "Squadre": 6,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallacanestro",
-    "categoria": "Ragazzi",
-    "Regione": "Piemonte",
-    "Comitato": "Alessandria",
-    "Squadre": 7,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallacanestro",
-    "categoria": "Ragazzi",
-    "Regione": "Piemonte",
-    "Comitato": "Cuneo",
-    "Squadre": 8,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallacanestro",
-    "categoria": "Ragazzi",
-    "Regione": "Piemonte",
-    "Comitato": "Subalpino",
-    "Squadre": 6,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallacanestro",
-    "categoria": "Ragazzi",
-    "Regione": "Puglia",
-    "Comitato": "Bari",
-    "Squadre": 7,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallacanestro",
-    "categoria": "Ragazzi",
-    "Regione": "Puglia",
-    "Comitato": "Lecce",
-    "Squadre": 2,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallacanestro",
-    "categoria": "Ragazzi",
-    "Regione": "Toscana",
-    "Comitato": "Firenze",
-    "Squadre": 18,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallacanestro",
-    "categoria": "Ragazzi",
-    "Regione": "Veneto",
-    "Comitato": "Padova",
-    "Squadre": 12,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallacanestro",
-    "categoria": "Ragazzi",
-    "Regione": "Veneto",
-    "Comitato": "Verona",
-    "Squadre": 15,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallacanestro",
-    "categoria": "Under 10",
-    "Regione": "Campania",
-    "Comitato": "Napoli",
-    "Squadre": 3,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallacanestro",
-    "categoria": "Under 10",
-    "Regione": "Emilia-Romagna",
-    "Comitato": "Bologna",
-    "Squadre": 10,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallacanestro",
-    "categoria": "Under 10",
-    "Regione": "Emilia-Romagna",
-    "Comitato": "Modena",
-    "Squadre": 6,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallacanestro",
-    "categoria": "Under 10",
-    "Regione": "Emilia-Romagna",
-    "Comitato": "Reggio Emilia",
-    "Squadre": 10,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallacanestro",
-    "categoria": "Under 10",
-    "Regione": "Lombardia",
-    "Comitato": "Bergamo",
-    "Squadre": 6,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallacanestro",
-    "categoria": "Under 10",
-    "Regione": "Lombardia",
-    "Comitato": "Lecco",
-    "Squadre": 8,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallacanestro",
-    "categoria": "Under 10",
-    "Regione": "Lombardia",
-    "Comitato": "Mantova",
-    "Squadre": 6,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallacanestro",
-    "categoria": "Under 10",
-    "Regione": "Lombardia",
-    "Comitato": "Milano",
-    "Squadre": 16,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallacanestro",
-    "categoria": "Under 10",
-    "Regione": "Puglia",
-    "Comitato": "Bari",
-    "Squadre": 7,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallacanestro",
-    "categoria": "Under 10",
-    "Regione": "Puglia",
-    "Comitato": "Brindisi",
-    "Squadre": 2,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallacanestro",
-    "categoria": "Under 10",
-    "Regione": "Puglia",
-    "Comitato": "Lecce",
-    "Squadre": 6,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallacanestro",
-    "categoria": "Under 10",
-    "Regione": "Sicilia",
-    "Comitato": "Acireale",
-    "Squadre": 6,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallacanestro",
-    "categoria": "Under 10",
-    "Regione": "Toscana",
-    "Comitato": "Firenze",
-    "Squadre": 11,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallacanestro",
-    "categoria": "Under 10",
-    "Regione": "Umbria",
-    "Comitato": "Perugia",
-    "Squadre": 9,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallacanestro",
-    "categoria": "Under 10",
-    "Regione": "Veneto",
-    "Comitato": "Verona",
-    "Squadre": 11,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallacanestro",
-    "categoria": "Under 12",
-    "Regione": "Basilicata",
-    "Comitato": "Matera",
-    "Squadre": 10,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallacanestro",
-    "categoria": "Under 12",
-    "Regione": "Emilia-Romagna",
-    "Comitato": "Bologna",
-    "Squadre": 13,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallacanestro",
-    "categoria": "Under 12",
-    "Regione": "Emilia-Romagna",
-    "Comitato": "Modena",
-    "Squadre": 6,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallacanestro",
-    "categoria": "Under 12",
-    "Regione": "Emilia-Romagna",
-    "Comitato": "Parma",
-    "Squadre": 2,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallacanestro",
-    "categoria": "Under 12",
-    "Regione": "Emilia-Romagna",
-    "Comitato": "Reggio Emilia",
-    "Squadre": 13,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallacanestro",
-    "categoria": "Under 12",
-    "Regione": "Liguria",
-    "Comitato": "Genova",
-    "Squadre": 6,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallacanestro",
-    "categoria": "Under 12",
-    "Regione": "Lombardia",
-    "Comitato": "Bergamo",
-    "Squadre": 14,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallacanestro",
-    "categoria": "Under 12",
-    "Regione": "Lombardia",
-    "Comitato": "Brescia",
-    "Squadre": 2,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallacanestro",
-    "categoria": "Under 12",
-    "Regione": "Lombardia",
-    "Comitato": "Lecco",
-    "Squadre": 9,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallacanestro",
-    "categoria": "Under 12",
-    "Regione": "Lombardia",
-    "Comitato": "Mantova",
-    "Squadre": 5,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallacanestro",
-    "categoria": "Under 12",
-    "Regione": "Lombardia",
-    "Comitato": "Milano",
-    "Squadre": 9,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallacanestro",
-    "categoria": "Under 12",
-    "Regione": "Piemonte",
-    "Comitato": "Subalpino",
-    "Squadre": 4,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallacanestro",
-    "categoria": "Under 12",
-    "Regione": "Puglia",
-    "Comitato": "Bari",
-    "Squadre": 8,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallacanestro",
-    "categoria": "Under 12",
-    "Regione": "Puglia",
-    "Comitato": "Brindisi",
-    "Squadre": 4,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallacanestro",
-    "categoria": "Under 12",
-    "Regione": "Puglia",
-    "Comitato": "Lecce",
-    "Squadre": 5,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallacanestro",
-    "categoria": "Under 12",
-    "Regione": "Sicilia",
-    "Comitato": "Acireale",
-    "Squadre": 6,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallacanestro",
-    "categoria": "Under 12",
-    "Regione": "Toscana",
-    "Comitato": "Firenze",
-    "Squadre": 22,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallacanestro",
-    "categoria": "Under 12",
-    "Regione": "Umbria",
-    "Comitato": "Perugia",
-    "Squadre": 9,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallacanestro",
-    "categoria": "Under 12",
-    "Regione": "Veneto",
-    "Comitato": "Verona",
-    "Squadre": 14,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallacanestro",
-    "categoria": "Under 8",
-    "Regione": "Emilia-Romagna",
-    "Comitato": "Bologna",
-    "Squadre": 6,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallacanestro",
-    "categoria": "Under 8",
-    "Regione": "Emilia-Romagna",
-    "Comitato": "Modena",
-    "Squadre": 6,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallacanestro",
-    "categoria": "Under 8",
-    "Regione": "Emilia-Romagna",
-    "Comitato": "Reggio Emilia",
-    "Squadre": 5,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallacanestro",
-    "categoria": "Under 8",
-    "Regione": "Puglia",
-    "Comitato": "Bari",
-    "Squadre": 5,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallacanestro",
-    "categoria": "Under 8",
-    "Regione": "Puglia",
-    "Comitato": "Brindisi",
-    "Squadre": 1,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallacanestro",
-    "categoria": "Under 8",
-    "Regione": "Puglia",
-    "Comitato": "Lecce",
-    "Squadre": 1,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallacanestro",
-    "categoria": "Baskin Pca Integrata",
-    "Regione": "Emilia-Romagna",
-    "Comitato": "Emilia Romagna",
-    "Squadre": 6,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallacanestro",
-    "categoria": "Baskin Pca Integrata",
-    "Regione": "Lombardia",
-    "Comitato": "Cremona",
-    "Squadre": 9,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallacanestro",
-    "categoria": "Baskin Pca Integrata",
-    "Regione": "Lombardia",
-    "Comitato": "Mantova",
-    "Squadre": 6,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallacanestro",
-    "categoria": "Baskin Pca Integrata",
-    "Regione": "Puglia",
-    "Comitato": "Bari",
-    "Squadre": 8,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallacanestro",
-    "categoria": "Open M",
-    "Regione": "Calabria",
-    "Comitato": "Reggio Calabria",
-    "Squadre": 12,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallacanestro",
-    "categoria": "Open M",
-    "Regione": "Emilia-Romagna",
-    "Comitato": "Bologna",
-    "Squadre": 10,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallacanestro",
-    "categoria": "Open M",
-    "Regione": "Emilia-Romagna",
-    "Comitato": "Faenza",
-    "Squadre": 32,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallacanestro",
-    "categoria": "Open M",
-    "Regione": "Emilia-Romagna",
-    "Comitato": "Modena",
-    "Squadre": 9,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallacanestro",
-    "categoria": "Open M",
-    "Regione": "Emilia-Romagna",
-    "Comitato": "Reggio Emilia",
-    "Squadre": 48,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallacanestro",
-    "categoria": "Open M",
-    "Regione": "Emilia-Romagna",
-    "Comitato": "Piacenza",
-    "Squadre": 9,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallacanestro",
-    "categoria": "Open M",
-    "Regione": "Lazio",
-    "Comitato": "Roma",
-    "Squadre": 32,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallacanestro",
-    "categoria": "Open M",
-    "Regione": "Lombardia",
-    "Comitato": "Bergamo",
-    "Squadre": 70,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallacanestro",
-    "categoria": "Open M",
-    "Regione": "Lombardia",
-    "Comitato": "Brescia",
-    "Squadre": 27,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallacanestro",
-    "categoria": "Open M",
-    "Regione": "Lombardia",
-    "Comitato": "Lecco",
-    "Squadre": 15,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallacanestro",
-    "categoria": "Open M",
-    "Regione": "Lombardia",
-    "Comitato": "Milano",
-    "Squadre": 10,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallacanestro",
-    "categoria": "Open M",
-    "Regione": "Marche",
-    "Comitato": "Macerata",
-    "Squadre": 6,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallacanestro",
-    "categoria": "Open M",
-    "Regione": "Piemonte",
-    "Comitato": "Cuneo",
-    "Squadre": 17,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallacanestro",
-    "categoria": "Open M",
-    "Regione": "Piemonte",
-    "Comitato": "Asti",
-    "Squadre": 14,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallacanestro",
-    "categoria": "Open M",
-    "Regione": "Piemonte",
-    "Comitato": "Subalpino",
-    "Squadre": 19,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallacanestro",
-    "categoria": "Open M",
-    "Regione": "Puglia",
-    "Comitato": "Brindisi",
-    "Squadre": 7,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallacanestro",
-    "categoria": "Open M",
-    "Regione": "Puglia",
-    "Comitato": "Lecce",
-    "Squadre": 8,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallacanestro",
-    "categoria": "Open M",
-    "Regione": "Umbria",
-    "Comitato": "Perugia",
-    "Squadre": 21,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallacanestro",
-    "categoria": "Open M",
-    "Regione": "Veneto",
-    "Comitato": "Treviso",
-    "Squadre": 25,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallacanestro",
-    "categoria": "Open M",
-    "Regione": "Veneto",
-    "Comitato": "Venezia",
-    "Squadre": 20,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallacanestro",
-    "categoria": "Open M",
-    "Regione": "Veneto",
-    "Comitato": "Verona",
-    "Squadre": 73,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallacanestro",
-    "categoria": "Under 13",
-    "Regione": "Campania",
-    "Comitato": "Napoli",
-    "Squadre": 6,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallacanestro",
-    "categoria": "Under 13",
-    "Regione": "Emilia-Romagna",
-    "Comitato": "Bologna",
-    "Squadre": 14,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallacanestro",
-    "categoria": "Under 13",
-    "Regione": "Emilia-Romagna",
-    "Comitato": "Modena",
-    "Squadre": 7,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallacanestro",
-    "categoria": "Under 13",
-    "Regione": "Emilia-Romagna",
-    "Comitato": "Parma",
-    "Squadre": 2,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallacanestro",
-    "categoria": "Under 13",
-    "Regione": "Emilia-Romagna",
-    "Comitato": "Reggio Emilia",
-    "Squadre": 8,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallacanestro",
-    "categoria": "Under 13",
-    "Regione": "Lombardia",
-    "Comitato": "Mantova",
-    "Squadre": 7,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallacanestro",
-    "categoria": "Under 13",
-    "Regione": "Lombardia",
-    "Comitato": "Milano",
-    "Squadre": 15,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallacanestro",
-    "categoria": "Under 13",
-    "Regione": "Piemonte",
-    "Comitato": "Cuneo",
-    "Squadre": 8,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallacanestro",
-    "categoria": "Under 13",
-    "Regione": "Puglia",
-    "Comitato": "Bari",
-    "Squadre": 7,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallacanestro",
-    "categoria": "Under 13",
-    "Regione": "Puglia",
-    "Comitato": "Brindisi",
-    "Squadre": 2,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallacanestro",
-    "categoria": "Under 13",
-    "Regione": "Puglia",
-    "Comitato": "Lecce",
-    "Squadre": 1,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallacanestro",
-    "categoria": "Under 13",
-    "Regione": "Sicilia",
-    "Comitato": "Enna",
-    "Squadre": 3,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallacanestro",
-    "categoria": "Under 13",
-    "Regione": "Toscana",
-    "Comitato": "Firenze",
-    "Squadre": 21,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallacanestro",
-    "categoria": "Under 13",
-    "Regione": "Umbria",
-    "Comitato": "Perugia",
-    "Squadre": 5,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallacanestro",
-    "categoria": "Under 13",
-    "Regione": "Veneto",
-    "Comitato": "Padova",
-    "Squadre": 22,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallacanestro",
-    "categoria": "Under 13",
-    "Regione": "Veneto",
-    "Comitato": "Verona",
-    "Squadre": 10,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Allieve",
-    "Regione": "Campania",
-    "Comitato": "Caserta",
-    "Squadre": 5,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Allieve",
-    "Regione": "Campania",
-    "Comitato": "Cava Dei Tirreni",
-    "Squadre": 11,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Allieve",
-    "Regione": "Campania",
-    "Comitato": "Napoli",
-    "Squadre": 10,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Allieve",
-    "Regione": "Campania",
-    "Comitato": "Aversa",
-    "Squadre": 5,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Allieve",
-    "Regione": "Emilia-Romagna",
-    "Comitato": "Bologna",
-    "Squadre": 8,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Allieve",
-    "Regione": "Emilia-Romagna",
-    "Comitato": "Faenza",
-    "Squadre": 20,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Allieve",
-    "Regione": "Emilia-Romagna",
-    "Comitato": "Forli",
-    "Squadre": 15,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Allieve",
-    "Regione": "Emilia-Romagna",
-    "Comitato": "Modena",
-    "Squadre": 33,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Allieve",
-    "Regione": "Emilia-Romagna",
-    "Comitato": "Parma",
-    "Squadre": 11,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Allieve",
-    "Regione": "Emilia-Romagna",
-    "Comitato": "Reggio Emilia",
-    "Squadre": 35,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Allieve",
-    "Regione": "Lazio",
-    "Comitato": "Roma",
-    "Squadre": 24,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Allieve",
-    "Regione": "Liguria",
-    "Comitato": "Chiavari",
-    "Squadre": 6,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Allieve",
-    "Regione": "Liguria",
-    "Comitato": "Genova",
-    "Squadre": 10,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Allieve",
-    "Regione": "Liguria",
-    "Comitato": "Imperia-Sanremo",
-    "Squadre": 5,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Allieve",
-    "Regione": "Lombardia",
-    "Comitato": "Bergamo",
-    "Squadre": 85,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Allieve",
-    "Regione": "Lombardia",
-    "Comitato": "Brescia",
-    "Squadre": 35,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Allieve",
-    "Regione": "Lombardia",
-    "Comitato": "Como",
-    "Squadre": 10,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Allieve",
-    "Regione": "Lombardia",
-    "Comitato": "Cremona",
-    "Squadre": 8,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Allieve",
-    "Regione": "Lombardia",
-    "Comitato": "Lecco",
-    "Squadre": 20,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Allieve",
-    "Regione": "Lombardia",
-    "Comitato": "Lodi",
-    "Squadre": 21,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Allieve",
-    "Regione": "Lombardia",
-    "Comitato": "Milano",
-    "Squadre": 40,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Allieve",
-    "Regione": "Lombardia",
-    "Comitato": "Vallecamonica",
-    "Squadre": 12,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Allieve",
-    "Regione": "Piemonte",
-    "Comitato": "Alba",
-    "Squadre": 10,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Allieve",
-    "Regione": "Piemonte",
-    "Comitato": "Cuneo",
-    "Squadre": 17,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Allieve",
-    "Regione": "Puglia",
-    "Comitato": "Brindisi",
-    "Squadre": 5,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Allieve",
-    "Regione": "Puglia",
-    "Comitato": "Lecce",
-    "Squadre": 5,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Allieve",
-    "Regione": "Sicilia",
-    "Comitato": "Acireale",
-    "Squadre": 8,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Allieve",
-    "Regione": "Sicilia",
-    "Comitato": "Catania",
-    "Squadre": 19,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Allieve",
-    "Regione": "Sicilia",
-    "Comitato": "Palermo",
-    "Squadre": 11,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Allieve",
-    "Regione": "Sicilia",
-    "Comitato": "Siracusa",
-    "Squadre": 9,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Allieve",
-    "Regione": "Sicilia",
-    "Comitato": "Trapani",
-    "Squadre": 6,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Allieve",
-    "Regione": "Toscana",
-    "Comitato": "Toscana",
-    "Squadre": 19,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Allieve",
-    "Regione": "Trentino-Alto Adige/Südtirol",
-    "Comitato": "Trento",
-    "Squadre": 17,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Allieve",
-    "Regione": "Umbria",
-    "Comitato": "Perugia",
-    "Squadre": 15,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Allieve",
-    "Regione": "Veneto",
-    "Comitato": "Padova",
-    "Squadre": 30,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Allieve",
-    "Regione": "Veneto",
-    "Comitato": "Treviso",
-    "Squadre": 13,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Allieve",
-    "Regione": "Veneto",
-    "Comitato": "Venezia",
-    "Squadre": 6,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Allieve",
-    "Regione": "Veneto",
-    "Comitato": "Verona",
-    "Squadre": 15,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Allievi",
-    "Regione": "Emilia-Romagna",
-    "Comitato": "Modena",
-    "Squadre": 7,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Allievi",
-    "Regione": "Lazio",
-    "Comitato": "Roma",
-    "Squadre": 4,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Allievi",
-    "Regione": "Piemonte",
-    "Comitato": "Cuneo",
-    "Squadre": 3,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Allievi",
-    "Regione": "Puglia",
-    "Comitato": "Lecce",
-    "Squadre": 2,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Allievi",
-    "Regione": "Sicilia",
-    "Comitato": "Catania",
-    "Squadre": 7,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Allievi",
-    "Regione": "Sicilia",
-    "Comitato": "Siracusa",
-    "Squadre": 5,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Allievi",
-    "Regione": "Toscana",
-    "Comitato": "Toscana",
-    "Squadre": 6,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Juniores Maschile",
-    "Regione": "Emilia-Romagna",
-    "Comitato": "Modena",
-    "Squadre": 7,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Juniores Maschile",
-    "Regione": "Liguria",
-    "Comitato": "Chiavari",
-    "Squadre": 4,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Juniores Maschile",
-    "Regione": "Piemonte",
-    "Comitato": "Cuneo",
-    "Squadre": 3,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Juniores Maschile",
-    "Regione": "Puglia",
-    "Comitato": "Brindisi",
-    "Squadre": 1,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Juniores Maschile",
-    "Regione": "Puglia",
-    "Comitato": "Lecce",
-    "Squadre": 1,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Juniores Maschile",
-    "Regione": "Sicilia",
-    "Comitato": "Catania",
-    "Squadre": 9,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Juniores Maschile",
-    "Regione": "Sicilia",
-    "Comitato": "Palermo",
-    "Squadre": 5,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Juniores Maschile",
-    "Regione": "Sicilia",
-    "Comitato": "Siracusa",
-    "Squadre": 5,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Ragazze",
-    "Regione": "Abruzzo",
-    "Comitato": "Teramo",
-    "Squadre": 3,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Ragazze",
-    "Regione": "Basilicata",
-    "Comitato": "Potenza",
-    "Squadre": 5,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Ragazze",
-    "Regione": "Campania",
-    "Comitato": "Caserta",
-    "Squadre": 12,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Ragazze",
-    "Regione": "Campania",
-    "Comitato": "Cava Dei Tirreni",
-    "Squadre": 8,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Ragazze",
-    "Regione": "Campania",
-    "Comitato": "Napoli",
-    "Squadre": 12,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Ragazze",
-    "Regione": "Campania",
-    "Comitato": "Aversa",
-    "Squadre": 5,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Ragazze",
-    "Regione": "Emilia-Romagna",
-    "Comitato": "Bologna",
-    "Squadre": 6,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Ragazze",
-    "Regione": "Emilia-Romagna",
-    "Comitato": "Forli",
-    "Squadre": 12,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Ragazze",
-    "Regione": "Emilia-Romagna",
-    "Comitato": "Modena",
-    "Squadre": 32,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Ragazze",
-    "Regione": "Emilia-Romagna",
-    "Comitato": "Parma",
-    "Squadre": 8,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Ragazze",
-    "Regione": "Emilia-Romagna",
-    "Comitato": "Ravenna",
-    "Squadre": 16,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Ragazze",
-    "Regione": "Emilia-Romagna",
-    "Comitato": "Reggio Emilia",
-    "Squadre": 28,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Ragazze",
-    "Regione": "Lazio",
-    "Comitato": "Roma",
-    "Squadre": 16,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Ragazze",
-    "Regione": "Liguria",
-    "Comitato": "Chiavari",
-    "Squadre": 5,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Ragazze",
-    "Regione": "Liguria",
-    "Comitato": "Genova",
-    "Squadre": 9,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Ragazze",
-    "Regione": "Liguria",
-    "Comitato": "Imperia-Sanremo",
-    "Squadre": 7,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Ragazze",
-    "Regione": "Lombardia",
-    "Comitato": "Bergamo",
-    "Squadre": 96,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Ragazze",
-    "Regione": "Lombardia",
-    "Comitato": "Brescia",
-    "Squadre": 30,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Ragazze",
-    "Regione": "Lombardia",
-    "Comitato": "Como",
-    "Squadre": 14,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Ragazze",
-    "Regione": "Lombardia",
-    "Comitato": "Crema",
-    "Squadre": 4,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Ragazze",
-    "Regione": "Lombardia",
-    "Comitato": "Cremona",
-    "Squadre": 7,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Ragazze",
-    "Regione": "Lombardia",
-    "Comitato": "Lecco",
-    "Squadre": 22,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Ragazze",
-    "Regione": "Lombardia",
-    "Comitato": "Lodi",
-    "Squadre": 12,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Ragazze",
-    "Regione": "Lombardia",
-    "Comitato": "Milano",
-    "Squadre": 48,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Ragazze",
-    "Regione": "Lombardia",
-    "Comitato": "Vallecamonica",
-    "Squadre": 17,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Ragazze",
-    "Regione": "Piemonte",
-    "Comitato": "Alba",
-    "Squadre": 11,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Ragazze",
-    "Regione": "Piemonte",
-    "Comitato": "Cuneo",
-    "Squadre": 20,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Ragazze",
-    "Regione": "Puglia",
-    "Comitato": "Brindisi",
-    "Squadre": 3,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Ragazze",
-    "Regione": "Puglia",
-    "Comitato": "Lecce",
-    "Squadre": 1,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Ragazze",
-    "Regione": "Sicilia",
-    "Comitato": "Catania",
-    "Squadre": 7,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Ragazze",
-    "Regione": "Sicilia",
-    "Comitato": "Messina",
-    "Squadre": 5,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Ragazze",
-    "Regione": "Sicilia",
-    "Comitato": "Palermo",
-    "Squadre": 5,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Ragazze",
-    "Regione": "Sicilia",
-    "Comitato": "Siracusa",
-    "Squadre": 6,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Ragazze",
-    "Regione": "Toscana",
-    "Comitato": "Toscana",
-    "Squadre": 16,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Ragazze",
-    "Regione": "Trentino-Alto Adige/Südtirol",
-    "Comitato": "Trento",
-    "Squadre": 18,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Ragazze",
-    "Regione": "Umbria",
-    "Comitato": "Perugia",
-    "Squadre": 17,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Ragazze",
-    "Regione": "Veneto",
-    "Comitato": "Padova",
-    "Squadre": 22,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Ragazze",
-    "Regione": "Veneto",
-    "Comitato": "Treviso",
-    "Squadre": 8,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Ragazze",
-    "Regione": "Veneto",
-    "Comitato": "Venezia",
-    "Squadre": 6,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Ragazze",
-    "Regione": "Veneto",
-    "Comitato": "Verona",
-    "Squadre": 1,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Ragazzi",
-    "Regione": "Emilia-Romagna",
-    "Comitato": "Modena",
-    "Squadre": 6,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Ragazzi",
-    "Regione": "Emilia-Romagna",
-    "Comitato": "Reggio Emilia",
-    "Squadre": 7,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Ragazzi",
-    "Regione": "Lazio",
-    "Comitato": "Roma",
-    "Squadre": 5,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Ragazzi",
-    "Regione": "Lombardia",
-    "Comitato": "Bergamo",
-    "Squadre": 5,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Ragazzi",
-    "Regione": "Piemonte",
-    "Comitato": "Cuneo",
-    "Squadre": 3,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Ragazzi",
-    "Regione": "Puglia",
-    "Comitato": "Lecce",
-    "Squadre": 1,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Ragazzi",
-    "Regione": "Sicilia",
-    "Comitato": "Catania",
-    "Squadre": 10,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Ragazzi",
-    "Regione": "Sicilia",
-    "Comitato": "Siracusa",
-    "Squadre": 1,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Ragazzi",
-    "Regione": "Toscana",
-    "Comitato": "Toscana",
-    "Squadre": 8,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Ragazzi Misto",
-    "Regione": "Basilicata",
-    "Comitato": "Potenza",
-    "Squadre": 1,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Ragazzi Misto",
-    "Regione": "Emilia-Romagna",
-    "Comitato": "Reggio Emilia",
-    "Squadre": 1,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Ragazzi Misto",
-    "Regione": "Lazio",
-    "Comitato": "Roma",
-    "Squadre": 1,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Ragazzi Misto",
-    "Regione": "Piemonte",
-    "Comitato": "Cuneo",
-    "Squadre": 6,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Ragazzi Misto",
-    "Regione": "Puglia",
-    "Comitato": "Brindisi",
-    "Squadre": 1,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Ragazzi Misto",
-    "Regione": "Puglia",
-    "Comitato": "Lecce",
-    "Squadre": 2,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Ragazzi Misto",
-    "Regione": "Sicilia",
-    "Comitato": "Acireale",
-    "Squadre": 4,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Ragazzi Misto",
-    "Regione": "Sicilia",
-    "Comitato": "Catania",
-    "Squadre": 8,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Ragazzi Misto",
-    "Regione": "Sicilia",
-    "Comitato": "Siracusa",
-    "Squadre": 5,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Ragazzi Misto",
-    "Regione": "Veneto",
-    "Comitato": "Verona",
-    "Squadre": 16,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Under 10 (Minivolley - 3vs3)",
-    "Regione": "Basilicata",
-    "Comitato": "Melfi",
-    "Squadre": 8,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Under 10 (Minivolley - 3vs3)",
-    "Regione": "Basilicata",
-    "Comitato": "Potenza",
-    "Squadre": 7,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Under 10 (Minivolley - 3vs3)",
-    "Regione": "Campania",
-    "Comitato": "Caserta",
-    "Squadre": 3,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Under 10 (Minivolley - 3vs3)",
-    "Regione": "Campania",
-    "Comitato": "Cava Dei Tirreni",
-    "Squadre": 6,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Under 10 (Minivolley - 3vs3)",
-    "Regione": "Emilia-Romagna",
-    "Comitato": "Reggio Emilia",
-    "Squadre": 12,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Under 10 (Minivolley - 3vs3)",
-    "Regione": "Lombardia",
-    "Comitato": "Brescia",
-    "Squadre": 20,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Under 10 (Minivolley - 3vs3)",
-    "Regione": "Lombardia",
-    "Comitato": "Como",
-    "Squadre": 8,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Under 10 (Minivolley - 3vs3)",
-    "Regione": "Lombardia",
-    "Comitato": "Cremona",
-    "Squadre": 10,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Under 10 (Minivolley - 3vs3)",
-    "Regione": "Lombardia",
-    "Comitato": "Lecco",
-    "Squadre": 12,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Under 10 (Minivolley - 3vs3)",
-    "Regione": "Lombardia",
-    "Comitato": "Milano",
-    "Squadre": 12,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Under 10 (Minivolley - 3vs3)",
-    "Regione": "Lombardia",
-    "Comitato": "Vallecamonica",
-    "Squadre": 24,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Under 10 (Minivolley - 3vs3)",
-    "Regione": "Piemonte",
-    "Comitato": "Cuneo",
-    "Squadre": 17,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Under 10 (Minivolley - 3vs3)",
-    "Regione": "Puglia",
-    "Comitato": "Brindisi",
-    "Squadre": 1,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Under 10 (Minivolley - 3vs3)",
-    "Regione": "Puglia",
-    "Comitato": "Lecce",
-    "Squadre": 6,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Under 10 (Minivolley - 3vs3)",
-    "Regione": "Sicilia",
-    "Comitato": "Acireale",
-    "Squadre": 7,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Under 10 (Minivolley - 3vs3)",
-    "Regione": "Sicilia",
-    "Comitato": "Catania",
-    "Squadre": 17,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Under 10 (Minivolley - 3vs3)",
-    "Regione": "Sicilia",
-    "Comitato": "Palermo",
-    "Squadre": 6,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Under 10 (Minivolley - 3vs3)",
-    "Regione": "Sicilia",
-    "Comitato": "Siracusa",
-    "Squadre": 8,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Under 10 (Minivolley - 3vs3)",
-    "Regione": "Umbria",
-    "Comitato": "Perugia",
-    "Squadre": 37,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Under 10 (Minivolley - 3vs3)",
-    "Regione": "Veneto",
-    "Comitato": "Treviso",
-    "Squadre": 7,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Under 10 (Minivolley - 3vs3)",
-    "Regione": "Veneto",
-    "Comitato": "Rovigo",
-    "Squadre": 6,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Under 12 (6vs6)",
-    "Regione": "Campania",
-    "Comitato": "Cava Dei Tirreni",
-    "Squadre": 6,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Under 12 (6vs6)",
-    "Regione": "Campania",
-    "Comitato": "Napoli",
-    "Squadre": 1,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Under 12 (6vs6)",
-    "Regione": "Emilia-Romagna",
-    "Comitato": "Faenza",
-    "Squadre": 11,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Under 12 (6vs6)",
-    "Regione": "Emilia-Romagna",
-    "Comitato": "Forli",
-    "Squadre": 7,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Under 12 (6vs6)",
-    "Regione": "Emilia-Romagna",
-    "Comitato": "Modena",
-    "Squadre": 30,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Under 12 (6vs6)",
-    "Regione": "Emilia-Romagna",
-    "Comitato": "Parma",
-    "Squadre": 4,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Under 12 (6vs6)",
-    "Regione": "Emilia-Romagna",
-    "Comitato": "Reggio Emilia",
-    "Squadre": 9,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Under 12 (6vs6)",
-    "Regione": "Liguria",
-    "Comitato": "Imperia-Sanremo",
-    "Squadre": 6,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Under 12 (6vs6)",
-    "Regione": "Lombardia",
-    "Comitato": "Bergamo",
-    "Squadre": 131,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Under 12 (6vs6)",
-    "Regione": "Lombardia",
-    "Comitato": "Brescia",
-    "Squadre": 39,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Under 12 (6vs6)",
-    "Regione": "Lombardia",
-    "Comitato": "Como",
-    "Squadre": 13,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Under 12 (6vs6)",
-    "Regione": "Lombardia",
-    "Comitato": "Crema",
-    "Squadre": 5,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Under 12 (6vs6)",
-    "Regione": "Lombardia",
-    "Comitato": "Cremona",
-    "Squadre": 10,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Under 12 (6vs6)",
-    "Regione": "Lombardia",
-    "Comitato": "Lecco",
-    "Squadre": 27,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Under 12 (6vs6)",
-    "Regione": "Lombardia",
-    "Comitato": "Lodi",
-    "Squadre": 21,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Under 12 (6vs6)",
-    "Regione": "Lombardia",
-    "Comitato": "Milano",
-    "Squadre": 50,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Under 12 (6vs6)",
-    "Regione": "Lombardia",
-    "Comitato": "Vallecamonica",
-    "Squadre": 17,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Under 12 (6vs6)",
-    "Regione": "Piemonte",
-    "Comitato": "Alba",
-    "Squadre": 7,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Under 12 (6vs6)",
-    "Regione": "Piemonte",
-    "Comitato": "Cuneo",
-    "Squadre": 30,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Under 12 (6vs6)",
-    "Regione": "Puglia",
-    "Comitato": "Lecce",
-    "Squadre": 2,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Under 12 (6vs6)",
-    "Regione": "Sicilia",
-    "Comitato": "Siracusa",
-    "Squadre": 1,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Under 12 (6vs6)",
-    "Regione": "Toscana",
-    "Comitato": "Toscana",
-    "Squadre": 5,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Under 12 (6vs6)",
-    "Regione": "Trentino-Alto Adige/Südtirol",
-    "Comitato": "Trento",
-    "Squadre": 20,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Under 12 (6vs6)",
-    "Regione": "Umbria",
-    "Comitato": "Perugia",
-    "Squadre": 16,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Under 12 (6vs6)",
-    "Regione": "Veneto",
-    "Comitato": "Padova",
-    "Squadre": 11,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Under 12 (6vs6)",
-    "Regione": "Veneto",
-    "Comitato": "Treviso",
-    "Squadre": 7,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Under 12 (6vs6)",
-    "Regione": "Veneto",
-    "Comitato": "Rovigo",
-    "Squadre": 6,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Under 12 (Supervolley - 4vs4)",
-    "Regione": "Basilicata",
-    "Comitato": "Melfi",
-    "Squadre": 12,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Under 12 (Supervolley - 4vs4)",
-    "Regione": "Basilicata",
-    "Comitato": "Potenza",
-    "Squadre": 12,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Under 12 (Supervolley - 4vs4)",
-    "Regione": "Campania",
-    "Comitato": "Caserta",
-    "Squadre": 2,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Under 12 (Supervolley - 4vs4)",
-    "Regione": "Campania",
-    "Comitato": "Napoli",
-    "Squadre": 4,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Under 12 (Supervolley - 4vs4)",
-    "Regione": "Emilia-Romagna",
-    "Comitato": "Faenza",
-    "Squadre": 1,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Under 12 (Supervolley - 4vs4)",
-    "Regione": "Emilia-Romagna",
-    "Comitato": "Modena",
-    "Squadre": 16,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Under 12 (Supervolley - 4vs4)",
-    "Regione": "Emilia-Romagna",
-    "Comitato": "Reggio Emilia",
-    "Squadre": 14,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Under 12 (Supervolley - 4vs4)",
-    "Regione": "Liguria",
-    "Comitato": "Imperia-Sanremo",
-    "Squadre": 12,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Under 12 (Supervolley - 4vs4)",
-    "Regione": "Lombardia",
-    "Comitato": "Como",
-    "Squadre": 4,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Under 12 (Supervolley - 4vs4)",
-    "Regione": "Puglia",
-    "Comitato": "Brindisi",
-    "Squadre": 1,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Under 12 (Supervolley - 4vs4)",
-    "Regione": "Puglia",
-    "Comitato": "Lecce",
-    "Squadre": 1,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Under 12 (Supervolley - 4vs4)",
-    "Regione": "Puglia",
-    "Comitato": "Barletta A.T.",
-    "Squadre": 5,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Under 12 (Supervolley - 4vs4)",
-    "Regione": "Sicilia",
-    "Comitato": "Acireale",
-    "Squadre": 9,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Under 12 (Supervolley - 4vs4)",
-    "Regione": "Sicilia",
-    "Comitato": "Caltagirone",
-    "Squadre": 2,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Under 12 (Supervolley - 4vs4)",
-    "Regione": "Sicilia",
-    "Comitato": "Catania",
-    "Squadre": 29,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Under 12 (Supervolley - 4vs4)",
-    "Regione": "Sicilia",
-    "Comitato": "Palermo",
-    "Squadre": 5,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Under 12 (Supervolley - 4vs4)",
-    "Regione": "Sicilia",
-    "Comitato": "Siracusa",
-    "Squadre": 5,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Under 12 (Supervolley - 4vs4)",
-    "Regione": "Toscana",
-    "Comitato": "Toscana",
-    "Squadre": 5,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Under 12 (Supervolley - 4vs4)",
-    "Regione": "Umbria",
-    "Comitato": "Perugia",
-    "Squadre": 38,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Under 12 (Supervolley - 4vs4)",
-    "Regione": "Veneto",
-    "Comitato": "Treviso",
-    "Squadre": 6,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Under 12 (Supervolley - 4vs4)",
-    "Regione": "Veneto",
-    "Comitato": "Verona",
-    "Squadre": 15,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Under 12 (Supervolley - 4vs4) Maschile",
-    "Regione": "Emilia-Romagna",
-    "Comitato": "Modena",
-    "Squadre": 5,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Under 12 (Supervolley - 4vs4) Maschile",
-    "Regione": "Puglia",
-    "Comitato": "Brindisi",
-    "Squadre": 1,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Under 12 (Supervolley - 4vs4) Maschile",
-    "Regione": "Sicilia",
-    "Comitato": "Catania",
-    "Squadre": 5,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Under 12 (Supervolley - 4vs4) Maschile",
-    "Regione": "Sicilia",
-    "Comitato": "Palermo",
-    "Squadre": 1,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Under 12 (Supervolley - 4vs4) Maschile",
-    "Regione": "Sicilia",
-    "Comitato": "Siracusa",
-    "Squadre": 2,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Under 12 (Supervolley - 4vs4) Maschile",
-    "Regione": "Umbria",
-    "Comitato": "Perugia",
-    "Squadre": 7,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Under 8",
-    "Regione": "Sicilia",
-    "Comitato": "Catania",
-    "Squadre": 3,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Under 13 (6vs6) Misto",
-    "Regione": "Abruzzo",
-    "Comitato": "Teramo",
-    "Squadre": 1,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Under 13 (6vs6) Misto",
-    "Regione": "Emilia-Romagna",
-    "Comitato": "Reggio Emilia",
-    "Squadre": 2,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Under 13 (6vs6) Misto",
-    "Regione": "Puglia",
-    "Comitato": "Lecce",
-    "Squadre": 2,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Under 13 (6vs6) Misto",
-    "Regione": "Sicilia",
-    "Comitato": "Acireale",
-    "Squadre": 4,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Under 13 (6vs6) Misto",
-    "Regione": "Sicilia",
-    "Comitato": "Siracusa",
-    "Squadre": 2,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Under 13 (6vs6) Misto",
-    "Regione": "Toscana",
-    "Comitato": "Toscana",
-    "Squadre": 1,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Under 13 (6vs6) Femminile",
-    "Regione": "Campania",
-    "Comitato": "Caserta",
-    "Squadre": 6,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Under 13 (6vs6) Femminile",
-    "Regione": "Campania",
-    "Comitato": "Napoli",
-    "Squadre": 4,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Under 13 (6vs6) Femminile",
-    "Regione": "Emilia-Romagna",
-    "Comitato": "Bologna",
-    "Squadre": 1,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Under 13 (6vs6) Femminile",
-    "Regione": "Emilia-Romagna",
-    "Comitato": "Forli",
-    "Squadre": 8,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Under 13 (6vs6) Femminile",
-    "Regione": "Emilia-Romagna",
-    "Comitato": "Modena",
-    "Squadre": 29,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Under 13 (6vs6) Femminile",
-    "Regione": "Emilia-Romagna",
-    "Comitato": "Parma",
-    "Squadre": 5,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Under 13 (6vs6) Femminile",
-    "Regione": "Emilia-Romagna",
-    "Comitato": "Ravenna",
-    "Squadre": 13,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Under 13 (6vs6) Femminile",
-    "Regione": "Emilia-Romagna",
-    "Comitato": "Reggio Emilia",
-    "Squadre": 17,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Under 13 (6vs6) Femminile",
-    "Regione": "Emilia-Romagna",
-    "Comitato": "Emilia Romagna",
-    "Squadre": 1,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Under 13 (6vs6) Femminile",
-    "Regione": "Lazio",
-    "Comitato": "Roma",
-    "Squadre": 12,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Under 13 (6vs6) Femminile",
-    "Regione": "Liguria",
-    "Comitato": "Chiavari",
-    "Squadre": 1,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Under 13 (6vs6) Femminile",
-    "Regione": "Liguria",
-    "Comitato": "Genova",
-    "Squadre": 13,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Under 13 (6vs6) Femminile",
-    "Regione": "Liguria",
-    "Comitato": "Imperia-Sanremo",
-    "Squadre": 6,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Under 13 (6vs6) Femminile",
-    "Regione": "Lombardia",
-    "Comitato": "Brescia",
-    "Squadre": 22,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Under 13 (6vs6) Femminile",
-    "Regione": "Lombardia",
-    "Comitato": "Como",
-    "Squadre": 12,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Under 13 (6vs6) Femminile",
-    "Regione": "Lombardia",
-    "Comitato": "Crema",
-    "Squadre": 5,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Under 13 (6vs6) Femminile",
-    "Regione": "Lombardia",
-    "Comitato": "Lecco",
-    "Squadre": 14,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Under 13 (6vs6) Femminile",
-    "Regione": "Lombardia",
-    "Comitato": "Lodi",
-    "Squadre": 15,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Under 13 (6vs6) Femminile",
-    "Regione": "Lombardia",
-    "Comitato": "Milano",
-    "Squadre": 51,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Under 13 (6vs6) Femminile",
-    "Regione": "Piemonte",
-    "Comitato": "Alba",
-    "Squadre": 9,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Under 13 (6vs6) Femminile",
-    "Regione": "Puglia",
-    "Comitato": "Brindisi",
-    "Squadre": 2,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Under 13 (6vs6) Femminile",
-    "Regione": "Puglia",
-    "Comitato": "Lecce",
-    "Squadre": 2,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Under 13 (6vs6) Femminile",
-    "Regione": "Sicilia",
-    "Comitato": "Catania",
-    "Squadre": 6,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Under 13 (6vs6) Femminile",
-    "Regione": "Sicilia",
-    "Comitato": "Palermo",
-    "Squadre": 6,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Under 13 (6vs6) Femminile",
-    "Regione": "Sicilia",
-    "Comitato": "Siracusa",
-    "Squadre": 6,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Under 13 (6vs6) Femminile",
-    "Regione": "Umbria",
-    "Comitato": "Perugia",
-    "Squadre": 9,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Under 13 (6vs6) Femminile",
-    "Regione": "Veneto",
-    "Comitato": "Padova",
-    "Squadre": 16,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Under 13 (6vs6) Femminile",
-    "Regione": "Veneto",
-    "Comitato": "Treviso",
-    "Squadre": 1,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Under 13 (6vs6) Femminile",
-    "Regione": "Veneto",
-    "Comitato": "Venezia",
-    "Squadre": 5,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Under 13 (6vs6) Femminile",
-    "Regione": "Veneto",
-    "Comitato": "Rovigo",
-    "Squadre": 1,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Pallavolo Integrata",
-    "Regione": "Emilia-Romagna",
-    "Comitato": "Emilia Romagna",
-    "Squadre": 2,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Pallavolo Integrata",
-    "Regione": "Lombardia",
-    "Comitato": "Cremona",
-    "Squadre": 7,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Juniores Femminile",
-    "Regione": "Campania",
-    "Comitato": "Caserta",
-    "Squadre": 9,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Juniores Femminile",
-    "Regione": "Campania",
-    "Comitato": "Cava Dei Tirreni",
-    "Squadre": 8,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Juniores Femminile",
-    "Regione": "Campania",
-    "Comitato": "Napoli",
-    "Squadre": 8,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Juniores Femminile",
-    "Regione": "Emilia-Romagna",
-    "Comitato": "Faenza",
-    "Squadre": 14,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Juniores Femminile",
-    "Regione": "Emilia-Romagna",
-    "Comitato": "Forli",
-    "Squadre": 13,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Juniores Femminile",
-    "Regione": "Emilia-Romagna",
-    "Comitato": "Modena",
-    "Squadre": 18,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Juniores Femminile",
-    "Regione": "Emilia-Romagna",
-    "Comitato": "Parma",
-    "Squadre": 6,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Juniores Femminile",
-    "Regione": "Emilia-Romagna",
-    "Comitato": "Reggio Emilia",
-    "Squadre": 21,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Juniores Femminile",
-    "Regione": "Lazio",
-    "Comitato": "Roma",
-    "Squadre": 8,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Juniores Femminile",
-    "Regione": "Liguria",
-    "Comitato": "Genova",
-    "Squadre": 13,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Juniores Femminile",
-    "Regione": "Lombardia",
-    "Comitato": "Bergamo",
-    "Squadre": 48,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Juniores Femminile",
-    "Regione": "Lombardia",
-    "Comitato": "Brescia",
-    "Squadre": 29,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Juniores Femminile",
-    "Regione": "Lombardia",
-    "Comitato": "Como",
-    "Squadre": 13,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Juniores Femminile",
-    "Regione": "Lombardia",
-    "Comitato": "Crema",
-    "Squadre": 5,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Juniores Femminile",
-    "Regione": "Lombardia",
-    "Comitato": "Lecco",
-    "Squadre": 12,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Juniores Femminile",
-    "Regione": "Lombardia",
-    "Comitato": "Lodi",
-    "Squadre": 10,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Juniores Femminile",
-    "Regione": "Lombardia",
-    "Comitato": "Milano",
-    "Squadre": 38,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Juniores Femminile",
-    "Regione": "Piemonte",
-    "Comitato": "Alba",
-    "Squadre": 9,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Juniores Femminile",
-    "Regione": "Piemonte",
-    "Comitato": "Cuneo",
-    "Squadre": 15,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Juniores Femminile",
-    "Regione": "Sicilia",
-    "Comitato": "Catania",
-    "Squadre": 14,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Juniores Femminile",
-    "Regione": "Sicilia",
-    "Comitato": "Palermo",
-    "Squadre": 7,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Juniores Femminile",
-    "Regione": "Sicilia",
-    "Comitato": "Siracusa",
-    "Squadre": 8,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Juniores Femminile",
-    "Regione": "Sicilia",
-    "Comitato": "Trapani",
-    "Squadre": 7,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Juniores Femminile",
-    "Regione": "Toscana",
-    "Comitato": "Toscana",
-    "Squadre": 12,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Juniores Femminile",
-    "Regione": "Trentino-Alto Adige/Südtirol",
-    "Comitato": "Trento",
-    "Squadre": 7,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Juniores Femminile",
-    "Regione": "Veneto",
-    "Comitato": "Padova",
-    "Squadre": 16,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Juniores Femminile",
-    "Regione": "Veneto",
-    "Comitato": "Treviso",
-    "Squadre": 11,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Juniores Femminile",
-    "Regione": "Veneto",
-    "Comitato": "Venezia",
-    "Squadre": 5,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Juniores Femminile",
-    "Regione": "Veneto",
-    "Comitato": "Verona",
-    "Squadre": 12,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Open Femminile",
-    "Regione": "Basilicata",
-    "Comitato": "Potenza",
-    "Squadre": 6,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Open Femminile",
-    "Regione": "Calabria",
-    "Comitato": "Reggio Calabria",
-    "Squadre": 6,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
     "categoria": "Open Femminile",
     "Regione": "Campania",
     "Comitato": "Caserta",
-    "Squadre": 7,
+    "Squadre": 8,
     "NOTE": ""
   },
   {
     "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Open Femminile",
-    "Regione": "Campania",
-    "Comitato": "Cava Dei Tirreni",
-    "Squadre": 12,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Open Femminile",
-    "Regione": "Campania",
-    "Comitato": "Napoli",
-    "Squadre": 5,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Open Femminile",
-    "Regione": "Emilia-Romagna",
-    "Comitato": "Bologna",
-    "Squadre": 16,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Open Femminile",
-    "Regione": "Emilia-Romagna",
-    "Comitato": "Faenza",
-    "Squadre": 17,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
+    "Disciplina": "Calcio a Cinque",
     "categoria": "Open Femminile",
     "Regione": "Emilia-Romagna",
     "Comitato": "Forli",
-    "Squadre": 7,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Open Femminile",
-    "Regione": "Emilia-Romagna",
-    "Comitato": "Modena",
-    "Squadre": 12,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Open Femminile",
-    "Regione": "Emilia-Romagna",
-    "Comitato": "Reggio Emilia",
-    "Squadre": 7,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Open Femminile",
-    "Regione": "Lazio",
-    "Comitato": "Latina",
-    "Squadre": 5,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Open Femminile",
-    "Regione": "Lazio",
-    "Comitato": "Roma",
-    "Squadre": 14,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Open Femminile",
-    "Regione": "Liguria",
-    "Comitato": "Chiavari",
-    "Squadre": 7,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Open Femminile",
-    "Regione": "Lombardia",
-    "Comitato": "Bergamo",
-    "Squadre": 36,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Open Femminile",
-    "Regione": "Lombardia",
-    "Comitato": "Brescia",
-    "Squadre": 21,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Open Femminile",
-    "Regione": "Lombardia",
-    "Comitato": "Como",
-    "Squadre": 11,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Open Femminile",
-    "Regione": "Lombardia",
-    "Comitato": "Cremona",
-    "Squadre": 5,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Open Femminile",
-    "Regione": "Lombardia",
-    "Comitato": "Lecco",
-    "Squadre": 23,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Open Femminile",
-    "Regione": "Lombardia",
-    "Comitato": "Lodi",
-    "Squadre": 18,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Open Femminile",
-    "Regione": "Lombardia",
-    "Comitato": "Milano",
     "Squadre": 16,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Open Femminile",
-    "Regione": "Lombardia",
-    "Comitato": "Vallecamonica",
-    "Squadre": 9,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Open Femminile",
-    "Regione": "Piemonte",
-    "Comitato": "Cuneo",
-    "Squadre": 15,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Open Femminile",
-    "Regione": "Piemonte",
-    "Comitato": "Biella",
-    "Squadre": 9,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Open Femminile",
-    "Regione": "Puglia",
-    "Comitato": "Brindisi",
-    "Squadre": 6,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Open Femminile",
-    "Regione": "Sicilia",
-    "Comitato": "Catania",
-    "Squadre": 8,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Open Femminile",
-    "Regione": "Sicilia",
-    "Comitato": "Palermo",
-    "Squadre": 12,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Open Femminile",
-    "Regione": "Sicilia",
-    "Comitato": "Siracusa",
-    "Squadre": 6,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Open Femminile",
-    "Regione": "Sicilia",
-    "Comitato": "Enna",
-    "Squadre": 5,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Open Femminile",
-    "Regione": "Umbria",
-    "Comitato": "Perugia",
-    "Squadre": 6,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Open Femminile",
-    "Regione": "Veneto",
-    "Comitato": "Treviso",
-    "Squadre": 7,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Open Femminile",
-    "Regione": "Veneto",
-    "Comitato": "Verona",
-    "Squadre": 14,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Open Maschile",
-    "Regione": "Campania",
-    "Comitato": "Caserta",
-    "Squadre": 5,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Open Maschile",
-    "Regione": "Campania",
-    "Comitato": "Cava Dei Tirreni",
-    "Squadre": 12,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Open Maschile",
-    "Regione": "Campania",
-    "Comitato": "Napoli",
-    "Squadre": 6,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Open Maschile",
-    "Regione": "Emilia-Romagna",
-    "Comitato": "Bologna",
-    "Squadre": 8,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Open Maschile",
-    "Regione": "Emilia-Romagna",
-    "Comitato": "Modena",
-    "Squadre": 7,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Open Maschile",
-    "Regione": "Emilia-Romagna",
-    "Comitato": "Ravenna",
-    "Squadre": 11,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Open Maschile",
-    "Regione": "Lazio",
-    "Comitato": "Latina",
-    "Squadre": 5,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Open Maschile",
-    "Regione": "Lazio",
-    "Comitato": "Roma",
-    "Squadre": 13,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Open Maschile",
-    "Regione": "Piemonte",
-    "Comitato": "Cuneo",
-    "Squadre": 5,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Open Maschile",
-    "Regione": "Piemonte",
-    "Comitato": "Biella",
-    "Squadre": 5,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Open Maschile",
-    "Regione": "Sicilia",
-    "Comitato": "Catania",
-    "Squadre": 6,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Open Maschile",
-    "Regione": "Sicilia",
-    "Comitato": "Palermo",
-    "Squadre": 10,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Open Maschile",
-    "Regione": "Sicilia",
-    "Comitato": "Siracusa",
-    "Squadre": 9,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Open Misto",
-    "Regione": "Abruzzo",
-    "Comitato": "Teramo",
-    "Squadre": 7,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Open Misto",
-    "Regione": "Abruzzo",
-    "Comitato": "L’Aquila",
-    "Squadre": 6,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Open Misto",
-    "Regione": "Basilicata",
-    "Comitato": "Matera",
-    "Squadre": 6,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Open Misto",
-    "Regione": "Basilicata",
-    "Comitato": "Potenza",
-    "Squadre": 5,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Open Misto",
-    "Regione": "Calabria",
-    "Comitato": "Reggio Calabria",
-    "Squadre": 6,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Open Misto",
-    "Regione": "Campania",
-    "Comitato": "Caserta",
-    "Squadre": 7,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Open Misto",
-    "Regione": "Campania",
-    "Comitato": "Cava Dei Tirreni",
-    "Squadre": 9,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Open Misto",
-    "Regione": "Campania",
-    "Comitato": "Napoli",
-    "Squadre": 12,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Open Misto",
-    "Regione": "Emilia-Romagna",
-    "Comitato": "Bologna",
-    "Squadre": 45,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Open Misto",
-    "Regione": "Emilia-Romagna",
-    "Comitato": "Forli",
-    "Squadre": 16,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Open Misto",
-    "Regione": "Emilia-Romagna",
-    "Comitato": "Modena",
-    "Squadre": 34,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Open Misto",
-    "Regione": "Emilia-Romagna",
-    "Comitato": "Ravenna",
-    "Squadre": 7,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Open Misto",
-    "Regione": "Emilia-Romagna",
-    "Comitato": "Reggio Emilia",
-    "Squadre": 26,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Open Misto",
-    "Regione": "Lazio",
-    "Comitato": "Latina",
-    "Squadre": 14,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Open Misto",
-    "Regione": "Lazio",
-    "Comitato": "Roma",
-    "Squadre": 16,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Open Misto",
-    "Regione": "Lombardia",
-    "Comitato": "Bergamo",
-    "Squadre": 34,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Open Misto",
-    "Regione": "Lombardia",
-    "Comitato": "Como",
-    "Squadre": 22,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Open Misto",
-    "Regione": "Lombardia",
-    "Comitato": "Crema",
-    "Squadre": 7,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Open Misto",
-    "Regione": "Lombardia",
-    "Comitato": "Lecco",
-    "Squadre": 19,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Open Misto",
-    "Regione": "Lombardia",
-    "Comitato": "Lodi",
-    "Squadre": 15,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Open Misto",
-    "Regione": "Lombardia",
-    "Comitato": "Milano",
-    "Squadre": 16,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Open Misto",
-    "Regione": "Lombardia",
-    "Comitato": "Sondrio",
-    "Squadre": 10,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Open Misto",
-    "Regione": "Marche",
-    "Comitato": "Macerata",
-    "Squadre": 9,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Open Misto",
-    "Regione": "Marche",
-    "Comitato": "Pesaro-Urbino",
-    "Squadre": 6,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Open Misto",
-    "Regione": "Piemonte",
-    "Comitato": "Alba",
-    "Squadre": 5,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Open Misto",
-    "Regione": "Piemonte",
-    "Comitato": "Cuneo",
-    "Squadre": 23,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Open Misto",
-    "Regione": "Piemonte",
-    "Comitato": "Novara",
-    "Squadre": 12,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Open Misto",
-    "Regione": "Piemonte",
-    "Comitato": "Biella",
-    "Squadre": 5,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Open Misto",
-    "Regione": "Puglia",
-    "Comitato": "Bari",
-    "Squadre": 5,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Open Misto",
-    "Regione": "Puglia",
-    "Comitato": "Brindisi",
-    "Squadre": 8,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Open Misto",
-    "Regione": "Puglia",
-    "Comitato": "Lecce",
-    "Squadre": 7,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Open Misto",
-    "Regione": "Sicilia",
-    "Comitato": "Acireale",
-    "Squadre": 6,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Open Misto",
-    "Regione": "Sicilia",
-    "Comitato": "Catania",
-    "Squadre": 11,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Open Misto",
-    "Regione": "Sicilia",
-    "Comitato": "Palermo",
-    "Squadre": 14,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Open Misto",
-    "Regione": "Sicilia",
-    "Comitato": "Siracusa",
-    "Squadre": 7,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Open Misto",
-    "Regione": "Sicilia",
-    "Comitato": "Enna",
-    "Squadre": 5,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Open Misto",
-    "Regione": "Toscana",
-    "Comitato": "Lucca",
-    "Squadre": 12,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Open Misto",
-    "Regione": "Umbria",
-    "Comitato": "Perugia",
-    "Squadre": 7,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Open Misto",
-    "Regione": "Umbria",
-    "Comitato": "Gubbio",
-    "Squadre": 10,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Open Misto",
-    "Regione": "Veneto",
-    "Comitato": "Treviso",
-    "Squadre": 27,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Open Misto",
-    "Regione": "Veneto",
-    "Comitato": "Verona",
-    "Squadre": 27,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Open Misto",
-    "Regione": "Veneto",
-    "Comitato": "Rovigo",
-    "Squadre": 6,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Open Misto",
-    "Regione": "Friuli Venezia Giulia",
-    "Comitato": "Udine",
-    "Squadre": 38,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Top J F",
-    "Regione": "Emilia-Romagna",
-    "Comitato": "Modena",
-    "Squadre": 7,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Top J F",
-    "Regione": "Emilia-Romagna",
-    "Comitato": "Ravenna",
-    "Squadre": 6,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Top J F",
-    "Regione": "Emilia-Romagna",
-    "Comitato": "Reggio Emilia",
-    "Squadre": 6,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Top J F",
-    "Regione": "Lombardia",
-    "Comitato": "Brescia",
-    "Squadre": 8,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Top J F",
-    "Regione": "Lombardia",
-    "Comitato": "Lecco",
-    "Squadre": 8,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Top J F",
-    "Regione": "Lombardia",
-    "Comitato": "Milano",
-    "Squadre": 25,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Top J F",
-    "Regione": "Lombardia",
-    "Comitato": "Vallecamonica",
-    "Squadre": 7,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Top J F",
-    "Regione": "Piemonte",
-    "Comitato": "Cuneo",
-    "Squadre": 13,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Top J F",
-    "Regione": "Sicilia",
-    "Comitato": "Palermo",
-    "Squadre": 6,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Top J F",
-    "Regione": "Umbria",
-    "Comitato": "Perugia",
-    "Squadre": 7,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Top J M",
-    "Regione": "Puglia",
-    "Comitato": "Lecce",
-    "Squadre": 1,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Top J M",
-    "Regione": "Sicilia",
-    "Comitato": "Palermo",
-    "Squadre": 6,
-    "NOTE": ""
-  },
-  {
-    "status": "Soddisfa C.U.",
-    "Disciplina": "Pallavolo",
-    "categoria": "Under 10 (Minivolley)",
-    "Regione": "Emilia-Romagna",
-    "Comitato": "Modena",
-    "Squadre": 15,
     "NOTE": ""
   },
   {
@@ -8020,7 +1895,7 @@ const EMBEDDED_DATA = [
   {
     "status": "non soddisfa c.u.",
     "Disciplina": "Calcio",
-    "categoria": "Open M",
+    "categoria": "Open Maschile",
     "Regione": "Lazio",
     "Comitato": "Roma",
     "Squadre": 1,
@@ -8079,42 +1954,6 @@ const EMBEDDED_DATA = [
     "Comitato": "Palermo",
     "Squadre": 1,
     "NOTE": "Non soddisfa C.U. 1 sq insufficienti"
-  },
-  {
-    "status": "non soddisfa c.u.",
-    "Disciplina": "Calcio a Cinque",
-    "categoria": "Open F",
-    "Regione": "Liguria",
-    "Comitato": "Imperia-Sanremo",
-    "Squadre": 1,
-    "NOTE": "Non soddisfa C.U. 1 sq insufficienti"
-  },
-  {
-    "status": "non soddisfa c.u.",
-    "Disciplina": "Calcio a Cinque",
-    "categoria": "Open F",
-    "Regione": "Puglia",
-    "Comitato": "Lecce",
-    "Squadre": 0,
-    "NOTE": "Non soddisfa C.U. 1 sq insufficienti"
-  },
-  {
-    "status": "non soddisfa c.u.",
-    "Disciplina": "Calcio a Cinque",
-    "categoria": "Open F",
-    "Regione": "Toscana",
-    "Comitato": "Pisa",
-    "Squadre": 4,
-    "NOTE": "Non soddisfa C.U. 1 sq insufficienti"
-  },
-  {
-    "status": "non soddisfa c.u.",
-    "Disciplina": "Calcio a Cinque",
-    "categoria": "Open F",
-    "Regione": "Marche",
-    "Comitato": "Macerata",
-    "Squadre": 5,
-    "NOTE": "Non soddisfa C.U. 1 (manca fase reg.)"
   },
   {
     "status": "non soddisfa c.u.",
@@ -8155,7 +1994,43 @@ const EMBEDDED_DATA = [
   {
     "status": "non soddisfa c.u.",
     "Disciplina": "Calcio a Cinque",
-    "categoria": "Open M",
+    "categoria": "Open Femminile",
+    "Regione": "Liguria",
+    "Comitato": "Imperia-Sanremo",
+    "Squadre": 1,
+    "NOTE": "Non soddisfa C.U. 1 sq insufficienti"
+  },
+  {
+    "status": "non soddisfa c.u.",
+    "Disciplina": "Calcio a Cinque",
+    "categoria": "Open Femminile",
+    "Regione": "Puglia",
+    "Comitato": "Lecce",
+    "Squadre": 0,
+    "NOTE": "Non soddisfa C.U. 1 sq insufficienti"
+  },
+  {
+    "status": "non soddisfa c.u.",
+    "Disciplina": "Calcio a Cinque",
+    "categoria": "Open Femminile",
+    "Regione": "Toscana",
+    "Comitato": "Pisa",
+    "Squadre": 4,
+    "NOTE": "Non soddisfa C.U. 1 sq insufficienti"
+  },
+  {
+    "status": "non soddisfa c.u.",
+    "Disciplina": "Calcio a Cinque",
+    "categoria": "Open Femminile",
+    "Regione": "Marche",
+    "Comitato": "Macerata",
+    "Squadre": 5,
+    "NOTE": "Non soddisfa C.U. 1 (manca fase reg.)"
+  },
+  {
+    "status": "non soddisfa c.u.",
+    "Disciplina": "Calcio a Cinque",
+    "categoria": "Open Maschile",
     "Regione": "Calabria",
     "Comitato": "Tirrenico",
     "Squadre": 1,
@@ -8164,7 +2039,7 @@ const EMBEDDED_DATA = [
   {
     "status": "non soddisfa c.u.",
     "Disciplina": "Calcio a Cinque",
-    "categoria": "Open M",
+    "categoria": "Open Maschile",
     "Regione": "Emilia-Romagna",
     "Comitato": "Forli",
     "Squadre": 3,
@@ -8173,7 +2048,7 @@ const EMBEDDED_DATA = [
   {
     "status": "non soddisfa c.u.",
     "Disciplina": "Calcio a Cinque",
-    "categoria": "Open M",
+    "categoria": "Open Maschile",
     "Regione": "Sicilia",
     "Comitato": "Enna",
     "Squadre": 1,
@@ -8250,51 +2125,6 @@ const EMBEDDED_DATA = [
     "Comitato": "Enna",
     "Squadre": 3,
     "NOTE": "Non soddisfa C.U. 1 sq insufficienti"
-  },
-  {
-    "status": "non soddisfa c.u.",
-    "Disciplina": "Calcio a Sette",
-    "categoria": "Open F",
-    "Regione": "Emilia-Romagna",
-    "Comitato": "Reggio Emilia",
-    "Squadre": 1,
-    "NOTE": "Regioni insufficienti (2)"
-  },
-  {
-    "status": "non soddisfa c.u.",
-    "Disciplina": "Calcio a Sette",
-    "categoria": "Open F",
-    "Regione": "Lombardia",
-    "Comitato": "Milano",
-    "Squadre": 12,
-    "NOTE": "Regioni insufficienti (2)"
-  },
-  {
-    "status": "non soddisfa c.u.",
-    "Disciplina": "Calcio a Sette",
-    "categoria": "Open F",
-    "Regione": "Lombardia",
-    "Comitato": "Bergamo",
-    "Squadre": 10,
-    "NOTE": "Regioni insufficienti (2)"
-  },
-  {
-    "status": "non soddisfa c.u.",
-    "Disciplina": "Calcio a Sette",
-    "categoria": "Open F",
-    "Regione": "Lombardia",
-    "Comitato": "Brescia",
-    "Squadre": 17,
-    "NOTE": "Regioni insufficienti (2)"
-  },
-  {
-    "status": "non soddisfa c.u.",
-    "Disciplina": "Calcio a Sette",
-    "categoria": "Open F",
-    "Regione": "Lombardia",
-    "Comitato": "Varese",
-    "Squadre": 19,
-    "NOTE": "Regioni insufficienti (2)"
   },
   {
     "status": "non soddisfa c.u.",
@@ -8370,12 +2200,48 @@ const EMBEDDED_DATA = [
   },
   {
     "status": "non soddisfa c.u.",
-    "Disciplina": "Pallacanestro",
-    "categoria": "Top Junior F",
-    "Regione": "Puglia",
-    "Comitato": "Bari",
+    "Disciplina": "Calcio a Sette",
+    "categoria": "Open Femminile",
+    "Regione": "Emilia-Romagna",
+    "Comitato": "Reggio Emilia",
     "Squadre": 1,
-    "NOTE": "Regioni insufficienti (1 con 1 sq.)"
+    "NOTE": "Regioni insufficienti (2)"
+  },
+  {
+    "status": "non soddisfa c.u.",
+    "Disciplina": "Calcio a Sette",
+    "categoria": "Open Femminile",
+    "Regione": "Lombardia",
+    "Comitato": "Milano",
+    "Squadre": 12,
+    "NOTE": "Regioni insufficienti (2)"
+  },
+  {
+    "status": "non soddisfa c.u.",
+    "Disciplina": "Calcio a Sette",
+    "categoria": "Open Femminile",
+    "Regione": "Lombardia",
+    "Comitato": "Bergamo",
+    "Squadre": 10,
+    "NOTE": "Regioni insufficienti (2)"
+  },
+  {
+    "status": "non soddisfa c.u.",
+    "Disciplina": "Calcio a Sette",
+    "categoria": "Open Femminile",
+    "Regione": "Lombardia",
+    "Comitato": "Brescia",
+    "Squadre": 17,
+    "NOTE": "Regioni insufficienti (2)"
+  },
+  {
+    "status": "non soddisfa c.u.",
+    "Disciplina": "Calcio a Sette",
+    "categoria": "Open Femminile",
+    "Regione": "Lombardia",
+    "Comitato": "Varese",
+    "Squadre": 19,
+    "NOTE": "Regioni insufficienti (2)"
   },
   {
     "status": "non soddisfa c.u.",
@@ -8416,11 +2282,20 @@ const EMBEDDED_DATA = [
   {
     "status": "non soddisfa c.u.",
     "Disciplina": "Pallacanestro",
-    "categoria": "Open M",
+    "categoria": "Open Maschile",
     "Regione": "Emilia-Romagna",
     "Comitato": "Parma",
     "Squadre": 2,
     "NOTE": "Non soddisfa C.U. 1 sq insufficienti"
+  },
+  {
+    "status": "non soddisfa c.u.",
+    "Disciplina": "Pallacanestro",
+    "categoria": "Top J F",
+    "Regione": "Puglia",
+    "Comitato": "Bari",
+    "Squadre": 1,
+    "NOTE": "Regioni insufficienti (1 con 1 sq.)"
   },
   {
     "status": "non soddisfa c.u.",
@@ -8470,7 +2345,7 @@ const EMBEDDED_DATA = [
   {
     "status": "non soddisfa c.u.",
     "Disciplina": "Pallavolo",
-    "categoria": "Juniores Femminile",
+    "categoria": "Juniores F",
     "Regione": "Liguria",
     "Comitato": "Chiavari",
     "Squadre": 4,
@@ -8479,7 +2354,7 @@ const EMBEDDED_DATA = [
   {
     "status": "non soddisfa c.u.",
     "Disciplina": "Pallavolo",
-    "categoria": "Juniores Femminile",
+    "categoria": "Juniores F",
     "Regione": "Puglia",
     "Comitato": "Brindisi",
     "Squadre": 5,
@@ -8488,7 +2363,7 @@ const EMBEDDED_DATA = [
   {
     "status": "non soddisfa c.u.",
     "Disciplina": "Pallavolo",
-    "categoria": "Juniores Femminile",
+    "categoria": "Juniores F",
     "Regione": "Puglia",
     "Comitato": "Lecce",
     "Squadre": 4,
@@ -8658,14 +2533,15 @@ function updateKPIs(){
   const ok = filtered.filter(r => r.status === STATUS.OK);
   const nomin = filtered.filter(r => r.status === STATUS.NOMIN);
   const nonprev = filtered.filter(r => r.status === STATUS.NONPREV);
-  const totalSq = filtered.reduce((s,r) => s + (r.Squadre || 0), 0);
 
-  document.getElementById('kpiTotal').textContent = filtered.length.toLocaleString('it');
-  document.getElementById('kpiSquadre').textContent = totalSq.toLocaleString('it');
+  // KPI 1: Soddisfano C.U.
   document.getElementById('kpiOk').textContent = ok.length.toLocaleString('it');
-  document.getElementById('kpiNomin').textContent = nomin.length.toLocaleString('it');
 
-  // KPI "Regioni": mostrato solo quando sono selezionate almeno 1 Disciplina e 1 Categoria
+  // KPI 2: Numero campionati (solo quelli che soddisfano C.U.) → univoci per Disciplina+Categoria
+  const campCount = new Set(ok.map(r => `${(r.Disciplina||'')} ${(r.categoria||'')}`)).size;
+  document.getElementById('kpiTotal').textContent = campCount.toLocaleString('it');
+
+  // KPI 3: Regioni (solo soddisfano C.U.) — mostrato solo se selezionate Disciplina + Categoria
   const showRegioni = (f.disc && f.disc.length > 0) && (f.cat && f.cat.length > 0);
   const regCard = document.getElementById('kpiRegioniCard');
   const regVal  = document.getElementById('kpiRegioni');
@@ -8680,6 +2556,14 @@ function updateKPIs(){
     }
   }
 
+  // KPI 4: Squadre iscritte (solo soddisfano C.U.)
+  const totalSqOk = ok.reduce((s,r) => s + (r.Squadre || 0), 0);
+  document.getElementById('kpiSquadre').textContent = totalSqOk.toLocaleString('it');
+
+  // KPI 5: Non soddisfano C.U.
+  document.getElementById('kpiNomin').textContent = nomin.length.toLocaleString('it');
+
+  // Badge tabs
   document.getElementById('countOk').textContent = ok.length;
   document.getElementById('countNomin').textContent = nomin.length;
   document.getElementById('countNonprev').textContent = nonprev.length;
@@ -8700,12 +2584,71 @@ function makeTable(id, status, columns){
     pageLength: 25,
     lengthMenu: [10,25,50,100],
     order: [[0,'asc'],[1,'asc'],[2,'asc'],[3,'asc']],
+    orderMulti: false, // gestito da noi
+    dom: '<"d-flex flex-wrap gap-2 justify-content-between align-items-center mb-2"Bf>rt<"d-flex flex-wrap gap-2 justify-content-between align-items-center mt-2"ip>',
+    buttons: [
+      { extend: 'excelHtml5', text: '⬇️ Excel', title: 'Campionati' },
+      { extend: 'print',      text: '🖨 Stampa / PDF', title: '' }
+    ],
     language: { url: "https://cdn.datatables.net/plug-ins/1.13.8/i18n/it-IT.json" }
   });
   dt.__status = status;
+  enableStickyMultiSort(dt, id);
   return dt;
 }
 
+
+
+function enableStickyMultiSort(dt, tableSelector){
+  const $table = $(tableSelector);
+  const state = []; // [{col,dir}]
+  const $ths = $table.find('thead th');
+
+  function renderIndicators(){
+    $ths.each(function(){
+      const th = this;
+      th.classList.remove('sort-off');
+      th.removeAttribute('data-sort-label');
+      const idx = $ths.index(th);
+      const pos = state.findIndex(s => s.col === idx);
+      if(pos === -1){
+        th.classList.add('sort-off');
+        return;
+      }
+      const dir = state[pos].dir === 'asc' ? '↑' : '↓';
+      th.setAttribute('data-sort-label', `${pos+1}${dir}`);
+    });
+  }
+
+  function apply(){
+    const order = state.map(s => [s.col, s.dir]);
+    dt.order(order.length ? order : [[0,'asc']]).draw();
+    renderIndicators();
+  }
+
+  // click header: toggle asc → desc → off (multi-col senza Shift)
+  $table.on('click', 'thead th', function(e){
+    e.preventDefault();
+    e.stopImmediatePropagation();
+
+    const col = $ths.index(this);
+    const pos = state.findIndex(s => s.col === col);
+    if(pos === -1){
+      state.push({col, dir:'asc'});
+    } else if(state[pos].dir === 'asc'){
+      state[pos].dir = 'desc';
+    } else {
+      state.splice(pos, 1);
+    }
+    apply();
+  });
+
+  // init indicatori dal default DataTables
+  const initial = dt.order() || [];
+  state.length = 0;
+  initial.forEach(o => state.push({col:o[0], dir:o[1]}));
+  renderIndicators();
+}
 
 // ── Tab switching ──
 document.getElementById('tabBar').addEventListener('click', function(e){
@@ -8814,6 +2757,17 @@ tables.nonprev_all = makeTable('#table-nonprev-all', STATUS.NONPREV, [
     w.document.write(html);
     w.document.close();
   });
+  // KPI: click su "NON SODDISFANO C.U." → apre tab relativo e scorre alla tabella
+  const kpiBad = document.getElementById('kpiNominCard');
+  if(kpiBad){
+    kpiBad.addEventListener('click', () => {
+      const btn = document.querySelector('.status-tab[data-target="pane-nomin"]');
+      if(btn) btn.click();
+      const pane = document.getElementById('pane-nomin');
+      if(pane) pane.scrollIntoView({behavior:'smooth', block:'start'});
+    });
+  }
+
 }
 
 init();
