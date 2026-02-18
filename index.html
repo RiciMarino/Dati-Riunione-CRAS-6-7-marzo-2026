@@ -8767,9 +8767,7 @@ function makeTable(id, status, columns){
     columns,
     pageLength: 50,
     lengthMenu: [50, 75, 100, 125, 150, 175, 200],
-    order: [[0,'asc'],[1,'asc'],[2,'asc'],[3,'asc']],
-    orderMulti: false, // gestito da noi
-    dom: '<"d-flex flex-wrap gap-2 justify-content-between align-items-center mb-2"B<"d-flex flex-wrap gap-2 align-items-center ms-auto"lf>>rt<"d-flex flex-wrap gap-2 justify-content-between align-items-center mt-2"ip>',
+    order: [[0,'asc'],[1,'asc'],[2,'asc'],[3,'asc']],    dom: '<"d-flex flex-wrap gap-2 justify-content-between align-items-center mb-2"B<"d-flex flex-wrap gap-2 align-items-center ms-auto"lf>>rt<"d-flex flex-wrap gap-2 justify-content-between align-items-center mt-2"ip>',
     buttons: [
             {
               text: '↺ Reset ordinamento',
@@ -8789,62 +8787,11 @@ function makeTable(id, status, columns){
     language: { url: "https://cdn.datatables.net/plug-ins/1.13.8/i18n/it-IT.json" }
   });
   dt.__status = status;
-  enableStickyMultiSort(dt, id);
-  return dt;
+return dt;
 }
 
 
 
-function enableStickyMultiSort(dt, tableSelector){
-  const $table = $(tableSelector);
-  const state = []; // [{col,dir}]
-  const $ths = $table.find('thead th');
-
-  function renderIndicators(){
-    $ths.each(function(){
-      const th = this;
-      th.classList.remove('sort-off');
-      th.removeAttribute('data-sort-label');
-      const idx = $ths.index(th);
-      const pos = state.findIndex(s => s.col === idx);
-      if(pos === -1){
-        th.classList.add('sort-off');
-        return;
-      }
-      const dir = state[pos].dir === 'asc' ? '↑' : '↓';
-      th.setAttribute('data-sort-label', `${pos+1}${dir}`);
-    });
-  }
-
-  function apply(){
-    const order = state.map(s => [s.col, s.dir]);
-    dt.order(order.length ? order : [[0,'asc']]).draw();
-    renderIndicators();
-  }
-
-  // click header: toggle asc → desc → off (multi-col senza Shift)
-  $table.on('click', 'thead th', function(e){
-    e.preventDefault();
-    e.stopImmediatePropagation();
-
-    const col = $ths.index(this);
-    const pos = state.findIndex(s => s.col === col);
-    if(pos === -1){
-      state.push({col, dir:'asc'});
-    } else if(state[pos].dir === 'asc'){
-      state[pos].dir = 'desc';
-    } else {
-      state.splice(pos, 1);
-    }
-    apply();
-  });
-
-  // init indicatori dal default DataTables
-  const initial = dt.order() || [];
-  state.length = 0;
-  initial.forEach(o => state.push({col:o[0], dir:o[1]}));
-  renderIndicators();
-}
 
 // ── Tab switching ──
 document.getElementById('tabBar').addEventListener('click', function(e){
