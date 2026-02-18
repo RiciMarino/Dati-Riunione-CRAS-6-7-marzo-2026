@@ -385,6 +385,42 @@ th .order-badge {
   color: #000 !important;
 }
 
+
+.sort-help {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: .5rem;
+}
+.sort-help-icon {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: #6c757d;
+  color: #fff;
+  font-weight: bold;
+  text-align: center;
+  line-height: 22px;
+  cursor: pointer;
+  font-size: 0.85rem;
+}
+.sort-help-box {
+  position: absolute;
+  right: 1.5rem;
+  margin-top: 28px;
+  background: #fff;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: .75rem;
+  font-size: .8rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,.15);
+  display: none;
+  max-width: 260px;
+  z-index: 1000;
+}
+.sort-help:hover .sort-help-box {
+  display: block;
+}
+
 </style>
 <link href="https://cdn.datatables.net/buttons/2.4.2/css/buttons.bootstrap5.min.css" rel="stylesheet"/></head>
 <body>
