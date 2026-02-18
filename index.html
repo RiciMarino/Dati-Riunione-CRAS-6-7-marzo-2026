@@ -8679,6 +8679,19 @@ const STATUS = {
   NONPREV: "Non previsto nazionali"
 };
 
+function parseNumIt(v){
+  if(v === null || v === undefined) return 0;
+  if(typeof v === 'number') return v;
+  let s = String(v).replace(/<[^>]*>/g,'').trim();
+  if(!s) return 0;
+  // keep digits, dots, commas, spaces
+  s = s.replace(/\s+/g,'').replace(/\./g,'').replace(',', '.');
+  const n = parseFloat(s);
+  return isNaN(n) ? 0 : n;
+}
+
+
+
 let raw = [];
 let tables = {};
 
@@ -8900,33 +8913,33 @@ function init(){
 
   tables.ok = makeTable('#table-ok', STATUS.OK, [
     {data:'Disciplina'}, {data:'categoria'}, {data:'Regione'}, {data:'Comitato'},
-    {data:'Squadre', render:(d)=> d ?? ''}
+    {data:'Squadre', render:function(d,type){ if(type==='sort'||type==='type') return parseNumIt(d); return d ?? ''; }}
   ]);
   tables.nomin = makeTable('#table-nomin', STATUS.NOMIN, [
     {data:'Disciplina'}, {data:'categoria'}, {data:'Regione'}, {data:'Comitato'},
-    {data:'Squadre', render:(d)=> d ?? ''},
+    {data:'Squadre', render:function(d,type){ if(type==='sort'||type==='type') return parseNumIt(d); return d ?? ''; }},
     {data:'NOTE', defaultContent:''}
   ]);
   tables.nonprev = makeTable('#table-nonprev', STATUS.NONPREV, [
     {data:'Disciplina'}, {data:'categoria'}, {data:'Regione'}, {data:'Comitato'},
-    {data:'Squadre', render:(d)=> d ?? ''},
+    {data:'Squadre', render:function(d,type){ if(type==='sort'||type==='type') return parseNumIt(d); return d ?? ''; }},
     {data:'NOTE', defaultContent:''}
   ]);
 
   tables.ok_all = makeTable('#table-ok-all', STATUS.OK, [
   {data:'Disciplina'}, {data:'categoria'}, {data:'Regione'}, {data:'Comitato'},
-  {data:'Squadre', render:(d)=> d ?? ''}
+  {data:'Squadre', render:function(d,type){ if(type==='sort'||type==='type') return parseNumIt(d); return d ?? ''; }}
 ]);
 
 tables.nomin_all = makeTable('#table-nomin-all', STATUS.NOMIN, [
   {data:'Disciplina'}, {data:'categoria'}, {data:'Regione'}, {data:'Comitato'},
-  {data:'Squadre', render:(d)=> d ?? ''},
+  {data:'Squadre', render:function(d,type){ if(type==='sort'||type==='type') return parseNumIt(d); return d ?? ''; }},
   {data:'NOTE', defaultContent:''}
 ]);
 
 tables.nonprev_all = makeTable('#table-nonprev-all', STATUS.NONPREV, [
   {data:'Disciplina'}, {data:'categoria'}, {data:'Regione'}, {data:'Comitato'},
-  {data:'Squadre', render:(d)=> d ?? ''},
+  {data:'Squadre', render:function(d,type){ if(type==='sort'||type==='type') return parseNumIt(d); return d ?? ''; }},
   {data:'NOTE', defaultContent:''}
 ]);
 
