@@ -9100,13 +9100,19 @@ tables.nonprev_all = makeTable('#table-nonprev-all', STATUS.NONPREV, [
   $('#btnPrint').on('click', () => {
     const regione = $('#printRegione').val();
     if(!regione) return;
-    const include2 = $('#printInclude2').checked ?? document.getElementById('printInclude2').checked;
-    const include3 = $('#printInclude3').checked ?? document.getElementById('printInclude3').checked;
-    const html = buildPrintHtml(regione, include2, include3);
+    const include2 = document.getElementById('printInclude2')?.checked ?? true;
+    const include3 = document.getElementById('printInclude3')?.checked ?? true;
+    const htmlDoc = buildPrintHtml(regione, include2, include3);
     const w = window.open('', '_blank');
+    if(!w){
+      alert('Popup bloccato dal browser: abilita i popup per poter stampare.');
+      return;
+    }
     w.document.open();
-    w.document.write(html);
+    w.document.write(htmlDoc);
     w.document.close();
+    w.focus();
+    w.onload = function(){ w.print(); };
   });
   // KPI: click su "NON SODDISFANO C.U." → apre tab relativo e scorre alla tabella
   const kpiBad = document.getElementById('kpiNominCard');
@@ -9119,6 +9125,88 @@ tables.nonprev_all = makeTable('#table-nonprev-all', STATUS.NONPREV, [
     });
   }
 
+}
+
+
+/* ------------------------------
+   Stampa PDF "Regione per PDF"
+   ------------------------------ */
+function escHtml(s){
+  return String(s ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+}
+function buildTableHtml(rows, withNote){
+  const headers = withNote
+    ? ['Disciplina','Categoria','Regione','Comitato','Squadre','Note']
+    : ['Disciplina','Categoria','Regione','Comitato','Squadre'];
+  const thead = '<tr>' + headers.map(h => '<th>' + h + '</th>').join('') + '</tr>';
+  const tbody = rows.map(r => {
+    const cells = withNote
+      ? [r.Disciplina, r.categoria, r.Regione, r.Comitato, r.Squadre, r.NOTE ?? r.Note ?? '']
+      : [r.Disciplina, r.categoria, r.Regione, r.Comitato, r.Squadre];
+    return '<tr>' + cells.map((c,i) => {
+      const isNum = (!withNote && i===4) || (withNote && i===4);
+      const v = isNum ? Number(c || 0) : c;
+      return '<td' + (isNum ? ' style="text-align:right"' : '') + '>' + escHtml(isNum ? v.toLocaleString('it-IT') : v) + '</td>';
+    }).join('') + '</tr>';
+  }).join('');
+  return '<table><thead>' + thead + '</thead><tbody>' + tbody + '</tbody></table>';
+}
+function buildPrintHtml(regione, include2, include3){
+  const reg = Array.isArray(regione) ? regione[0] : regione;
+  const title = (document.title || 'Campionati') + ' – Regione: ' + reg;
+  const ok = raw.filter(r => r.status === STATUS.OK && r.Regione === reg);
+  const ns = raw.filter(r => r.status === STATUS.NOMIN && r.Regione === reg);
+  const np = raw.filter(r => r.status === STATUS.NONPREV && r.Regione === reg);
+
+  const style = `
+    <style>
+      body{ font-family: Arial, sans-serif; padding: 18px; }
+      h1{ font-size: 16px; margin: 0 0 6px 0; }
+      h2{ font-size: 13px; margin: 16px 0 8px 0; }
+      .meta{ font-size: 12px; opacity: .75; margin-bottom: 12px; }
+      table{ width: 100%; border-collapse: collapse; font-size: 12px; margin-bottom: 10px; }
+      th, td{ border: 1px solid #ddd; padding: 6px 8px; text-align: left; vertical-align: top; }
+      th{ background: #f3f5f7; }
+      /* Mantieni lo sbiadito anche in stampa per 1-4 squadre (solo tab OK) */
+      tr.soft-deadline td{ background: rgba(255,193,7,.10) !important; }
+    </style>
+  `;
+
+  // mark soft-deadline in OK for 1-4
+  const okMarked = ok.map(r => ({...r, __soft: (Number(r.Squadre) >= 1 && Number(r.Squadre) <= 4)}));
+
+  function tableWithSoft(rows){
+    // we build table rows manually to add class
+    const headers = ['Disciplina','Categoria','Regione','Comitato','Squadre'];
+    const thead = '<tr>' + headers.map(h => '<th>' + h + '</th>').join('') + '</tr>';
+    const tbody = rows.map(r => {
+      const cls = r.__soft ? ' class="soft-deadline"' : '';
+      const cells = [r.Disciplina, r.categoria, r.Regione, r.Comitato, r.Squadre];
+      return '<tr' + cls + '>' + cells.map((c,i) => {
+        const isNum = (i===4);
+        const v = isNum ? Number(c || 0) : c;
+        return '<td' + (isNum ? ' style="text-align:right"' : '') + '>' + escHtml(isNum ? v.toLocaleString('it-IT') : v) + '</td>';
+      }).join('') + '</tr>';
+    }).join('');
+    return '<table><thead>' + thead + '</thead><tbody>' + tbody + '</tbody></table>';
+  }
+
+  let body = '<h1>' + escHtml(title) + '</h1>' +
+             '<div class="meta">Generato dal portale – ' + new Date().toLocaleString('it-IT') + '</div>';
+
+  body += '<h2>Campionati che SODDISFANO C.U. (' + ok.length + ')</h2>';
+  body += ok.length ? tableWithSoft(okMarked) : '<div class="meta">Nessun dato.</div>';
+
+  if(include2){
+    body += '<h2>Campionati che NON soddisfano C.U. (' + ns.length + ')</h2>';
+    body += ns.length ? buildTableHtml(ns, true) : '<div class="meta">Nessun dato.</div>';
+  }
+  if(include3){
+    body += '<h2>Non previsto ai nazionali (' + np.length + ')</h2>';
+    body += np.length ? buildTableHtml(np, true) : '<div class="meta">Nessun dato.</div>';
+  }
+
+  return '<html><head><title>' + escHtml(title) + '</title>' + style + '</head><body>' + body + '</body></html>';
 }
 
 init();
