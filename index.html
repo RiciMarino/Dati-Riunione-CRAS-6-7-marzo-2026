@@ -352,6 +352,17 @@
       padding: .1rem .45rem;
     }
     table.dataTable thead th.sort-off::after{ content: ""; border: none; background: transparent; }
+
+/* Subtle multi-order indicators */
+th.order-active {
+  box-shadow: inset 0 -2px 0 rgba(0,0,0,0.25);
+}
+th .order-badge {
+  font-size: 0.7em;
+  opacity: 0.7;
+  margin-left: 4px;
+}
+
 </style>
 <link href="https://cdn.datatables.net/buttons/2.4.2/css/buttons.bootstrap5.min.css" rel="stylesheet"/></head>
 <body>
@@ -2581,7 +2592,7 @@ function makeTable(id, status, columns){
   const dt = $(id).DataTable({
     data: [],
     columns,
-    pageLength: 25,
+    pageLength: 50,
     lengthMenu: [10,25,50,100],
     order: [[0,'asc'],[1,'asc'],[2,'asc'],[3,'asc']],
     orderMulti: false, // gestito da noi
